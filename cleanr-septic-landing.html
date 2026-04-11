@@ -1,0 +1,2816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLEANR – Protect Your Septic System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="cleanr-tokens.css" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <style>
+
+    /* ── DESIGN SYSTEM TOKENS ───────────────────────────────
+       Mirrors cleanr-tokens.css (also linked in <head> for shared
+       components). Update both when token values change.
+    ──────────────────────────────────────────────────────── */
+    :root {
+      /* Fonts */
+      --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+
+      /* Primary — Blue */
+      --color-primary-50:  #EDF2FC;
+      --color-primary-100: #D2E0FA;
+      --color-primary-200: #A8C2F3;
+      --color-primary-300: #7A9FED;
+      --color-primary-400: #5A84EB;
+      --color-primary-500: #2A65E3;
+      --color-primary-600: #2148C4;
+      --color-primary-700: #1A3A9E;
+      --color-primary-800: #142D78;
+      --color-primary-900: #0E2154;
+
+      /* Secondary — Navy */
+      --color-secondary-500: #16293A;
+      --color-secondary-600: #0D1E2C;
+      --color-secondary-700: #091722;
+
+      /* Brand / logo mark */
+      --color-logo: #022551;
+
+      /* Surface & Background */
+      --color-surface:   #FFFFFF;
+      --color-bg:        #F1F3F4;
+      --color-bg-alt:    #EDF4F6;
+      --color-surface-2: #F2F0EC;
+      --color-marquee-pill: rgba(230, 234, 236, 1);
+
+      /* Text */
+      --color-text:    #0D1E2C;
+      --color-text-2:  #3D5263;
+      --color-text-3:  var(--color-text-2);
+      --color-text-inverse: var(--color-surface);
+
+      /* Border */
+      --color-border:       #E5E0D8;
+      --color-border-2:     #CEC9BF;
+      --color-border-focus: #2A65E3;
+
+      /* Semantic */
+      --color-danger:  #C0432F;
+      --color-warning: #B8720A;
+      --color-success: #1A7A52;
+
+      /* Diagram cost pills (reference: light salmon + deep red type) */
+      --color-cost-pill-bg:    #FDEBEA;
+      --color-cost-pill-text:  #9F2D24;
+
+      /* Shadow */
+      --shadow-sm: 0 2px 10px rgba(13,30,44,0.08);
+      --shadow-md: 0 6px 24px rgba(13,30,44,0.10);
+      --shadow-lg: 0 16px 48px rgba(13,30,44,0.13);
+      --shadow-primary: 0 8px 24px rgba(42,101,227,0.30);
+
+      /* Layout */
+      --max-w:        1160px;
+      --pad-x:        clamp(24px, 5vw, 80px);
+      --space-section: clamp(80px, 10vw, 120px);
+
+      /* Radius */
+      --radius-sm:   6px;
+      --radius-md:   12px;
+      --radius-lg:   20px;
+      --radius-xl:   32px;
+      --radius-pill: 999px;
+
+      /* Type — display (mirrors cleanr-tokens.css) */
+      --text-display-2xl: clamp(34px, 4.6vw, 56px);
+      --weight-semibold: 600;
+    }
+
+    /* em in display headings = primary color accent, no italic */
+    .d1 em, .d2 em, .d3 em { font-style: normal; color: var(--color-primary-500); }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--color-bg); color: var(--color-text); -webkit-font-smoothing: antialiased; overflow-x: hidden; line-height: 1.6; }
+
+    /* ── LAYOUT ──────────────────────────────────────────── */
+    .wrap { max-width: var(--max-w); margin-inline: auto; padding-inline: var(--pad-x); }
+    .sec { padding-block: var(--space-section); }
+
+    /* ── TYPE ────────────────────────────────────────────── */
+    /* Plus Jakarta Sans · display + heading + body scale */
+    .d1 {
+      font-family: var(--font-display);
+      font-size: var(--text-display-2xl);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.025em;
+    }
+    .d2 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4.2vw, 58px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+    .d3 {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.5vw, 34px);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-3);
+    }
+    .label--primary { color: var(--color-primary-500); }
+
+    /* ── BUTTONS ─────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body); font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none; text-decoration: none;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.18s, color 0.18s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn--secondary  { background: var(--color-secondary-600); color: var(--color-surface); }
+    .btn--secondary:hover  { background: var(--color-secondary-500); box-shadow: 0 8px 24px rgba(13,30,44,0.22); }
+    .btn--primary  { background: var(--color-primary-500); color: var(--color-surface); }
+    .btn--primary:hover  { background: var(--color-primary-400); box-shadow: 0 8px 24px rgba(42,101,227,0.3); }
+    .btn--ghost { background: transparent; color: var(--color-text); border: 1.5px solid var(--color-border); }
+    .btn--ghost:hover { border-color: var(--color-text-3); }
+    .btn--lg { padding: 17px 36px; font-size: 16px; }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 12px 0;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .nav.opaque {
+      background: rgba(241,243,244,0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 0 var(--color-border);
+    }
+    .nav .wrap {
+      max-width: none;
+      width: 100%;
+      margin-inline: 0;
+      padding-inline: var(--pad-x);
+      box-sizing: border-box;
+    }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .nav__logo svg {
+      display: block;
+      height: 66px;
+      width: auto;
+      color: var(--color-logo);
+    }
+    .nav__links { display: flex; align-items: center; gap: 24px; }
+    .nav__link { font-size: 13.5px; color: var(--color-text-2); text-decoration: none; transition: color 0.2s; }
+    .nav__link:hover { color: var(--color-text); }
+    .nav__link--cta { font-weight: var(--weight-semibold); }
+    .nav__link--semibold { font-weight: var(--weight-semibold); }
+
+    /* Nav: pill bar + nested primary Buy (matches reference) */
+    .nav__buy-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: clamp(10px, 1.4vw, 16px);
+      padding: 5px 8px 5px clamp(16px, 2.2vw, 22px);
+      background: var(--color-surface);
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      color: inherit;
+      box-shadow: none;
+      transition: box-shadow 0.2s ease;
+    }
+    .nav__buy-bar:hover {
+      box-shadow: var(--shadow-sm);
+    }
+    .nav__buy-bar:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 3px;
+    }
+    .nav__buy-bar__price {
+      font-size: 15.5px;
+      font-weight: var(--weight-semibold);
+      color: var(--color-text);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .nav__buy-bar__action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 20px;
+      min-height: 34px;
+      border-radius: var(--radius-pill);
+      font-size: 14.5px;
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-inverse);
+      background: var(--color-primary-500);
+      transition: background 0.2s ease;
+    }
+    .nav__buy-bar:hover .nav__buy-bar__action {
+      background: var(--color-primary-400);
+    }
+
+    /* ── HERO ── Cove split + LAICA editorial center-left ── */
+    .hero {
+      min-height: clamp(600px, 88svh, 920px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      position: relative;
+      overflow: hidden;
+      border: none;
+    }
+
+    /* Left: editorial text column */
+    .hero__left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 80px var(--pad-x) 56px;
+      position: relative; z-index: 2;
+      background: var(--color-bg);
+    }
+
+    /* Google reviews bar */
+    .g-reviews {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .g-reviews__logo {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600; color: var(--color-text-3);
+      letter-spacing: 0.01em;
+    }
+    .g-reviews__logo-icon {
+      width: 16px; height: 16px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234285F4' d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'/%3E%3Cpath fill='%2334A853' d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z'/%3E%3Cpath fill='%23FBBC05' d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z'/%3E%3Cpath fill='%23EA4335' d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'/%3E%3C/svg%3E") center/contain no-repeat;
+      flex-shrink: 0;
+    }
+    .g-reviews__divider {
+      width: 1px; height: 14px; background: var(--color-border);
+    }
+    .g-reviews__stars {
+      display: flex; gap: 2px; align-items: center;
+    }
+    .g-reviews__star {
+      width: 14px; height: 14px;
+      background: #FBBC05;
+      clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+    }
+    .g-reviews__score {
+      font-size: 13px; font-weight: 700; color: var(--color-text);
+      margin-left: 4px;
+    }
+    .g-reviews__count {
+      font-size: 12.5px; color: var(--color-text-3);
+    }
+
+    .hero__h1 { color: var(--color-text); margin-bottom: 28px; }
+    .hero__h1 em { color: var(--color-primary-500); font-style: normal; }
+
+    .hero__sub {
+      font-size: clamp(15px, 1.4vw, 17px);
+      color: var(--color-text-2);
+      line-height: 1.72;
+      max-width: 420px;
+      margin-bottom: 36px;
+    }
+
+    .hero__ctas { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+
+    /* Cove-style inline proof list */
+    .hero__proof {
+      padding-top: 32px;
+      display: flex; gap: 24px; flex-wrap: wrap;
+    }
+    .proof-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13.5px; color: var(--color-text-3); font-weight: 500;
+    }
+    .proof-item__tick {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* Right: photo column — flex column; image is full-bleed, overlays use their own padding */
+    .hero__right {
+      position: relative;
+      margin: 0;
+      margin-inline: 0;
+      width: 100%;
+      min-height: 0;
+      align-self: stretch;
+      background: var(--color-bg-alt);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    .hero__product-visual {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero__product-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* Pin hero column layout (avoids stray margin / block from tools or cached CSS) */
+    #h-right {
+      display: flex;
+      flex-direction: column;
+      margin-inline: 0;
+    }
+
+    /* Small promo clip — bottom-right of hero photo column */
+    .hero__video-wrap {
+      position: relative;
+      z-index: 5;
+      margin-top: auto;
+      align-self: flex-end;
+      padding: 0 64px 54px;
+      max-width: 100%;
+      box-sizing: border-box;
+      pointer-events: auto;
+    }
+
+    .hero__video-wrap video {
+      display: block;
+      width: min(180px, 34vw);
+      max-width: 100%;
+      aspect-ratio: 9 / 16;
+      height: auto;
+      object-fit: cover;
+      object-position: center;
+      border-radius: var(--radius-md);
+      box-shadow:
+        0 8px 22px rgba(13, 30, 44, 0.14),
+        0 2px 8px rgba(13, 30, 44, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.14);
+      background: #000;
+    }
+
+    /* ── SECTION: PROBLEM ────────────────────────────────── */
+    /* LAICA: centered editorial, clean whitespace */
+    #problem { background-color: rgba(241, 243, 244, 1); }
+    .problem__intro {
+      max-width: 640px;
+      margin-inline: auto;
+      text-align: center;
+      margin-bottom: clamp(56px, 7vw, 88px);
+    }
+    .problem__intro .d2 { margin: 12px 0 20px; }
+    #problem-h2 em { color: var(--color-primary-500); }
+    .problem__intro p { font-size: 17px; color: var(--color-text-2); line-height: 1.75; }
+
+    /* Interactive septic diagram */
+    .diagram-section {
+      margin-bottom: clamp(48px, 6vw, 64px);
+    }
+    .diagram-stage {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(0.97) translateY(20px);
+    }
+    .diagram-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      user-select: none;
+      pointer-events: none;
+    }
+    .hotspot {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      margin-left: -22px;
+      margin-top: -22px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      opacity: 0;
+    }
+    .hotspot:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 3px;
+    }
+    .hotspot__ring {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--color-primary-500);
+      opacity: 0.5;
+      animation: hotspotPulse 2s ease-in-out infinite;
+    }
+    .hotspot.active .hotspot__ring {
+      animation: none;
+      opacity: 1;
+      width: 36px;
+      height: 36px;
+      background: var(--color-primary-50);
+      border-color: var(--color-primary-400);
+      transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .hotspot__dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--color-primary-500);
+      border: 2px solid var(--color-surface);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, background 0.2s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .hotspot.active .hotspot__dot {
+      background: var(--color-primary-400);
+      transform: scale(1.2);
+    }
+    .hotspot__num {
+      display: none;
+    }
+    @keyframes hotspotPulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.5); opacity: 0; }
+    }
+    .callout {
+      position: absolute;
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      max-width: min(320px, 58vw);
+    }
+    .callout.active .callout__body {
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-primary-300);
+    }
+    .callout__body {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 12px;
+      justify-content: space-between;
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-border);
+      min-width: 0;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .callout__text {
+      margin: 0;
+      flex: 1 1 140px;
+      min-width: 0;
+      font-size: 12.5px;
+      font-weight: var(--weight-semibold);
+      color: var(--color-text);
+      line-height: 1.45;
+    }
+    .cost-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      white-space: nowrap;
+      background: var(--color-cost-pill-bg);
+      color: var(--color-cost-pill-text);
+      flex-shrink: 0;
+    }
+    .callout--0 { top: 26%; left: 4%; }
+    .callout--1 { top: 14%; right: 4%; }
+    .callout--2 { bottom: 14%; left: 30%; }
+    .callout--3 { bottom: 26%; left: 2%; }
+    .diagram-cards {
+      display: none;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .diagram-cards li {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+    }
+    .diagram-card {
+      flex-shrink: 0;
+      width: 100%;
+      min-height: 44px;
+      background: var(--color-surface);
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-family: inherit;
+    }
+    .diagram-card:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 2px;
+    }
+    .diagram-card.active {
+      border-color: var(--color-primary-500);
+      box-shadow: 0 0 0 3px var(--color-primary-50);
+      transform: translateY(-2px);
+    }
+    .diagram-card__num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--color-primary-50);
+      color: var(--color-primary-500);
+      font-size: 13px;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .diagram-card.active .diagram-card__num {
+      background: var(--color-primary-500);
+      color: var(--color-surface);
+    }
+    .diagram-card__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+    .diagram-card__head .diagram-card__title {
+      margin-bottom: 0;
+      flex: 1;
+      min-width: 0;
+    }
+    .diagram-card__title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 4px;
+    }
+    .diagram-card__cost.cost-pill {
+      margin-top: 1px;
+    }
+    .diagram-card__body {
+      font-size: 12.5px;
+      color: var(--color-text-2);
+      line-height: 1.5;
+    }
+    @media (max-width: 768px) {
+      .callout { display: none; }
+      .hotspot__num {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--color-surface);
+        position: relative;
+        z-index: 2;
+      }
+      .hotspot__dot { display: none; }
+      .hotspot__ring {
+        width: 28px;
+        height: 28px;
+        background: var(--color-primary-500);
+        border: none;
+        opacity: 0.95;
+      }
+      .hotspot.active .hotspot__ring {
+        background: var(--color-secondary-600);
+      }
+      .diagram-cards {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 16px var(--pad-x) 20px;
+        scrollbar-width: none;
+        margin-top: 8px;
+      }
+      .diagram-cards .diagram-card {
+        width: 220px;
+        max-width: 220px;
+      }
+      .diagram-cards::-webkit-scrollbar { display: none; }
+    }
+
+    /* Trust stats marquee — after #problem */
+    .trust-marquee-wrap {
+      background: var(--color-bg);
+      padding-block: clamp(18px, 2.5vw, 28px);
+      position: relative;
+    }
+    .trust-marquee__sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .trust-marquee {
+      --trust-marquee-gap: clamp(14px, 2.5vw, 26px);
+      position: relative;
+    }
+    .trust-marquee__viewport {
+      overflow: hidden;
+      position: relative;
+      margin-inline: auto;
+      max-width: 100%;
+    }
+    .trust-marquee__fade {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: clamp(40px, 7vw, 100px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .trust-marquee__fade--left {
+      left: 0;
+      background: linear-gradient(to right, var(--color-bg), transparent);
+    }
+    .trust-marquee__fade--right {
+      right: 0;
+      background: linear-gradient(to left, var(--color-bg), transparent);
+    }
+    .trust-marquee__track {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      width: max-content;
+      animation: trustMarqueeScroll 42s linear infinite;
+      will-change: transform;
+    }
+    .trust-marquee__set {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    /* Equal spacing everywhere (incl. between duplicated sets) without track gap — gap would break translateX(-50%) loop */
+    .trust-marquee .trust-marquee__pill {
+      background-color: var(--color-marquee-pill);
+      margin-right: var(--trust-marquee-gap);
+    }
+    @keyframes trustMarqueeScroll {
+      to { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .trust-marquee__fade {
+        display: none;
+      }
+      .trust-marquee__track {
+        animation: none;
+        transform: none;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        max-width: var(--max-w);
+        box-sizing: border-box;
+        padding-inline: var(--pad-x);
+      }
+      .trust-marquee__set:last-of-type {
+        display: none;
+      }
+      .trust-marquee__set {
+        gap: var(--trust-marquee-gap);
+      }
+      .trust-marquee .trust-marquee__pill {
+        margin-right: 0;
+      }
+      .trust-marquee__pill {
+        white-space: normal;
+        text-align: center;
+        background-color: var(--color-marquee-pill);
+      }
+    }
+
+    /* Cost callout — light panel on problem section */
+    .cost-banner {
+      background: rgba(255, 255, 255, 1);
+      border-radius: var(--radius-lg);
+      padding: clamp(20px, 3vw, 28px) clamp(20px, 3vw, 36px);
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 24px;
+      flex-wrap: wrap;
+    }
+    .cost-banner__left {}
+    .cost-banner__label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--color-text-3);
+      margin-bottom: 8px;
+    }
+    .cost-banner__amount {
+      display: inline-block;
+      font-family: var(--font-display); font-size: clamp(52px, 6vw, 80px);
+      font-weight: 800;
+      color: var(--color-cost-pill-text);
+      background: var(--color-cost-pill-bg);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      padding: clamp(10px, 1.4vw, 14px) clamp(18px, 2.8vw, 32px);
+      border-radius: 16px;
+      margin-bottom: 6px;
+    }
+    .cost-banner__amount .cost-counter__prefix,
+    .cost-banner__amount .cost-counter__num,
+    .cost-banner__amount .cost-counter__suffix {
+      color: inherit;
+    }
+    .cost-banner__amount .cost-counter__num {
+      letter-spacing: -0.065em;
+    }
+    .cost-counter__suffix {
+      opacity: 0;
+      display: inline-block;
+      transition: opacity 0.2s ease;
+    }
+    .cost-counter__suffix.visible {
+      opacity: 1;
+    }
+    .cost-banner__sub { font-size: 14px; color: var(--color-text-2); max-width: 300px; line-height: 1.5; }
+    .cost-banner__cta-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ── SECTION: SOLUTION ───────────────────────────────── */
+    .solution { background: var(--color-bg); }
+    .solution__top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(40px, 6vw, 80px);
+      align-items: center;
+      margin-bottom: clamp(56px, 7vw, 88px);
+    }
+    .solution__video-wrap {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--color-surface-2);
+      aspect-ratio: 4 / 3;
+    }
+    .solution__video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .solution__copy .d2 { margin: 0 0 20px; color: var(--color-secondary-600); }
+    .solution__copy p {
+      font-size: 16.5px;
+      color: var(--color-text-2);
+      line-height: 1.75;
+      margin-bottom: 28px;
+      max-width: 520px;
+    }
+    .solution-check-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 520px;
+    }
+    .solution-check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--color-text-2);
+      line-height: 1.5;
+    }
+    .solution-check-list__icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* ── FITS YOUR SPACE (below #solution) ─ */
+    .space-fit {
+      background: var(--color-bg);
+    }
+    .space-fit__row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      gap: clamp(28px, 4.5vw, 56px);
+      align-items: center;
+    }
+    .space-fit__copy .label {
+      margin-bottom: 12px;
+    }
+    .space-fit__copy .d2 {
+      margin: 0;
+      color: var(--color-secondary-600);
+      max-width: 22ch;
+      font-size: clamp(28px, 3.75vw, 52px);
+    }
+    .space-fit__media-wrap {
+      position: relative;
+      width: 100%;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--color-secondary-700);
+      aspect-ratio: 16 / 10;
+      box-shadow: var(--shadow-md);
+    }
+    .space-fit__video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ── TESTIMONIALS (9:16 video cards) ─────────────────── */
+    .testi { background: var(--color-bg); }
+    .testi__top {
+      margin-bottom: 48px;
+      text-align: center;
+    }
+    /* Full-bleed row: escapes .wrap so cards can reach viewport edges */
+    .testi__carousel {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      margin-bottom: 48px;
+      width: 100vw;
+      max-width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      padding-inline: 0;
+      box-sizing: border-box;
+    }
+    .testi__viewport {
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .testi__viewport::-webkit-scrollbar {
+      display: none;
+    }
+    .testi__grid {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: clamp(14px, 2vw, 20px);
+      align-items: stretch;
+      min-width: min-content;
+    }
+    .testi__nav {
+      display: none;
+      flex-shrink: 0;
+      align-self: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 1px solid var(--color-border);
+      border-radius: 50%;
+      background: var(--color-surface);
+      color: var(--color-secondary-600);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+    }
+    .testi__nav:hover:not(:disabled) {
+      border-color: var(--color-primary-400);
+      color: var(--color-primary-500);
+      background: var(--color-primary-50);
+    }
+    .testi__nav:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .testi__nav svg {
+      display: block;
+      margin: auto;
+    }
+    @media (min-width: 1201px) {
+      .testi__viewport {
+        overflow-x: visible;
+      }
+      .testi__grid .testi-vcard {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+    }
+    @media (max-width: 1200px) {
+      .testi__nav {
+        display: grid;
+        place-items: center;
+      }
+      .testi__viewport {
+        scroll-snap-type: x mandatory;
+      }
+      .testi__grid .testi-vcard {
+        flex: 0 0 clamp(240px, 78vw, 360px);
+        scroll-snap-align: start;
+        scroll-snap-stop: normal;
+      }
+    }
+    .testi-vcard {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .testi-vcard__frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      background: var(--color-secondary-700);
+    }
+    .testi-vcard__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .testi-vcard__meta {
+      padding: 16px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .stars { display: flex; gap: 3px; }
+    .star { width: 12px; height: 12px; background: #E8A020;
+      clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%); }
+    .testi-vcard .tname { font-size: 13.5px; font-weight: 600; color: var(--color-text); }
+    .testi-vcard .tloc { font-size: 11.5px; color: var(--color-text-3); }
+
+    /* ── PRODUCT (reference: split card, feature chips, gallery + thumbs) ─ */
+    .product { background: var(--color-bg); }
+    #product .wrap {
+      max-width: 1400px;
+    }
+    .product__inner {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: var(--color-surface);
+    }
+    .product__top {
+      padding: 0;
+      border-bottom: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+    .product__left {
+      padding: clamp(28px, 4.5vw, 56px) clamp(24px, 4vw, 48px);
+      display: flex;
+      flex-direction: column;
+    }
+    .product__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px 6px 8px;
+      background: var(--color-primary-50);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-primary-500);
+      margin-bottom: 16px;
+      width: fit-content;
+    }
+    .product__badge-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--color-primary-500);
+      display: grid;
+      place-items: center;
+      line-height: 0;
+    }
+    .product__badge-dot img {
+      width: 13px;
+      height: 13px;
+      display: block;
+    }
+    .product__body {
+      font-size: 15px;
+      color: var(--color-text-2);
+      line-height: 1.72;
+      margin-bottom: 24px;
+      max-width: 42ch;
+    }
+    .product__feature-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .product__fcard {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--color-bg);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text);
+      line-height: 1.35;
+    }
+    .product__fcard__icon {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+    }
+    .product__fcard__icon img {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+    .product__fcard__icon--clock {
+      color: var(--color-primary-500);
+    }
+    .product__fcard__icon--clock svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    /* Product accordions: same .faq-* as FAQ section. Each list is a single item, so the list
+       carries the top rule (item is :first-child and would otherwise have no visible border). */
+    .product .faq-list {
+      margin-top: 0;
+      margin-bottom: 28px;
+      border-top: 1px solid var(--color-border);
+    }
+    .product .faq-list .faq-item:first-child { border-top: none; }
+    .product .easy-block .faq-list { margin-top: 0; margin-bottom: 0; }
+    .incl-list { list-style: none; display: flex; flex-direction: column; gap: 0; margin: 0; }
+    .incl-list li {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 14.5px; color: var(--color-text);
+      padding: 11px 0; border-bottom: 1px solid var(--color-border);
+    }
+    .incl-list li:last-child { border-bottom: none; }
+    .incl-list li::before {
+      content: '✓'; width: 20px; height: 20px; border-radius: 50%;
+      background: var(--color-primary-500); display: grid; place-items: center;
+      font-size: 10px; color: var(--color-surface); font-weight: 700; flex-shrink: 0;
+    }
+
+    .product__right {
+      min-width: 0;
+      min-height: 0;
+      background: #e8eef3;
+      border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .product__gallery {
+      position: relative;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 0;
+      width: 100%;
+      max-width: none;
+      margin-inline: 0;
+      min-height: 0;
+    }
+    .product__thumbs {
+      position: absolute;
+      top: clamp(12px, 2vw, 20px);
+      right: clamp(12px, 2vw, 20px);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 2;
+    }
+    .product__thumb {
+      width: 56px;
+      height: 56px;
+      padding: 0;
+      border: 2px solid var(--color-surface);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--color-surface);
+      box-shadow: 0 2px 8px rgba(13, 30, 44, 0.12);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .product__thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .product__thumb:hover {
+      border-color: var(--color-primary-200);
+    }
+    .product__thumb--active {
+      border-color: var(--color-primary-500);
+      box-shadow: 0 0 0 1px var(--color-primary-500), 0 2px 10px rgba(42, 101, 227, 0.25);
+    }
+    .product__thumb:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 2px;
+    }
+    .product__media-frame {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: min(320px, 55vw);
+      width: 100%;
+      border-radius: 0;
+      overflow: hidden;
+      background: var(--color-surface-2);
+      display: block;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .product__media-frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .product__cta {
+      width: 100%;
+      justify-content: center;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+    .easy-block { margin-bottom: 20px; }
+    .easy-items { list-style: none; display: flex; flex-direction: column; gap: 0; margin: 0; }
+    .easy-items li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; color: var(--color-text-2);
+      padding: 11px 0; border-bottom: 1px solid var(--color-border);
+    }
+    .easy-items li:last-child { border-bottom: none; }
+    .easy-items li::before {
+      content: '';
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--color-primary-50);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 8l2.5 2.5L12 5' stroke='%232A65E3' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: contain; flex-shrink: 0;
+    }
+
+    /* ── HOW IT WORKS ────────────────────────────────────── */
+    .how { background: var(--color-secondary-600); }
+    .how__top {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+      margin-bottom: 48px;
+    }
+    .how__left .d2 { color: var(--color-surface); margin: 12px 0 20px; }
+    .how__left p { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.72; }
+    .step-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+    .step-item {
+      display: flex; align-items: flex-start; gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .step-item:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .step-n {
+      font-family: var(--font-display); font-size: 28px; font-weight: 700;
+      color: var(--color-primary-400); line-height: 1; flex-shrink: 0; width: 28px;
+    }
+    .step-txt { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.55; padding-top: 6px; }
+
+    .video-frame {
+      background: rgba(255,255,255,0.03);
+      border: 1.5px dashed rgba(255,255,255,0.1);
+      border-radius: var(--radius-lg);
+      height: 280px; display: grid; place-items: center;
+    }
+    .video-play {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: rgba(42,101,227,0.2);
+      border: 1.5px solid rgba(42,101,227,0.35);
+      display: grid; place-items: center;
+      cursor: pointer; margin: 0 auto 10px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .video-play:hover { background: rgba(42,101,227,0.36); transform: scale(1.06); }
+    .video-play::before { content: '▶'; color: var(--color-primary-400); font-size: 16px; margin-left: 3px; }
+    .video-lbl { font-size: 13px; color: rgba(255,255,255,0.3); text-align: center; }
+
+    /* ── FAQ ─────────────────────────────────────────────── */
+    .faq { background: var(--color-bg); }
+    .faq__inner {
+      max-width: 680px;
+      margin-inline: auto;
+      text-align: center;
+    }
+    .faq-list { margin-top: 40px; margin-bottom: 40px; }
+    .faq-item {
+      border-top: 1px solid var(--color-border);
+      border-bottom: none;
+    }
+    .faq-btn {
+      width: 100%; display: flex; align-items: center;
+      justify-content: space-between; gap: 16px;
+      padding: 22px 0; background: none; border: none; cursor: pointer;
+      text-align: left; font-family: var(--font-display); font-size: 17px;
+      font-weight: 600; color: var(--color-text); transition: color 0.2s;
+    }
+    .faq-btn:hover { color: var(--color-primary-500); }
+    .faq-ico {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      display: inline-grid;
+      place-items: center;
+      line-height: 0;
+      box-sizing: border-box;
+      padding: 0;
+      background: none;
+      border: none;
+    }
+    .faq-ico__symbol {
+      grid-area: 1 / 1;
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+    .faq-ico__symbol--minus {
+      display: none;
+    }
+    .faq-item.open .faq-ico__symbol--plus {
+      display: none;
+    }
+    .faq-item.open .faq-ico__symbol--minus {
+      display: block;
+    }
+    .faq-ans {
+      font-size: 15px; color: var(--color-text-2); line-height: 1.75;
+      padding-bottom: 22px; display: none;
+      text-align: left;
+    }
+    .faq-item.open .faq-ans { display: block; }
+
+    /* ── FINAL CTA ───────────────────────────────────────── */
+    /* LAICA-style: large centered editorial, minimal */
+    .final {
+      background: var(--color-surface);
+      text-align: center;
+      padding-block: clamp(80px, 12vw, 140px);
+      position: relative; overflow: hidden;
+    }
+    /* LAICA ghost text behind */
+    .final__ghost {
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: clamp(120px, 20vw, 220px);
+      font-weight: 800;
+      color: rgba(42,101,227,0.04);
+      letter-spacing: -0.04em;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none; user-select: none;
+      white-space: nowrap; z-index: 0;
+    }
+    .final__inner { position: relative; z-index: 1; }
+    .final__label { margin-bottom: 16px; }
+    .final__h2 { margin-bottom: 20px; color: var(--color-text); }
+    .final__body { font-size: 17px; color: var(--color-text-2); max-width: 520px; margin-inline: auto; margin-bottom: 40px; line-height: 1.72; }
+    .final__trust {
+      display: flex; align-items: center; justify-content: center;
+      gap: 24px; flex-wrap: wrap; margin-top: 24px;
+    }
+    .final__trust-item { font-size: 12.5px; color: var(--color-text-3); display: flex; align-items: center; gap: 6px; }
+    .final__trust-item::before { content: '✓'; color: var(--color-primary-500); font-weight: 700; }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    .footer {
+      background: var(--color-bg); padding: 24px 0;
+      border-top: 1px solid var(--color-border);
+    }
+    .footer__txt { font-size: 13px; color: var(--color-text-3); text-align: center; }
+
+    /* ── SCROLL REVEAL ───────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(20px); }
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { transition: opacity 0.65s ease, transform 0.65s ease; }
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; gap: 0; }
+      .hero__right {
+        height: 52vw;
+        min-height: 220px;
+        margin: 0;
+        margin-inline: 0;
+        width: 100%;
+      }
+      .hero__video-wrap {
+        padding: 0 clamp(20px, 6vw, 64px) clamp(28px, 6vw, 54px);
+      }
+      .hero__video-wrap video { width: min(150px, 40vw); }
+      .hero__left { padding: 88px 24px 48px; }
+      .solution__top, .how__top, .product__top { grid-template-columns: 1fr; gap: 0; }
+      .space-fit__row {
+        grid-template-columns: 1fr;
+        gap: clamp(24px, 4vw, 40px);
+      }
+      .product__right {
+        border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+        min-height: min(360px, 72vw);
+      }
+      .product__gallery {
+        max-width: 100%;
+        flex: none;
+      }
+      .product__thumbs {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        order: -1;
+        width: 100%;
+        margin: 12px 12px 8px;
+        top: auto;
+        right: auto;
+      }
+      .product__media-frame {
+        flex: none;
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        min-height: min(260px, 70vw);
+        border-radius: 0;
+      }
+      .product__feature-cards {
+        grid-template-columns: 1fr;
+      }
+      .product__left {
+        border-bottom: 1px solid rgba(13, 30, 44, 0.08);
+        padding-bottom: clamp(28px, 4.5vw, 40px);
+      }
+    }
+    @media (max-width: 600px) {
+      .cost-banner { flex-direction: column; padding: 20px clamp(16px, 4vw, 24px); gap: 20px; }
+    }
+
+    /* ── TESTIMONIAL CAROUSEL (reusable — source: #cleanr-testimonial-carousel) ── */
+    .hero__quotes {
+      margin-top: 36px;
+      padding-top: 32px;
+      border-top: 1px solid var(--color-border);
+      position: relative;
+    }
+
+    /* Full-width strip + padding when carousel is mounted in hero or cloned elsewhere */
+    .hero__quotes.testimonial-carousel {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      padding: 20px 64px 54px;
+    }
+
+    .hero__right .hero__quotes {
+      margin-top: auto;
+      margin-left: 0;
+      margin-right: 0;
+      padding: 20px 64px 54px;
+      border: none;
+      position: relative;
+      flex-shrink: 0;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      align-self: stretch;
+      box-sizing: border-box;
+      z-index: 4;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .hero__quotes-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .hero__right .hero__quotes-row {
+      justify-content: flex-end;
+    }
+
+    /*
+      Deck layers sit inside .quote-card-stack__inner so their containing block
+      matches the card; padding-bottom reserves space for the “lip” so nothing
+      escapes under .hero__right { overflow: hidden }.
+    */
+    .quote-card-stack {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .quote-card-stack__inner {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      padding-bottom: 22px;
+      box-sizing: border-box;
+    }
+
+    .quote-card-stack__sheet {
+      position: absolute;
+      border-radius: 12px;
+      pointer-events: none;
+      box-sizing: border-box;
+      top: 0;
+    }
+
+    /* Wider + lower = further back in the stack */
+    .quote-card-stack__sheet--deep {
+      z-index: 0;
+      left: 18px;
+      right: 18px;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.38);
+      box-shadow: 0 4px 20px rgba(13, 30, 44, 0.05);
+    }
+
+    .quote-card-stack__sheet--mid {
+      z-index: 1;
+      left: 9px;
+      right: 9px;
+      bottom: 8px;
+      background: rgba(255, 255, 255, 0.62);
+      box-shadow: 0 6px 24px rgba(13, 30, 44, 0.06);
+    }
+
+    .quote-card {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 100%;
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px 18px;
+      box-shadow:
+        0 8px 28px rgba(13, 30, 44, 0.08),
+        0 2px 8px rgba(13, 30, 44, 0.05);
+    }
+
+    .quote-track {
+      position: relative;
+      min-height: 5.5rem;
+      overflow: hidden;
+    }
+
+    .quote-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      pointer-events: none;
+    }
+
+    .quote-slide.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      position: relative;
+    }
+
+    .quote-inner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .quote-body {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .quote-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--color-surface);
+      box-shadow: 0 2px 8px rgba(13, 30, 44, 0.1);
+    }
+
+    .quote-attribution {
+      font-size: 10.5px;
+      font-weight: 500;
+      color: #6b7c8a;
+      letter-spacing: 0.02em;
+      margin-bottom: 5px;
+    }
+
+    .quote-attribution strong {
+      color: var(--color-text);
+      font-weight: 700;
+    }
+
+    .quote-text {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text);
+      line-height: 1.55;
+      font-style: normal;
+    }
+
+    /* Vertical nav rail (reference: arrows + circular dots) */
+    .quote-carousel-nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-shrink: 0;
+      padding: 10px 8px;
+      background: rgba(13, 30, 44, 0);
+      color: #fff;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-radius: 999px;
+      align-self: center;
+    }
+
+    .quote-nav-btn {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+
+    .quote-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .quote-nav-btn:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .quote-nav-btn:active {
+      transform: scale(0.94);
+    }
+
+    .quote-nav-btn svg {
+      display: block;
+      width: 16px;
+      height: 16px;
+    }
+
+    .quote-dots {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quote-dot {
+      width: 8px;
+      height: 8px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .quote-dot:hover {
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    .quote-dot.active {
+      background: #fff;
+      transform: scale(1.15);
+    }
+
+    .quote-dot:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 640px) {
+      .hero__quotes-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero__right .hero__quotes-row {
+        align-items: flex-end;
+      }
+
+      .quote-carousel-nav {
+        flex-direction: row;
+        align-self: center;
+        padding: 10px 18px;
+        gap: 16px;
+        border-radius: 999px;
+      }
+
+      .quote-dots {
+        flex-direction: row;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="main-nav" aria-label="Main">
+  <div class="wrap">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo" aria-label="CLEANR home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 718 376" aria-hidden="true" focusable="false">
+          <g fill="currentColor">
+            <polygon points="538.8 138 579.5 194.2 581 194.5 581 138 599.5 138 599.5 232 585.8 232 544.5 175.2 543.5 175.8 543.5 231.2 542.8 232 525.2 232 525 138 538.8 138"/>
+            <path d="M676.2,138c19.6,2.2,32.4,24.1,24.8,42.3-3.4,8.2-9.5,11.7-16.1,16.9l20.5,34.8h-20l-20.2-33h-13.8l-.5,1.2v31.8h-18.5v-94h43.8ZM651.5,183.5h20.2c10.3,0,15.8-13.1,11.2-21.7s-6.2-6.8-9.2-6.8h-22.2v28.5Z"/>
+            <path d="M409.5,232l33.3-93.5,23-.5,34.7,94h-18.2l-7.5-17h-38.9c0,.1-7.1,17-7.1,17h-19.2ZM442.2,198h26.8l-13.8-38-13.6,36.5.6,1.5Z"/>
+            <path d="M387.5,138v16.8l-.8.8h-39.8v20l1.2.5h35l.8.8v16.2h-36.2l-.8.8v20.8l1.2.5h39.8v15.8c0,.1.4.3.4.5l-.6.8h-59.2v-94h59Z"/>
+            <path d="M204.1,166.4c-18-24.8-58.4-12.1-57.1,19.9,1.2,31.1,40.8,40.6,57.8,16.7l15.7,8.5c-4.1,8.9-14.1,16.1-23.4,19.4-38.2,13.4-75.8-16.5-67.5-57s67.6-51.4,90.8-16.5c.1.7-.5,1-1,1.4-1.3,1.1-10.6,6.3-12.4,7s-2,1.1-2.9.6Z"/>
+            <polygon points="266 138 266 214.2 266.8 215 303 215 303 231.2 302.2 232 247.8 232 247 231.2 247 138 266 138"/>
+            <path d="M31.8,206.7c7,4,13.4,9.7,21.5,11.6,13.6-5.6,27.4-21.7,43.5-19.2,11.8,1.8,6.8,15.9,3.7,23.1-20.4,47.6-96.9,34.4-97.9-16.9-.4-20,21.3-3.2,29.3,1.5ZM7.9,199.1l-1.4,2.1c6.1,15.8,24.5,24.2,40.5,19,.2-.8-9.2-5.4-10.6-6.3-5.8-3.6-11.3-7.9-17.4-11.1-2.9-1.5-7.8-4.8-11.1-3.7ZM7,211.5c8.9,42.4,66.7,51.3,88.2,12.9s9.1-19.2,1.9-21.8c-12.3-4.5-31.8,14.8-43.4,19.3-12.9,5-28.3,4.2-39.6-4.3-1.3-1-6.1-7.1-7.1-6.1Z"/>
+            <path d="M55.3,119.2c11.3,7.7,41,45.9,43.8,59s-.8,11.4-6.2,15c-12,7.9-27.6-1.2-39.1-5.7-12.4,4.5-31.9,15.4-42.9,3-6-6.8-3-12.6.3-19.6,9.3-19.7,26.2-38.4,42.3-52.7.8,0,1.4.7,2,1.1ZM80.7,153.3c-8-11.2-17-21.8-27.4-30.8-12.1,11.2-23.5,24.2-32.3,38.2s-18,26.3-.7,31.7c6.4,2,12-.2,18-2.4,17.7-6.2,34.5-19.7,54.2-17.6-3.1-6.9-7.4-13.1-11.8-19.2ZM58.6,185.9c8.8,3.1,19.4,9.8,28.9,6.3,5.6-2.1,11.8-9.3,6.1-14.5s-26.8,3.6-35,6.8v1.4Z"/>
+          </g>
+        </svg>
+      </a>
+      <div class="nav__links">
+        <a href="#problem" class="nav__link nav__link--semibold">Why you should care</a>
+        <a href="#solution" class="nav__link nav__link--semibold">What CLEANR does</a>
+        <a href="#product" class="nav__buy-bar" aria-label="Buy CLEANR filter, $229">
+          <span class="nav__buy-bar__price">$229</span>
+          <span class="nav__buy-bar__action">Buy</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ 1 · HERO ══════════════════════════════════════════ -->
+<section class="hero" aria-label="Hero">
+
+  <!-- Left: editorial text — Cove -->
+  <div class="hero__left">
+    <!-- Google reviews bar -->
+    <div class="g-reviews" style="opacity:0" id="h-attrs">
+      <div class="g-reviews__logo">
+        <div class="g-reviews__logo-icon" aria-hidden="true"></div>
+        Google
+      </div>
+      <div class="g-reviews__divider" aria-hidden="true"></div>
+      <div class="g-reviews__stars" aria-label="4.8 out of 5 stars">
+        <div class="g-reviews__star"></div>
+        <div class="g-reviews__star"></div>
+        <div class="g-reviews__star"></div>
+        <div class="g-reviews__star"></div>
+        <div class="g-reviews__star"></div>
+      </div>
+      <span class="g-reviews__score">4.8</span>
+      <span class="g-reviews__count">(2,400+ reviews)</span>
+    </div>
+
+    <h1 class="d1 hero__h1" style="opacity:0" id="h-h1">
+      Protect Your Septic System from <em>Lint &amp; Debris</em>
+    </h1>
+
+    <p class="hero__sub" style="opacity:0" id="h-sub">
+      Think of CLEANR as a lint trap for your washing machine. It captures hair, lint, and debris before they reach your septic system — preventing backups, drain field damage, and expensive repairs.
+    </p>
+
+    <div class="hero__ctas" style="opacity:0" id="h-ctas">
+      <a href="#product" class="btn btn--secondary btn--lg">Buy the CLEANR Filter</a>
+    </div>
+
+    <div class="hero__proof" style="opacity:0" id="h-proof" role="list">
+      <div class="proof-item" role="listitem">
+        <img class="proof-item__tick" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+        Septic Safe Certified
+      </div>
+      <div class="proof-item" role="listitem">
+        <img class="proof-item__tick" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+        Installs in 15 minutes
+      </div>
+      <div class="proof-item" role="listitem">
+        <img class="proof-item__tick" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+        Works with All Washers
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: photo panel — Cove -->
+  <div class="hero__right" style="opacity:0" id="h-right">
+
+    <div class="hero__product-visual">
+      <img src="images/product-img-01.png" alt="CLEANR washing machine lint filter" width="800" height="1000" loading="eager" decoding="async" />
+    </div>
+
+    <div class="hero__video-wrap">
+      <video
+        class="hero__video"
+        src="video/Ad_Well%20Video_2.webm"
+        controls
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-label="Product video"
+      ></video>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══ 2 · PROBLEM ═══════════════════════════════════════ -->
+<section class="problem sec" id="problem" aria-labelledby="problem-h2">
+  <div class="wrap">
+
+    <div class="problem__intro reveal">
+      <span class="label">the problem</span>
+      <h2 class="d2" id="problem-h2">Lint can wreck your septic system. <em>And your wallet.</em></h2>
+      <p>Septic systems are designed to break down waste — not handle the constant flow of hair, lint, and microplastics from modern laundry. Over time, that buildup reduces flow, clogs your system, and leads to serious issues.</p>
+    </div>
+
+    <div class="diagram-section" id="diagram-section">
+      <div
+        class="diagram-stage"
+        id="diagram-stage"
+        role="img"
+        aria-label="Cross-section diagram of a buried septic tank with inlet, chambers, pump, outlet to drain field, and grass above. Four numbered hotspots highlight where laundry debris causes reduced efficiency, slow drainage, sewage backups, and drain field damage."
+      >
+        <img
+          src="images/septic-diagram-2.png"
+          alt=""
+          class="diagram-img"
+          id="diagram-img"
+          width="1160"
+          height="624"
+          decoding="async"
+        />
+
+        <button type="button" class="hotspot" data-index="0" style="top:38%; left:22%;" aria-pressed="false" aria-label="Hotspot 1: Lint and debris buildup slowly reduces flow and efficiency">
+          <span class="hotspot__ring" aria-hidden="true"></span>
+          <span class="hotspot__dot" aria-hidden="true"></span>
+          <span class="hotspot__num" aria-hidden="true">1</span>
+        </button>
+        <button type="button" class="hotspot" data-index="1" style="top:28%; left:68%;" aria-pressed="false" aria-label="Hotspot 2: Slow drainage and partial clogs strain the entire septic system">
+          <span class="hotspot__ring" aria-hidden="true"></span>
+          <span class="hotspot__dot" aria-hidden="true"></span>
+          <span class="hotspot__num" aria-hidden="true">2</span>
+        </button>
+        <button type="button" class="hotspot" data-index="2" style="top:70%; left:40%;" aria-pressed="false" aria-label="Hotspot 3: Sewage can back up into your home and yard when flow stops">
+          <span class="hotspot__ring" aria-hidden="true"></span>
+          <span class="hotspot__dot" aria-hidden="true"></span>
+          <span class="hotspot__num" aria-hidden="true">3</span>
+        </button>
+        <button type="button" class="hotspot" data-index="3" style="top:52%; left:18%;" aria-pressed="false" aria-label="Hotspot 4: Drain field damage often requires a costly full system replacement">
+          <span class="hotspot__ring" aria-hidden="true"></span>
+          <span class="hotspot__dot" aria-hidden="true"></span>
+          <span class="hotspot__num" aria-hidden="true">4</span>
+        </button>
+
+        <div class="callout callout--0" data-index="0">
+          <div class="callout__body">
+            <p class="callout__text">Lint and debris buildup in your system slowly reduces flow and efficiency.</p>
+            <span class="cost-pill" aria-label="Typical extra cost">$250–$500</span>
+          </div>
+        </div>
+        <div class="callout callout--1" data-index="1">
+          <div class="callout__body">
+            <p class="callout__text">Slow drainage and partial clogs strain your entire septic system.</p>
+            <span class="cost-pill" aria-label="Typical repair cost range">$500–$2k</span>
+          </div>
+        </div>
+        <div class="callout callout--2" data-index="2">
+          <div class="callout__body">
+            <p class="callout__text">When flow stops completely, sewage can back up into your home and yard.</p>
+            <span class="cost-pill" aria-label="Typical backup cleanup and repair cost">$2k+</span>
+          </div>
+        </div>
+        <div class="callout callout--3" data-index="3">
+          <div class="callout__body">
+            <p class="callout__text">Drain field damage often leads to a costly full system replacement.</p>
+            <span class="cost-pill" aria-label="Typical replacement cost range">$3k–$20k+</span>
+          </div>
+        </div>
+      </div>
+
+      <ul class="diagram-cards" id="diagram-cards" aria-label="Septic risk factors">
+        <li>
+          <button type="button" class="diagram-card" data-index="0">
+            <span class="diagram-card__num" aria-hidden="true">1</span>
+            <div class="diagram-card__content">
+              <div class="diagram-card__head">
+                <div class="diagram-card__title">Reduced Efficiency</div>
+                <span class="diagram-card__cost cost-pill">$250–$500</span>
+              </div>
+              <div class="diagram-card__body">Lint and hair buildup slowly reduces your system’s flow rate and capacity.</div>
+            </div>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="diagram-card" data-index="1">
+            <span class="diagram-card__num" aria-hidden="true">2</span>
+            <div class="diagram-card__content">
+              <div class="diagram-card__head">
+                <div class="diagram-card__title">System Strain</div>
+                <span class="diagram-card__cost cost-pill">$500–$2k</span>
+              </div>
+              <div class="diagram-card__body">Partial clogs force your septic to work harder, stressing every connected drain.</div>
+            </div>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="diagram-card" data-index="2">
+            <span class="diagram-card__num" aria-hidden="true">3</span>
+            <div class="diagram-card__content">
+              <div class="diagram-card__head">
+                <div class="diagram-card__title">Sewage Backups</div>
+                <span class="diagram-card__cost cost-pill">$2k+</span>
+              </div>
+              <div class="diagram-card__body">When flow stops completely, waste reverses back into your home and yard.</div>
+            </div>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="diagram-card" data-index="3">
+            <span class="diagram-card__num" aria-hidden="true">4</span>
+            <div class="diagram-card__content">
+              <div class="diagram-card__head">
+                <div class="diagram-card__title">Drain Field Failure</div>
+                <span class="diagram-card__cost cost-pill">$3k–$20k+</span>
+              </div>
+              <div class="diagram-card__body">The most expensive outcome — full system replacement, often without any warning.</div>
+            </div>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="cost-banner reveal">
+      <div class="cost-banner__left">
+        <div class="cost-banner__label">Financial Risk</div>
+        <div class="cost-banner__amount" id="cost-counter" aria-live="polite" aria-atomic="true">
+          <span class="cost-counter__prefix">$</span><span
+            class="cost-counter__num"
+            id="cost-counter-num"
+            data-target="20000"
+          >0</span><span
+            class="cost-counter__suffix"
+            id="cost-counter-suffix"
+          >+</span>
+        </div>
+        <div class="cost-banner__sub">Septic system damage can cost up to $20,000+ to repair — often with no prior warning.</div>
+      </div>
+      <div class="cost-banner__cta-col">
+        <a href="#product" class="btn btn--primary btn--lg">Stop Buildup Before It Starts</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="trust-marquee-wrap">
+  <p class="trust-marquee__sr-only" id="trust-marquee-desc">
+    90%+ filtration tested by third parties. 5,000+ gallons filtered annually per home. Trusted in 9 states and 7+ countries.
+  </p>
+  <div class="trust-marquee" role="presentation" aria-hidden="true">
+    <div class="trust-marquee__viewport">
+      <div class="trust-marquee__fade trust-marquee__fade--left" aria-hidden="true"></div>
+      <div class="trust-marquee__fade trust-marquee__fade--right" aria-hidden="true"></div>
+      <div class="trust-marquee__track">
+        <div class="trust-marquee__set">
+          <span class="trust-marquee__pill">90%+ filtration tested by third parties</span>
+          <span class="trust-marquee__pill">5,000+ gallons filtered annually per home</span>
+          <span class="trust-marquee__pill">Trusted in 9 states and 7+ countries</span>
+        </div>
+        <div class="trust-marquee__set">
+          <span class="trust-marquee__pill">90%+ filtration tested by third parties</span>
+          <span class="trust-marquee__pill">5,000+ gallons filtered annually per home</span>
+          <span class="trust-marquee__pill">Trusted in 9 states and 7+ countries</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 3 · SOLUTION ══════════════════════════════════════ -->
+<section class="solution sec" id="solution" aria-labelledby="solution-h2">
+  <div class="wrap">
+
+    <div class="solution__top">
+      <div class="solution__media reveal">
+        <div class="solution__video-wrap">
+          <video
+            class="solution__video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-label="Animation showing CLEANR capturing lint and debris from wash water"
+          >
+            <source src="video/4.3_250917_VORTX-Animation.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <div class="solution__copy reveal">
+        <h2 class="d2" id="solution-h2">Catch Debris Before It Reaches Your Septic</h2>
+        <p>CLEANR connects directly to your washing machine and captures hair, lint, and debris before they enter your septic system, helping prevent buildup, protect your drain field, and avoid costly repairs.</p>
+
+        <ul class="solution-check-list" role="list">
+          <li>
+            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+            Stops hair and lint before they enter your system
+          </li>
+          <li>
+            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+            Prevents clogs and slow drainage
+          </li>
+          <li>
+            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+            Protects your drain field
+          </li>
+          <li>
+            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+            Helps avoid expensive repairs
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ 3b · FITS YOUR SPACE ═══════════════════════════════ -->
+<section class="space-fit sec" id="fits-your-space" aria-labelledby="space-fit-h2">
+  <div class="wrap">
+    <div class="space-fit__row reveal">
+      <div class="space-fit__copy">
+        <span class="label label--primary">Fits in your space</span>
+        <h2 class="d2" id="space-fit-h2">CLEANR is easy to install, and is designed to fit your space</h2>
+      </div>
+      <div class="space-fit__media-wrap" role="region" aria-label="Installation video">
+        <video
+          class="space-fit__video"
+          controls
+          playsinline
+          webkit-playsinline=""
+          preload="metadata"
+          aria-label="Video: how to install CLEANR in your laundry space"
+        >
+          <source src="video/install-video.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4 · TESTIMONIALS ══════════════════════════════════ -->
+<section class="testi sec" id="reviews" aria-labelledby="testi-h2">
+  <div class="wrap">
+    <div class="testi__top reveal">
+      <h2 class="d2" id="testi-h2">Testimonials</h2>
+    </div>
+
+    <div class="testi__carousel reveal" data-testi-carousel>
+      <button type="button" class="testi__nav testi__nav--prev" aria-label="Previous testimonials" data-testi-prev>
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="testi__viewport" data-testi-viewport>
+        <div class="testi__grid">
+      <article class="testi-vcard">
+        <div class="testi-vcard__frame">
+          <video
+            class="testi-vcard__video"
+            controls
+            playsinline
+            preload="metadata"
+            aria-label="Video testimonial from Mark R., Verified Buyer in Tennessee"
+          >
+            <source src="video/kim.webm" type="video/webm" />
+          </video>
+        </div>
+        <div class="testi-vcard__meta">
+          <div class="stars" aria-hidden="true"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+          <div class="tname">Mark R.</div>
+          <div class="tloc">Verified Buyer — Tennessee</div>
+        </div>
+      </article>
+      <article class="testi-vcard">
+        <div class="testi-vcard__frame">
+          <video
+            class="testi-vcard__video"
+            controls
+            playsinline
+            preload="metadata"
+            aria-label="Video testimonial from Jennifer L., Verified in North Carolina"
+          >
+            <source src="video/kathie.webm" type="video/webm" />
+          </video>
+        </div>
+        <div class="testi-vcard__meta">
+          <div class="stars" aria-hidden="true"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+          <div class="tname">Jennifer L.</div>
+          <div class="tloc">Verified — North Carolina</div>
+        </div>
+      </article>
+      <article class="testi-vcard">
+        <div class="testi-vcard__frame">
+          <video
+            class="testi-vcard__video"
+            controls
+            playsinline
+            preload="metadata"
+            aria-label="Video: laundry as a major source of microplastics in water"
+          >
+            <source src="video/AD%20-%20Did%20you%20know%20that%20laundry%20is%20one%20of%20the%20biggest%20sources%20of%20microplastics%20in%20the%20waterAs%20a%20m.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="testi-vcard__meta">
+          <div class="stars" aria-hidden="true"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+          <div class="tname">Dave B.</div>
+          <div class="tloc">Verified — Vermont</div>
+        </div>
+      </article>
+        </div>
+      </div>
+      <button type="button" class="testi__nav testi__nav--next" aria-label="Next testimonials" data-testi-next>
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+
+    <div style="text-align:center;">
+      <a href="#product" class="btn btn--secondary reveal">Buy the CLEANR Filter</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 5 · PRODUCT ═══════════════════════════════════════ -->
+<section class="product sec" id="product" aria-labelledby="prod-h2">
+  <div class="wrap">
+
+    <div class="product__inner reveal">
+      <div class="product__top">
+        <div class="product__left">
+          <div class="product__badge">
+            <div class="product__badge-dot" aria-hidden="true">
+              <img src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" />
+            </div>
+            Septic Safe Certified
+          </div>
+          <h2 class="d3" id="prod-h2" style="margin-bottom:4px;">Washing Machine Filter Package for Septic Homeowners</h2>
+          <p class="product__body" style="margin-top:12px;">A complete, easy-to-install septic-safe system that starts protecting your septic immediately — no tools, no plumber, and no guesswork.</p>
+          <div class="product__feature-cards">
+            <div class="product__fcard">
+              <span class="product__fcard__icon" aria-hidden="true">
+                <img src="images/check-icon.svg" alt="" width="16" height="16" decoding="async" />
+              </span>
+              Works with any washing machine
+            </div>
+            <div class="product__fcard">
+              <span class="product__fcard__icon product__fcard__icon--clock" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l3.5 3.5"/></svg>
+              </span>
+              Installs in minutes
+            </div>
+          </div>
+          <div class="faq-list" role="presentation">
+            <div class="faq-item">
+              <button type="button" class="faq-btn" aria-expanded="false" aria-controls="product-incl-panel" id="product-incl-trigger">
+                What's Included
+                <span class="faq-ico" aria-hidden="true">
+                  <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+                  <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+                </span>
+              </button>
+              <div class="faq-ans" id="product-incl-panel" role="region" aria-labelledby="product-incl-trigger">
+                <ul class="incl-list" role="list">
+                  <li>CLEANR Washing Machine Filter</li>
+                  <li>1 full year of filter pods (50 pods / 250 washes)</li>
+                  <li>Free shipping</li>
+                  <li>12-month warranty</li>
+                  <li>Smart app tracking</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="easy-block">
+            <div class="faq-list" role="presentation">
+              <div class="faq-item">
+                <button type="button" class="faq-btn" aria-expanded="false" aria-controls="product-easy-panel" id="product-easy-trigger">
+                  Why It's Easy
+                  <span class="faq-ico" aria-hidden="true">
+                    <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+                    <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+                  </span>
+                </button>
+                <div class="faq-ans" id="product-easy-panel" role="region" aria-labelledby="product-easy-trigger">
+                  <ul class="easy-items" role="list">
+                    <li>Installs in 15 minutes — no tools required</li>
+                    <li>Works with any washing machine make or model</li>
+                    <li>No plumber needed</li>
+                    <li>~30 seconds of maintenance per week</li>
+                    <li>App alerts tell you when to change the filter</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="#" class="btn btn--primary btn--lg product__cta">Buy Now</a>
+        </div>
+
+        <div class="product__right">
+          <div class="product__gallery" data-product-gallery>
+            <div class="product__thumbs" role="tablist" aria-label="Product views">
+              <button type="button" class="product__thumb product__thumb--active" role="tab" aria-selected="true" aria-label="Product view 1" data-product-thumb="0">
+                <img src="images/product-app.png" alt="" width="112" height="112" loading="lazy" decoding="async" />
+              </button>
+              <button type="button" class="product__thumb" role="tab" aria-selected="false" aria-label="Product view 2" data-product-thumb="1">
+                <img src="images/product-app.png" alt="" width="112" height="112" loading="lazy" decoding="async" />
+              </button>
+              <button type="button" class="product__thumb" role="tab" aria-selected="false" aria-label="Product view 3" data-product-thumb="2">
+                <img src="images/product-app.png" alt="" width="112" height="112" loading="lazy" decoding="async" />
+              </button>
+            </div>
+            <div class="product__media-frame">
+              <img
+                id="product-gallery-main"
+                src="images/product-app.png"
+                alt="CLEANR app on a phone showing filter tracking and maintenance reminders"
+                width="800"
+                height="1000"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ 6 · HOW IT WORKS ══════════════════════════════════ -->
+<section class="how sec" aria-labelledby="how-h2">
+  <div class="wrap">
+    <div class="how__top">
+      <div class="how__left reveal">
+        <span class="label" style="color:rgba(255,255,255,0.4);">Setup</span>
+        <h2 class="d2" id="how-h2">Install Once to <em>Protect Every Load</em></h2>
+        <p>CLEANR works automatically with every wash, capturing debris before it ever reaches your septic system.</p>
+      </div>
+      <div class="reveal">
+        <ul class="step-list" role="list">
+          <li class="step-item" role="listitem"><span class="step-n">1</span><span class="step-txt">Install your filter — no tools required</span></li>
+          <li class="step-item" role="listitem"><span class="step-n">2</span><span class="step-txt">Water flows from your washing machine</span></li>
+          <li class="step-item" role="listitem"><span class="step-n">3</span><span class="step-txt">CLEANR captures hair, lint &amp; debris</span></li>
+          <li class="step-item" role="listitem"><span class="step-n">4</span><span class="step-txt">Clean water flows safely into your septic</span></li>
+          <li class="step-item" role="listitem"><span class="step-n">5</span><span class="step-txt">Debris stays contained for easy disposal</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="video-frame reveal" role="img" aria-label="See CLEANR in Action">
+      <div>
+        <div class="video-play" tabindex="0" role="button" aria-label="Play video"></div>
+        <div class="video-lbl">See CLEANR in Action</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 7 · FAQ ════════════════════════════════════════════ -->
+<section class="faq sec" id="faqs" aria-labelledby="faq-h2">
+  <div class="wrap">
+    <div class="faq__inner reveal">
+      <span class="label">FAQ</span>
+      <h2 class="d2" id="faq-h2" style="margin-top:12px;"><em>Common</em> Questions</h2>
+      <div class="faq-list" role="presentation">
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa1" id="fa1-trigger">
+            Will this work with my washer?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa1" role="region" aria-labelledby="fa1-trigger">Yes. CLEANR works with all washing machine makes and models — top-load and front-load alike.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa2" id="fa2-trigger">
+            How often do I need to maintain it?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa2" role="region" aria-labelledby="fa2-trigger">About 30 seconds per week. The app sends a push reminder when it's time to swap the filter pod.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa3" id="fa3-trigger">
+            Do I need a plumber to install it?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa3" role="region" aria-labelledby="fa3-trigger">No. Installation takes less than 15 minutes with no tools. The package includes everything you need.</div>
+        </div>
+      </div>
+      <a href="#product" class="btn btn--secondary">Buy the CLEANR Filter</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 8 · FINAL CTA ═════════════════════════════════════ -->
+<section class="final" aria-labelledby="final-h2">
+  <div class="final__ghost" aria-hidden="true">CLEANR</div>
+  <div class="wrap">
+    <div class="final__inner">
+      <div class="final__label label reveal">Don't Wait</div>
+      <h2 class="d2 final__h2 reveal" id="final-h2">Protect Your Septic<br/><em>at the Source</em></h2>
+      <p class="final__body reveal">By the time you notice a septic issue, the damage is already done — and costly to fix. CLEANR gives you a simple, affordable way to protect your system before that happens.</p>
+      <a href="#product" class="btn btn--primary btn--lg reveal">Buy the CLEANR Filter</a>
+      <div class="final__trust reveal">
+        <span class="final__trust-item">Septic Safe Certified</span>
+        <span class="final__trust-item">Free Shipping</span>
+        <span class="final__trust-item">12-Month Warranty</span>
+        <span class="final__trust-item">No Plumber Needed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer" role="contentinfo">
+  <p class="footer__txt">© 2026 CLEANR. All rights reserved. | cleanr.life</p>
+</footer>
+
+<!--
+  Reusable testimonial carousel (not shown in the hero). Clone when needed:
+    const tpl = document.getElementById('cleanr-testimonial-carousel');
+    document.getElementById('h-right').appendChild(tpl.content.cloneNode(true));
+    gsap.to('#h-quotes', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
+    initCleanrTestimonialCarousel(document.getElementById('h-quotes'));
+  Root already has id="h-quotes", classes hero__quotes testimonial-carousel. Styles: .hero__right .hero__quotes (100% width, padding 20px 64px 54px).
+-->
+<template id="cleanr-testimonial-carousel">
+  <div class="hero__quotes testimonial-carousel" id="h-quotes" aria-label="Customer testimonials">
+    <div class="hero__quotes-row">
+      <div class="quote-card-stack">
+        <div class="quote-card-stack__inner">
+          <div class="quote-card-stack__sheet quote-card-stack__sheet--deep" aria-hidden="true"></div>
+          <div class="quote-card-stack__sheet quote-card-stack__sheet--mid" aria-hidden="true"></div>
+          <div class="quote-card">
+            <div class="quote-track" id="quote-track">
+              <div class="quote-slide active" role="group" aria-label="Testimonial 1 of 3">
+                <div class="quote-inner">
+                  <div class="quote-avatar" style="background:#F2A00F;">MR</div>
+                  <div class="quote-body">
+                    <div class="quote-attribution">— <strong>Mark R.</strong>, Verified Buyer · Tennessee</div>
+                    <p class="quote-text">"After our septic pumped out packed with lint, our plumber specifically recommended CLEANR. Installs in minutes. Total peace of mind."</p>
+                  </div>
+                </div>
+              </div>
+              <div class="quote-slide" role="group" aria-label="Testimonial 2 of 3">
+                <div class="quote-inner">
+                  <div class="quote-avatar" style="background:var(--color-primary-500);">JL</div>
+                  <div class="quote-body">
+                    <div class="quote-attribution">— <strong>Jennifer L.</strong>, Verified Buyer · North Carolina</div>
+                    <p class="quote-text">"Installed in 10 minutes, no tools needed. The app is a great bonus — I can actually see how much debris it's catching each week."</p>
+                  </div>
+                </div>
+              </div>
+              <div class="quote-slide" role="group" aria-label="Testimonial 3 of 3">
+                <div class="quote-inner">
+                  <div class="quote-avatar" style="background:#2563EB;">DB</div>
+                  <div class="quote-body">
+                    <div class="quote-attribution">— <strong>Dave B.</strong>, Verified Buyer · Vermont</div>
+                    <p class="quote-text">"Cheap insurance against a $15K drain field replacement. Worth every penny. I wish I'd found this product two years ago."</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="quote-carousel-nav" aria-label="Testimonial navigation">
+        <button type="button" class="quote-nav-btn quote-nav-btn--prev" aria-label="Previous testimonial">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+        </button>
+        <div class="quote-dots" role="tablist">
+          <button type="button" class="quote-dot active" role="tab" aria-selected="true" data-index="0" aria-label="Show testimonial 1"></button>
+          <button type="button" class="quote-dot" role="tab" aria-selected="false" data-index="1" aria-label="Show testimonial 2"></button>
+          <button type="button" class="quote-dot" role="tab" aria-selected="false" data-index="2" aria-label="Show testimonial 3"></button>
+        </div>
+        <button type="button" class="quote-nav-btn quote-nav-btn--next" aria-label="Next testimonial">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </nav>
+    </div>
+  </div>
+</template>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* Nav */
+  const nav = document.getElementById('main-nav');
+  ScrollTrigger.create({ start: 'top -50', onUpdate: s => nav.classList.toggle('opaque', s.scroll() > 50) });
+
+  /* Hero — all elements have inline opacity:0, animate TO visible */
+  gsap.timeline({ delay: 0.2 })
+    .to('#h-attrs',  { opacity:1, y:0, duration:0.5, ease:'power2.out' })
+    .to('#h-h1',     { opacity:1, y:0, duration:0.8, ease:'power2.out' }, '-=0.2')
+    .to('#h-sub',    { opacity:1, y:0, duration:0.6, ease:'power2.out' }, '-=0.4')
+    .to('#h-ctas',   { opacity:1, y:0, duration:0.5, ease:'power2.out' }, '-=0.35')
+    .to('#h-proof',  { opacity:1, y:0, duration:0.5, ease:'power2.out' }, '-=0.3')
+    .to('#h-right',  { opacity:1, x:0, duration:0.9, ease:'power2.out' }, '-=0.7');
+
+  gsap.set('#h-right', { x: 40 });
+  gsap.set('#h-attrs, #h-h1, #h-sub, #h-ctas, #h-proof', { y: 20 });
+
+  /* ── Testimonial carousel — call initCleanrTestimonialCarousel(root) after cloning #cleanr-testimonial-carousel */
+  window.initCleanrTestimonialCarousel = function (container) {
+    if (!container) return;
+    const DURATION = 4500;
+    const slides = Array.from(container.querySelectorAll('.quote-slide'));
+    const dots   = Array.from(container.querySelectorAll('.quote-dot'));
+    const prevBtn = container.querySelector('.quote-nav-btn--prev');
+    const nextBtn = container.querySelector('.quote-nav-btn--next');
+    if (!slides.length || !dots.length) return;
+
+    let current = 0;
+    let timer   = null;
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      dots[current].setAttribute('aria-selected', 'false');
+
+      current = (index + slides.length) % slides.length;
+
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+      dots[current].setAttribute('aria-selected', 'true');
+    }
+
+    function startTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => goTo(current + 1), DURATION);
+    }
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => { goTo(i); startTimer(); });
+      dot.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(i); startTimer(); }
+      });
+    });
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => { goTo(current - 1); startTimer(); });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => { goTo(current + 1); startTimer(); });
+    }
+
+    container.addEventListener('mouseenter', () => clearInterval(timer));
+    container.addEventListener('mouseleave', startTimer);
+
+    startTimer();
+  };
+
+  initCleanrTestimonialCarousel(document.getElementById('h-quotes'));
+
+  /* Product gallery — main image follows selected thumbnail */
+  (function initProductGallery() {
+    var root = document.querySelector('[data-product-gallery]');
+    if (!root) return;
+    var main = document.getElementById('product-gallery-main');
+    var thumbs = root.querySelectorAll('.product__thumb');
+    if (!main || !thumbs.length) return;
+
+    thumbs.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var thumbImg = btn.querySelector('img');
+        if (thumbImg && thumbImg.src) {
+          main.src = thumbImg.currentSrc || thumbImg.src;
+        }
+        if (thumbImg && thumbImg.alt) {
+          main.alt = thumbImg.alt;
+        }
+        thumbs.forEach(function (b) {
+          var on = b === btn;
+          b.classList.toggle('product__thumb--active', on);
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+      });
+    });
+  })();
+
+  /* ── Problem section: interactive septic diagram ───────────────── */
+  (function () {
+    const section = document.getElementById('diagram-section');
+    const stage = document.getElementById('diagram-stage');
+    if (!section || !stage) return;
+
+    const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let currentHotspot = 0;
+    let autoTourTimer = null;
+    let autoTourActive = false;
+    let autoTourDelayId = null;
+
+    function stopAutoTour() {
+      autoTourActive = false;
+      if (autoTourTimer) {
+        clearInterval(autoTourTimer);
+        autoTourTimer = null;
+      }
+      if (autoTourDelayId) {
+        clearTimeout(autoTourDelayId);
+        autoTourDelayId = null;
+      }
+    }
+
+    function startAutoTour() {
+      if (!window.matchMedia('(hover: hover)').matches) return;
+      stopAutoTour();
+      autoTourActive = true;
+      autoTourTimer = setInterval(() => {
+        if (!autoTourActive) return;
+        activateHotspot((currentHotspot + 1) % 4);
+      }, 2500);
+    }
+
+    function scheduleAutoTour(delay) {
+      if (!window.matchMedia('(hover: hover)').matches) return;
+      if (autoTourDelayId) clearTimeout(autoTourDelayId);
+      autoTourDelayId = setTimeout(() => {
+        autoTourDelayId = null;
+        startAutoTour();
+      }, delay);
+    }
+
+    function activateHotspot(index) {
+      const i = parseInt(String(index), 10);
+      if (i < 0 || i > 3 || Number.isNaN(i)) return;
+
+      document.querySelectorAll('.hotspot').forEach((h) => {
+        h.classList.remove('active');
+        h.setAttribute('aria-pressed', 'false');
+      });
+      document.querySelectorAll('.callout').forEach((c) => c.classList.remove('active'));
+      document.querySelectorAll('.diagram-card').forEach((c) => c.classList.remove('active'));
+
+      const hotspot = document.querySelector('.hotspot[data-index="' + i + '"]');
+      const callout = document.querySelector('.callout[data-index="' + i + '"]');
+      const card = document.querySelector('.diagram-card[data-index="' + i + '"]');
+
+      if (hotspot) {
+        hotspot.classList.add('active');
+        hotspot.setAttribute('aria-pressed', 'true');
+      }
+      if (callout) callout.classList.add('active');
+      if (card) {
+        card.classList.add('active');
+        if (window.matchMedia('(max-width: 768px)').matches) {
+          card.scrollIntoView({
+            behavior: prefersReduce ? 'auto' : 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          });
+        }
+      }
+
+      currentHotspot = i;
+    }
+
+    document.querySelectorAll('.hotspot').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        stopAutoTour();
+        activateHotspot(btn.getAttribute('data-index'));
+      });
+    });
+
+    document.querySelectorAll('.diagram-card').forEach((card) => {
+      card.addEventListener('click', () => {
+        stopAutoTour();
+        activateHotspot(card.getAttribute('data-index'));
+      });
+    });
+
+    if (prefersReduce) {
+      stage.style.opacity = '1';
+      stage.style.transform = 'none';
+      document.querySelectorAll('.callout').forEach((el) => {
+        el.style.opacity = '1';
+      });
+      document.querySelectorAll('.hotspot').forEach((el) => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+      activateHotspot(0);
+    } else {
+      gsap.set('.hotspot', { scale: 0, opacity: 0 });
+      gsap.set('.callout', { autoAlpha: 0 });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#diagram-section',
+          start: 'top 80%',
+          once: true,
+        },
+      });
+
+      tl.to('#diagram-stage', {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+      });
+
+      tl.to(
+        '.callout',
+        {
+          autoAlpha: 1,
+          duration: 0.4,
+          stagger: 0.18,
+          ease: 'power2.out',
+        },
+        '-=0.2'
+      );
+
+      tl.to(
+        '.hotspot',
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.55,
+          stagger: 0.15,
+          ease: 'back.out(1.4)',
+        },
+        '<'
+      );
+
+      tl.call(() => {
+        activateHotspot(0);
+        setTimeout(() => {
+          if (!window.matchMedia('(hover: hover)').matches) return;
+          const r = section.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > window.innerHeight) return;
+          startAutoTour();
+        }, 1000);
+      });
+
+      ScrollTrigger.create({
+        trigger: '#diagram-section',
+        start: 'top 70%',
+        end: 'bottom 20%',
+        onLeave: stopAutoTour,
+        onLeaveBack: stopAutoTour,
+        onEnterBack: () => scheduleAutoTour(1800),
+      });
+    }
+  })();
+
+  /* Cost banner — count-up ($0 → $20,000, then “+”) */
+  (function () {
+    const counterEl = document.getElementById('cost-counter-num');
+    const suffixEl = document.getElementById('cost-counter-suffix');
+    const triggerEl = document.getElementById('cost-counter');
+    if (!counterEl || !suffixEl || !triggerEl) return;
+
+    const TARGET = 20000;
+    const DURATION_MS = 1800;
+    const START_DELAY_MS = 200;
+
+    function animateCounter(el, target, duration, onComplete) {
+      const startTime = performance.now();
+      function tick(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(eased * target);
+        el.textContent = current.toLocaleString('en-US');
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          el.textContent = target.toLocaleString('en-US');
+          if (onComplete) onComplete();
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      counterEl.textContent = TARGET.toLocaleString('en-US');
+      suffixEl.classList.add('visible');
+    } else {
+      let hasRun = false;
+      ScrollTrigger.create({
+        trigger: '#cost-counter',
+        start: 'top 85%',
+        onEnter: () => {
+          if (hasRun) return;
+          hasRun = true;
+          setTimeout(() => {
+            animateCounter(counterEl, TARGET, DURATION_MS, () => {
+              suffixEl.classList.add('visible');
+            });
+          }, START_DELAY_MS);
+        },
+      });
+    }
+  })();
+
+  /* Scroll reveals */
+  gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: 0.65, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 87%', toggleActions: 'play none none none' }
+    });
+  });
+
+  /* FAQ + product “What’s Included” accordion (scoped per .faq-list) */
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const list = btn.closest('.faq-list');
+      if (!item || !list) return;
+      const isOpen = item.classList.contains('open');
+      list.querySelectorAll('.faq-item.open').forEach(i => {
+        i.classList.remove('open');
+        const b = i.querySelector('.faq-btn');
+        if (b) b.setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  /* Testimonials — single row; ≤1200px horizontal scroll (scrollbar hidden) + arrow controls */
+  (function () {
+    const root = document.querySelector('[data-testi-carousel]');
+    if (!root) return;
+    const viewport = root.querySelector('[data-testi-viewport]');
+    const prev = root.querySelector('[data-testi-prev]');
+    const next = root.querySelector('[data-testi-next]');
+    const grid = root.querySelector('.testi__grid');
+    const cards = root.querySelectorAll('.testi-vcard');
+    if (!viewport || !prev || !next || !grid || !cards.length) return;
+
+    const mq = window.matchMedia('(max-width: 1200px)');
+
+    function gapPx() {
+      const n = parseFloat(getComputedStyle(grid).gap);
+      return Number.isFinite(n) ? n : 16;
+    }
+
+    function stepScroll(dir) {
+      if (!mq.matches) return;
+      const w = cards[0].getBoundingClientRect().width;
+      viewport.scrollBy({ left: dir * (w + gapPx()), behavior: 'smooth' });
+    }
+
+    function updateNav() {
+      if (!mq.matches) {
+        prev.disabled = false;
+        next.disabled = false;
+        return;
+      }
+      const maxScroll = viewport.scrollWidth - viewport.clientWidth;
+      const x = viewport.scrollLeft;
+      prev.disabled = x <= 2;
+      next.disabled = x >= maxScroll - 2;
+    }
+
+    prev.addEventListener('click', () => stepScroll(-1));
+    next.addEventListener('click', () => stepScroll(1));
+    viewport.addEventListener('scroll', updateNav, { passive: true });
+    window.addEventListener('resize', () => requestAnimationFrame(updateNav));
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', updateNav);
+    } else {
+      mq.addListener(updateNav);
+    }
+    updateNav();
+  })();
+
+  /* Smooth scroll */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+</body>
+</html>

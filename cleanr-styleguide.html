@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLEANR — Styleguide</title>
+  <link rel="stylesheet" href="cleanr-tokens.css" />
+  <style>
+    .sg-wrap {
+      max-width: var(--max-w);
+      margin-inline: auto;
+      padding: var(--space-12) var(--pad-x) var(--space-24);
+    }
+    .sg-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-6);
+      margin-bottom: var(--space-16);
+      padding-bottom: var(--space-8);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .sg-top h1 {
+      font-size: var(--text-h1);
+      margin: 0;
+    }
+    .sg-top p {
+      margin: var(--space-2) 0 0;
+      max-width: 42ch;
+    }
+    .sg-nav a {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      color: var(--color-primary-600);
+      text-decoration: none;
+    }
+    .sg-nav a:hover { text-decoration: underline; }
+
+    .sg-section {
+      margin-bottom: var(--space-20);
+    }
+    .sg-section > h2 {
+      font-size: var(--text-h2);
+      margin-bottom: var(--space-2);
+    }
+    .sg-lead {
+      font-size: var(--text-body-sm);
+      color: var(--color-text-3);
+      margin-bottom: var(--space-8);
+      max-width: 65ch;
+    }
+
+    .sg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+      gap: var(--space-4);
+    }
+    .sg-swatch {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+    }
+    .sg-swatch-color { height: 64px; }
+    .sg-swatch-meta {
+      padding: var(--space-3);
+      font-size: var(--text-2xs);
+      font-family: ui-monospace, monospace;
+      color: var(--color-text-2);
+      line-height: 1.35;
+      word-break: break-all;
+    }
+    .sg-swatch-name {
+      display: block;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      margin-bottom: 2px;
+    }
+    .sg-swatch-hex {
+      display: block;
+      font-size: var(--text-2xs);
+      font-weight: var(--weight-semibold);
+      font-family: ui-monospace, monospace;
+      color: var(--color-primary-600);
+      letter-spacing: 0.03em;
+      margin-bottom: 4px;
+    }
+    .sg-swatch-alias {
+      display: block;
+      font-size: var(--text-2xs);
+      color: var(--color-text-3);
+      margin-top: 2px;
+      margin-bottom: 4px;
+    }
+
+    .sg-type-row {
+      margin-bottom: var(--space-8);
+      padding-bottom: var(--space-8);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .sg-type-row:last-child { border-bottom: none; }
+    .sg-type-label {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-text-3);
+      margin-bottom: var(--space-3);
+    }
+
+    .sg-btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+    .sg-btn-row > span {
+      flex: 0 0 100%;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-3);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .sg-demo-dark {
+      background: var(--color-secondary-600);
+      padding: var(--space-8);
+      border-radius: var(--radius-lg);
+      margin-top: var(--space-4);
+    }
+
+    .sg-radius-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-6);
+      align-items: flex-end;
+    }
+    .sg-radius-item {
+      text-align: center;
+    }
+    .sg-radius-item span {
+      display: block;
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+      margin-top: var(--space-2);
+    }
+    .sg-radius-box {
+      width: 72px;
+      height: 72px;
+      background: var(--color-primary-100);
+      border: 1px solid var(--color-primary-300);
+    }
+
+    .sg-shadow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: var(--space-6);
+    }
+    .sg-shadow-box {
+      height: 88px;
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      display: grid;
+      place-items: center;
+      font-size: var(--text-2xs);
+      font-family: ui-monospace, monospace;
+      color: var(--color-text-3);
+      text-align: center;
+      padding: var(--space-2);
+    }
+
+    .sg-logo-block {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-8);
+      padding: var(--space-8);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+    }
+    .sg-logo-block svg {
+      height: 56px;
+      width: auto;
+      color: var(--color-logo);
+    }
+    .sg-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="sg-wrap">
+    <header class="sg-top">
+      <div>
+        <p class="label label--primary">Design system</p>
+        <h1>CLEANR styleguide</h1>
+        <p>Tokens live in <code>cleanr-tokens.css</code>. The marketing page loads that stylesheet for shared components (for example <code>.trust-marquee__pill</code>) and mirrors <code>:root</code> values in its embedded styles for page-specific tokens.</p>
+      </div>
+      <nav class="sg-nav" aria-label="Styleguide">
+        <a href="cleanr-septic-landing.html">← Landing page</a>
+      </nav>
+    </header>
+
+    <section class="sg-section" id="logo" aria-labelledby="sg-logo-h2">
+      <h2 id="sg-logo-h2">Logo</h2>
+      <p class="sg-lead">Wordmark uses <code>--color-logo</code> (<strong>#022551</strong>). Inline SVG should use <code>fill="currentColor"</code> on a group and set <code>color: var(--color-logo)</code> on the SVG or link.</p>
+      <div class="sg-logo-block">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 718 376" aria-hidden="true" focusable="false">
+          <g fill="currentColor">
+            <polygon points="538.8 138 579.5 194.2 581 194.5 581 138 599.5 138 599.5 232 585.8 232 544.5 175.2 543.5 175.8 543.5 231.2 542.8 232 525.2 232 525 138 538.8 138"/>
+            <path d="M676.2,138c19.6,2.2,32.4,24.1,24.8,42.3-3.4,8.2-9.5,11.7-16.1,16.9l20.5,34.8h-20l-20.2-33h-13.8l-.5,1.2v31.8h-18.5v-94h43.8ZM651.5,183.5h20.2c10.3,0,15.8-13.1,11.2-21.7s-6.2-6.8-9.2-6.8h-22.2v28.5Z"/>
+            <path d="M409.5,232l33.3-93.5,23-.5,34.7,94h-18.2l-7.5-17h-38.9c0,.1-7.1,17-7.1,17h-19.2ZM442.2,198h26.8l-13.8-38-13.6,36.5.6,1.5Z"/>
+            <path d="M387.5,138v16.8l-.8.8h-39.8v20l1.2.5h35l.8.8v16.2h-36.2l-.8.8v20.8l1.2.5h39.8v15.8c0,.1.4.3.4.5l-.6.8h-59.2v-94h59Z"/>
+            <path d="M204.1,166.4c-18-24.8-58.4-12.1-57.1,19.9,1.2,31.1,40.8,40.6,57.8,16.7l15.7,8.5c-4.1,8.9-14.1,16.1-23.4,19.4-38.2,13.4-75.8-16.5-67.5-57s67.6-51.4,90.8-16.5c.1.7-.5,1-1,1.4-1.3,1.1-10.6,6.3-12.4,7s-2,1.1-2.9.6Z"/>
+            <polygon points="266 138 266 214.2 266.8 215 303 215 303 231.2 302.2 232 247.8 232 247 231.2 247 138 266 138"/>
+            <path d="M31.8,206.7c7,4,13.4,9.7,21.5,11.6,13.6-5.6,27.4-21.7,43.5-19.2,11.8,1.8,6.8,15.9,3.7,23.1-20.4,47.6-96.9,34.4-97.9-16.9-.4-20,21.3-3.2,29.3,1.5ZM7.9,199.1l-1.4,2.1c6.1,15.8,24.5,24.2,40.5,19,.2-.8-9.2-5.4-10.6-6.3-5.8-3.6-11.3-7.9-17.4-11.1-2.9-1.5-7.8-4.8-11.1-3.7ZM7,211.5c8.9,42.4,66.7,51.3,88.2,12.9s9.1-19.2,1.9-21.8c-12.3-4.5-31.8,14.8-43.4,19.3-12.9,5-28.3,4.2-39.6-4.3-1.3-1-6.1-7.1-7.1-6.1Z"/>
+            <path d="M55.3,119.2c11.3,7.7,41,45.9,43.8,59s-.8,11.4-6.2,15c-12,7.9-27.6-1.2-39.1-5.7-12.4,4.5-31.9,15.4-42.9,3-6-6.8-3-12.6.3-19.6,9.3-19.7,26.2-38.4,42.3-52.7.8,0,1.4.7,2,1.1ZM80.7,153.3c-8-11.2-17-21.8-27.4-30.8-12.1,11.2-23.5,24.2-32.3,38.2s-18,26.3-.7,31.7c6.4,2,12-.2,18-2.4,17.7-6.2,34.5-19.7,54.2-17.6-3.1-6.9-7.4-13.1-11.8-19.2ZM58.6,185.9c8.8,3.1,19.4,9.8,28.9,6.3,5.6-2.1,11.8-9.3,6.1-14.5s-26.8,3.6-35,6.8v1.4Z"/>
+          </g>
+        </svg>
+        <div class="text-body-sm">
+          <p>Static asset: <code>images/Cleanr_logo_Logo-1.svg</code> (filled with #022551).</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sg-section" id="colors" aria-labelledby="sg-colors-h2">
+      <h2 id="sg-colors-h2">Colors</h2>
+      <p class="sg-lead">CSS custom properties on <code>:root</code>. Click values in DevTools to jump to definitions.</p>
+
+      <h3 class="text-h4" style="margin: var(--space-8) 0 var(--space-4);">Brand &amp; primary (blue)</h3>
+      <div class="sg-grid" style="margin-bottom: var(--space-8);">
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-logo);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Logo</span><span class="sg-swatch-hex">#022551</span>--color-logo</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-primary-50);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Primary 50</span><span class="sg-swatch-hex">#EDF2FC</span>--color-primary-50</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-primary-100);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Primary 100</span><span class="sg-swatch-hex">#D2E0FA</span>--color-primary-100</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-primary-200);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Primary 200</span><span class="sg-swatch-hex">#A8C2F3</span>--color-primary-200</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-primary-300);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Primary 300</span><span class="sg-swatch-hex">#7A9FED</span>--color-primary-300</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-primary-400);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Primary 400</span><span class="sg-swatch-hex">#5A84EB</span>--color-primary-400</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-primary-500);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Primary 500</span><span class="sg-swatch-hex">#2A65E3</span>--color-primary-500</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-primary-600);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Primary 600</span><span class="sg-swatch-hex">#2148C4</span>--color-primary-600</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-primary-700);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Primary 700</span><span class="sg-swatch-hex">#1A3A9E</span>--color-primary-700</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-primary-800);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Primary 800</span><span class="sg-swatch-hex">#142D78</span>--color-primary-800</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-primary-900);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Primary 900</span><span class="sg-swatch-hex">#0E2154</span>--color-primary-900</div></div>
+      </div>
+
+      <h3 class="text-h4" style="margin: var(--space-8) 0 var(--space-4);">Secondary (navy)</h3>
+      <div class="sg-grid" style="margin-bottom: var(--space-8);">
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-secondary-50);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Secondary 50</span><span class="sg-swatch-hex">#EEF2F5</span>--color-secondary-50</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-secondary-100);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Secondary 100</span><span class="sg-swatch-hex">#CFDAE3</span>--color-secondary-100</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-secondary-200);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Secondary 200</span><span class="sg-swatch-hex">#9FB5C7</span>--color-secondary-200</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-secondary-300);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Secondary 300</span><span class="sg-swatch-hex">#6F90AB</span>--color-secondary-300</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-secondary-400);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Secondary 400</span><span class="sg-swatch-hex">#3F6B8F</span>--color-secondary-400</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-secondary-500);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Secondary 500</span><span class="sg-swatch-hex">#16293A</span>--color-secondary-500</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-secondary-600);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Secondary 600</span><span class="sg-swatch-hex">#0D1E2C</span>--color-secondary-600</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-secondary-700);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Secondary 700</span><span class="sg-swatch-hex">#091722</span>--color-secondary-700</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-secondary-800);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Secondary 800</span><span class="sg-swatch-hex">#060F17</span>--color-secondary-800</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-secondary-900);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Secondary 900</span><span class="sg-swatch-hex">#03080C</span>--color-secondary-900</div></div>
+      </div>
+
+      <h3 class="text-h4" style="margin: var(--space-8) 0 var(--space-4);">Surfaces &amp; text</h3>
+      <div class="sg-grid" style="margin-bottom: var(--space-8);">
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-bg);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Background</span><span class="sg-swatch-hex">#F1F3F4</span>--color-bg</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-bg-alt);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">BG alt</span><span class="sg-swatch-hex">#EDF4F6</span>--color-bg-alt</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-surface); border-bottom: 1px solid var(--color-border);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Surface</span><span class="sg-swatch-hex">#FFFFFF</span>--color-surface</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-surface-2);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Surface 2</span><span class="sg-swatch-hex">#F2F0EC</span>--color-surface-2</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-marquee-pill);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Trust marquee pill</span><span class="sg-swatch-hex">rgba(230,234,236,1)</span><span class="sg-swatch-alias">(≈ #E6EAEC)</span>--color-marquee-pill</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-text);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Text</span><span class="sg-swatch-hex">#0D1E2C</span>--color-text</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-text-2);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Text 2</span><span class="sg-swatch-hex">#3D5263</span>--color-text-2</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-text-3);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Text 3</span><span class="sg-swatch-hex">#3D5263</span><span class="sg-swatch-alias">(alias of text-2)</span>--color-text-3</div></div>
+      </div>
+
+      <h3 class="text-h4" style="margin: var(--space-8) 0 var(--space-4);">Borders &amp; semantic</h3>
+      <div class="sg-grid">
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-border);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Border</span><span class="sg-swatch-hex">#E5E0D8</span>--color-border</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-border-2);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Border 2</span><span class="sg-swatch-hex">#CEC9BF</span>--color-border-2</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-border-focus);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Focus</span><span class="sg-swatch-hex">#2A65E3</span><span class="sg-swatch-alias">(alias of primary-500)</span>--color-border-focus</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-success);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Success</span><span class="sg-swatch-hex">#1A7A52</span>--color-success</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-success-bg);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Success bg</span><span class="sg-swatch-hex">#E3F4EC</span>--color-success-bg</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-warning);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Warning</span><span class="sg-swatch-hex">#B8720A</span>--color-warning</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-warning-bg);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Warning bg</span><span class="sg-swatch-hex">#FEF4E4</span>--color-warning-bg</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-danger);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Danger</span><span class="sg-swatch-hex">#C0432F</span>--color-danger</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-danger-bg);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Danger bg</span><span class="sg-swatch-hex">#FAEAE7</span>--color-danger-bg</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-info);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Info</span><span class="sg-swatch-hex">#1C6FA8</span>--color-info</div></div>
+        <div class="sg-swatch"><div class="sg-swatch-color" style="background: var(--color-info-bg);"></div><div class="sg-swatch-meta"><span class="sg-swatch-name">Info bg</span><span class="sg-swatch-hex">#E3F0FA</span>--color-info-bg</div></div>
+      </div>
+    </section>
+
+    <section class="sg-section" id="typography" aria-labelledby="sg-type-h2">
+      <h2 id="sg-type-h2">Typography</h2>
+      <p class="sg-lead">Font family: Plus Jakarta Sans (<code>--font-display</code> / <code>--font-body</code>). Display utilities and semantic headings below.</p>
+
+      <div class="sg-type-row">
+        <div class="sg-type-label">.text-display-2xl</div>
+        <p class="text-display-2xl">Protect Your Septic</p>
+      </div>
+      <div class="sg-type-row">
+        <div class="sg-type-label">.text-display-xl</div>
+        <p class="text-display-xl">Section hero headline</p>
+      </div>
+      <div class="sg-type-row">
+        <div class="sg-type-label">.text-display-lg</div>
+        <p class="text-display-lg">Large feature heading</p>
+      </div>
+      <div class="sg-type-row">
+        <div class="sg-type-label">h1 — .text-h1 via element</div>
+        <h1>Page-level heading</h1>
+      </div>
+      <div class="sg-type-row">
+        <div class="sg-type-label">h2</div>
+        <h2>Section heading</h2>
+      </div>
+      <div class="sg-type-row">
+        <div class="sg-type-label">h3</div>
+        <h3>Sub-section heading</h3>
+      </div>
+      <div class="sg-type-row">
+        <div class="sg-type-label">h4 / h5</div>
+        <h4>Card title</h4>
+        <h5 style="margin-top: var(--space-3);">Small heading</h5>
+      </div>
+      <div class="sg-type-row">
+        <div class="sg-type-label">Body — p, .text-body-lg / .text-body-md / .text-body-sm</div>
+        <p>Default paragraph: septic systems are designed to break down waste — not handle the constant flow of hair, lint, and microplastics from modern laundry.</p>
+        <p class="text-body-lg" style="margin-top: var(--space-4);">Large body for intros.</p>
+        <p class="text-body-sm" style="margin-top: var(--space-4);">Small body for secondary copy.</p>
+      </div>
+      <div class="sg-type-row">
+        <div class="sg-type-label">Labels</div>
+        <p><span class="label">Eyebrow default</span></p>
+        <p style="margin-top: var(--space-3);"><span class="label label--primary">Eyebrow primary</span></p>
+        <div class="sg-pill-row" style="margin-top: var(--space-4);">
+          <span class="label-pill label-pill--primary">Primary pill</span>
+          <span class="label-pill label-pill--secondary">Secondary pill</span>
+          <span class="label-pill label-pill--neutral">Neutral</span>
+          <span class="label-pill label-pill--success">Success</span>
+          <span class="label-pill label-pill--warning">Warning</span>
+          <span class="label-pill label-pill--danger">Danger</span>
+        </div>
+        <div style="margin-top: var(--space-6);">
+          <div class="sg-type-label" style="margin-bottom: var(--space-3);">Trust stats — .trust-marquee__pill</div>
+          <p class="text-body-sm" style="color: var(--color-text-3); margin-bottom: var(--space-4); max-width: 65ch;">Background from <code>--color-marquee-pill</code>; same pills as the trust marquee on the landing page (including duplicated track for animation).</p>
+          <div class="sg-pill-row" style="flex-wrap: wrap;">
+            <span class="trust-marquee__pill">90%+ filtration tested by third parties</span>
+            <span class="trust-marquee__pill">5,000+ gallons filtered annually per home</span>
+            <span class="trust-marquee__pill">Trusted in 9 states and 7+ countries</span>
+          </div>
+        </div>
+      </div>
+      <div class="sg-type-row">
+        <div class="sg-type-label">.text-sm / .text-xs / .text-2xs</div>
+        <p class="text-sm">Small metadata line.</p>
+        <p class="text-xs" style="margin-top: var(--space-2);">Extra small caption.</p>
+        <p class="text-2xs" style="margin-top: var(--space-2);">Fine print.</p>
+      </div>
+    </section>
+
+    <section class="sg-section" id="buttons" aria-labelledby="sg-btn-h2">
+      <h2 id="sg-btn-h2">Buttons</h2>
+      <p class="sg-lead">Base class <code>.btn</code> plus variant and size modifiers from <code>cleanr-tokens.css</code>.</p>
+
+      <div class="sg-btn-row">
+        <span>Variants</span>
+        <a href="#" class="btn btn--primary">Primary</a>
+        <a href="#" class="btn btn--secondary">Secondary</a>
+        <a href="#" class="btn btn--outline">Outline</a>
+        <a href="#" class="btn btn--outline-primary">Outline primary</a>
+        <button type="button" class="btn btn--ghost">Ghost</button>
+        <a href="#" class="btn btn--danger">Danger</a>
+      </div>
+      <div class="sg-demo-dark">
+        <div class="sg-btn-row" style="margin: 0;">
+          <span style="color: rgba(255,255,255,0.65);">On dark</span>
+          <a href="#" class="btn btn--inverse">Inverse</a>
+        </div>
+      </div>
+      <div class="sg-btn-row" style="margin-top: var(--space-8);">
+        <span>Sizes</span>
+        <a href="#" class="btn btn--primary btn--sm">Small</a>
+        <a href="#" class="btn btn--primary">Default</a>
+        <a href="#" class="btn btn--primary btn--lg">Large</a>
+        <a href="#" class="btn btn--primary btn--xl">Extra large</a>
+      </div>
+      <div class="sg-btn-row">
+        <span>State</span>
+        <button type="button" class="btn btn--primary" disabled>Disabled</button>
+        <button type="button" class="btn btn--secondary" aria-disabled="true">Aria disabled</button>
+      </div>
+    </section>
+
+    <section class="sg-section" id="radius" aria-labelledby="sg-radius-h2">
+      <h2 id="sg-radius-h2">Border radius</h2>
+      <p class="sg-lead">Token-driven corners for cards, inputs, and pills.</p>
+      <div class="sg-radius-grid">
+        <div class="sg-radius-item"><div class="sg-radius-box" style="border-radius: var(--radius-sm);"></div><span>--radius-sm</span></div>
+        <div class="sg-radius-item"><div class="sg-radius-box" style="border-radius: var(--radius-md);"></div><span>--radius-md</span></div>
+        <div class="sg-radius-item"><div class="sg-radius-box" style="border-radius: var(--radius-lg);"></div><span>--radius-lg</span></div>
+        <div class="sg-radius-item"><div class="sg-radius-box" style="border-radius: var(--radius-xl);"></div><span>--radius-xl</span></div>
+        <div class="sg-radius-item"><div class="sg-radius-box" style="border-radius: var(--radius-pill);"></div><span>--radius-pill</span></div>
+      </div>
+    </section>
+
+    <section class="sg-section" id="shadows" aria-labelledby="sg-shadow-h2">
+      <h2 id="sg-shadow-h2">Shadows</h2>
+      <p class="sg-lead">Elevation tokens for cards and interactive surfaces.</p>
+      <div class="sg-shadow-grid">
+        <div class="sg-shadow-box" style="box-shadow: var(--shadow-xs);">--shadow-xs</div>
+        <div class="sg-shadow-box" style="box-shadow: var(--shadow-sm);">--shadow-sm</div>
+        <div class="sg-shadow-box" style="box-shadow: var(--shadow-md);">--shadow-md</div>
+        <div class="sg-shadow-box" style="box-shadow: var(--shadow-lg);">--shadow-lg</div>
+        <div class="sg-shadow-box" style="box-shadow: var(--shadow-xl);">--shadow-xl</div>
+        <div class="sg-shadow-box" style="box-shadow: var(--shadow-primary); color: var(--color-primary-600);">--shadow-primary</div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

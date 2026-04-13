@@ -110,7 +110,7 @@ body {
     Mapped to semantic HTML elements; also available as utility classes.
   */
   --text-h1: clamp(28px, 3vw, 40px);    /* page-level heading */
-  --text-h2: clamp(24px, 2.5vw, 34px);  /* section heading */
+  --text-h2: clamp(26px, 3vw, 44px);  /* section heading */
   --text-h3: clamp(20px, 2vw,  28px);   /* sub-section heading */
   --text-h4: clamp(17px, 1.6vw, 22px);  /* card / panel heading */
   --text-h5: clamp(14px, 1.3vw, 18px);  /* small heading / label heading */
@@ -178,7 +178,7 @@ body {
   --space-32: 128px;
 
   /* Fluid section padding */
-  --space-section: clamp(80px, 10vw, 120px);
+  --space-section: clamp(72px, 9vw, 108px);
   --space-section-sm: clamp(48px, 6vw, 72px);
 
   /* Container / max-width */
@@ -242,7 +242,7 @@ h2 {
   font-family: var(--font-display);
   font-size: var(--text-h2);
   font-weight: var(--weight-bold);
-  line-height: var(--leading-tight);
+  line-height: 1.08;
   letter-spacing: var(--tracking-tighter);
   color: var(--color-text);
 }
@@ -390,7 +390,7 @@ p {
   border-radius: var(--radius-pill);
   background-color: var(--color-marquee-pill);
   font-size: clamp(15px, 1.35vw, 18px);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-medium);
   color: var(--color-secondary-600);
   white-space: nowrap;
   line-height: 1.3;

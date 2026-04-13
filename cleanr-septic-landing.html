@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>CLEANR – Protect Your Septic System</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -77,7 +77,7 @@
       /* Layout */
       --max-w:        1160px;
       --pad-x:        clamp(24px, 5vw, 80px);
-      --space-section: clamp(80px, 10vw, 120px);
+      --space-section: clamp(72px, 9vw, 108px);
 
       /* Radius */
       --radius-sm:   6px;
@@ -111,13 +111,6 @@
       line-height: 1.06;
       letter-spacing: -0.025em;
     }
-    .d2 {
-      font-family: var(--font-display);
-      font-size: clamp(32px, 4.2vw, 58px);
-      font-weight: 700;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-    }
     .d3 {
       font-family: var(--font-display);
       font-size: clamp(22px, 2.5vw, 34px);
@@ -133,40 +126,67 @@
     }
     .label--primary { color: var(--color-primary-500); }
 
-    /* ── BUTTONS ─────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      :root {
+        /* Larger than cleanr-tokens.css --text-h2 for small screens */
+        --text-h2: clamp(30px, 5vw, 44px);
+        /* Sub-section headings (e.g. product h3.d2) */
+        --text-h3: clamp(24px, 3.4vw, 30px);
+      }
+      h2 {
+        line-height: 1.22;
+      }
+    }
+
+    /* ── BUTTONS (page CTAs — nav uses .nav__buy-bar / .nav__buy-bar__action, not .btn) ─ */
     .btn {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 14px 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 17px 36px;
       border-radius: var(--radius-pill);
-      font-family: var(--font-body); font-size: 14px; font-weight: 600;
-      cursor: pointer; border: none; text-decoration: none;
-      transition: transform 0.18s, box-shadow 0.18s, background 0.18s, color 0.18s;
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: var(--weight-semibold);
+      line-height: 1.2;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      box-sizing: border-box;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.18s, color 0.18s, border-color 0.18s;
     }
     .btn:hover { transform: translateY(-2px); }
+    .btn:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 3px;
+    }
     .btn--secondary  { background: var(--color-secondary-600); color: var(--color-surface); }
     .btn--secondary:hover  { background: var(--color-secondary-500); box-shadow: 0 8px 24px rgba(13,30,44,0.22); }
     .btn--primary  { background: var(--color-primary-500); color: var(--color-surface); }
     .btn--primary:hover  { background: var(--color-primary-400); box-shadow: 0 8px 24px rgba(42,101,227,0.3); }
     .btn--ghost { background: transparent; color: var(--color-text); border: 1.5px solid var(--color-border); }
     .btn--ghost:hover { border-color: var(--color-text-3); }
-    .btn--lg { padding: 17px 36px; font-size: 16px; }
 
     /* ── NAV ─────────────────────────────────────────────── */
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      padding: 12px 0;
-      transition: background 0.3s, box-shadow 0.3s;
+      padding-top: max(12px, env(safe-area-inset-top, 0px));
+      padding-bottom: 12px;
+      padding-left: 0;
+      padding-right: 0;
+      transition: background 0.3s;
     }
     .nav.opaque {
       background: rgba(241,243,244,0.95);
       backdrop-filter: blur(10px);
-      box-shadow: 0 1px 0 var(--color-border);
     }
     .nav .wrap {
       max-width: none;
       width: 100%;
       margin-inline: 0;
-      padding-inline: var(--pad-x);
+      padding-left: max(var(--pad-x), env(safe-area-inset-left, 0px));
+      padding-right: max(var(--pad-x), env(safe-area-inset-right, 0px));
       box-sizing: border-box;
     }
     .nav__inner { display: flex; align-items: center; justify-content: space-between; width: 100%; }
@@ -190,6 +210,7 @@
 
     /* Nav: pill bar + nested primary Buy (matches reference) */
     .nav__buy-bar {
+      position: relative;
       display: inline-flex;
       align-items: center;
       gap: clamp(10px, 1.4vw, 16px);
@@ -232,9 +253,87 @@
       background: var(--color-primary-400);
     }
 
+    @media (max-width: 768px) {
+      .nav {
+        padding-top: max(8px, env(safe-area-inset-top, 0px));
+        padding-bottom: 8px;
+      }
+      .nav .wrap {
+        /* Slightly tighter horizontal padding so logo + CTA stay inside the viewport
+           (body uses overflow-x: hidden, which clips overflowing nav content). */
+        padding-left: max(12px, env(safe-area-inset-left, 0px));
+        padding-right: max(12px, env(safe-area-inset-right, 0px));
+      }
+      .nav__inner {
+        gap: 8px;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+      }
+      .nav__logo {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: min(240px, 56vw);
+      }
+      .nav__logo svg {
+        height: 50px;
+        width: auto;
+        max-width: 100%;
+      }
+      .nav__links {
+        flex: 0 0 auto;
+        gap: 0;
+        margin-left: auto;
+        min-width: 0;
+      }
+      .nav__links > a.nav__link {
+        display: none;
+      }
+      /* Same padding / gap / pill metrics as desktop .nav__buy-bar */
+      .nav__buy-bar {
+        flex-shrink: 0;
+        max-width: 100%;
+        white-space: nowrap;
+        padding: 5px 8px 5px clamp(16px, 2.2vw, 22px);
+        gap: clamp(10px, 1.4vw, 16px);
+      }
+      .nav__buy-bar__price {
+        font-size: 15.5px;
+      }
+      .nav__buy-bar__action {
+        padding: 9px 20px;
+        min-height: 34px;
+        font-size: 14.5px;
+      }
+    }
+    @media (max-width: 360px) {
+      .nav__buy-bar__price {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      /* Buy-only: outer inset matches desktop vertical + end padding */
+      .nav__buy-bar {
+        padding: 5px 8px;
+        gap: 0;
+        justify-content: center;
+      }
+      .nav__buy-bar__action {
+        padding: 9px 20px;
+        min-height: 34px;
+        font-size: 14.5px;
+      }
+    }
+
     /* ── HERO ── Cove split + LAICA editorial center-left ── */
     .hero {
-      min-height: clamp(600px, 88svh, 920px);
+      min-height: clamp(600px, 80svh, 920px);
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0;
@@ -256,6 +355,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
+      padding-top: clamp(32px, 4vw, 44px);
       margin-bottom: 28px;
     }
     .g-reviews__logo {
@@ -313,8 +413,9 @@
       width: 20px;
       height: 20px;
       flex-shrink: 0;
-      display: block;
+      margin-top: 2px;
       object-fit: contain;
+      display: block;
     }
 
     /* Right: photo column — flex column; image is full-bleed, overlays use their own padding */
@@ -354,19 +455,32 @@
       margin-inline: 0;
     }
 
+    @media (min-width: 961px) {
+      .hero__right {
+        border-bottom-left-radius: 16px;
+      }
+    }
+
     /* Small promo clip — bottom-right of hero photo column */
     .hero__video-wrap {
       position: relative;
       z-index: 5;
       margin-top: auto;
       align-self: flex-end;
-      padding: 0 64px 54px;
+      padding: 0 40px 36px;
       max-width: 100%;
       box-sizing: border-box;
       pointer-events: auto;
     }
 
-    .hero__video-wrap video {
+    .hero__video-inner {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      vertical-align: bottom;
+    }
+
+    .hero__video-inner .hero__video {
       display: block;
       width: min(180px, 34vw);
       max-width: 100%;
@@ -382,9 +496,56 @@
       background: #000;
     }
 
+    /* Minimal video controls overlay (hero / solution) */
+    .vid-controls {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .hero__video-wrap:hover .vid-controls,
+    .solution__video-wrap:hover .vid-controls,
+    .vid-controls.is-visible {
+      opacity: 1;
+    }
+    .vid-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .vid-btn:hover {
+      background: rgba(255, 255, 255, 0.32);
+    }
+    .vid-btn:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 2px;
+    }
+    .vid-icon[hidden] {
+      display: none !important;
+    }
+
     /* ── SECTION: PROBLEM ────────────────────────────────── */
     /* LAICA: centered editorial, clean whitespace */
-    #problem { background-color: rgba(241, 243, 244, 1); }
+    #problem {
+      background-color: rgba(241, 243, 244, 1);
+      padding-bottom: var(--space-section-sm);
+    }
     .problem__intro {
       max-width: 640px;
       margin-inline: auto;
@@ -398,11 +559,14 @@
     /* Interactive septic diagram */
     .diagram-section {
       margin-bottom: clamp(48px, 6vw, 64px);
+      /* Room for callouts/lenses that extend past the image box (stage is overflow: visible) */
+      padding-block: clamp(16px, 2.5vw, 32px);
+      overflow: visible;
     }
     .diagram-stage {
       position: relative;
       border-radius: var(--radius-lg);
-      overflow: hidden;
+      overflow: visible;
       opacity: 0;
       transform: scale(0.97) translateY(20px);
     }
@@ -412,14 +576,42 @@
       display: block;
       user-select: none;
       pointer-events: none;
+      border-radius: var(--radius-lg);
     }
+    /* Cluster: lens + callout overlaid on bottom of circular lens */
+    .diagram-hotspot {
+      position: absolute;
+      z-index: 15;
+      width: max-content;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+      overflow: visible;
+    }
+    .diagram-hotspot.active {
+      z-index: 25;
+    }
+    .diagram-hotspot .hotspot {
+      pointer-events: auto;
+    }
+    .hotspot__lens-stack {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(118px, 13vw, 176px);
+      height: clamp(118px, 13vw, 176px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
     .hotspot {
       position: absolute;
-      width: 44px;
-      height: 44px;
+      width: 52px;
+      height: 52px;
       padding: 0;
-      margin-left: -22px;
-      margin-top: -22px;
+      margin-left: -26px;
+      margin-top: -26px;
       background: none;
       border: none;
       cursor: pointer;
@@ -429,49 +621,194 @@
       z-index: 10;
       opacity: 0;
     }
-    .hotspot:focus-visible {
-      outline: 2px solid var(--color-border-focus);
-      outline-offset: 3px;
+    .hotspot__lens {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #fff;
+      box-shadow:
+        0 2px 14px rgba(13, 30, 44, 0.22),
+        0 0 0 1px rgba(0, 0, 0, 0.06);
+      display: block;
+      background: var(--color-surface);
+      box-sizing: border-box;
+    }
+    .hotspot__lens img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .hotspot--lens .hotspot__dot {
+      display: none;
+    }
+    .hotspot.hotspot--lens {
+      position: relative;
+      width: clamp(134px, 14.5vw, 196px);
+      height: clamp(134px, 14.5vw, 196px);
+      margin-left: 0;
+      margin-top: 0;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+    .diagram-hotspot[data-index="0"] .hotspot__lens-stack {
+      width: clamp(128px, 14.3vw, 190px);
+      height: clamp(128px, 14.3vw, 190px);
+    }
+    .diagram-hotspot[data-index="0"] .hotspot.hotspot--lens {
+      width: clamp(148px, 15.6vw, 210px);
+      height: clamp(148px, 15.6vw, 210px);
+    }
+    .diagram-hotspot[data-index="1"] .hotspot__lens-stack {
+      width: clamp(136px, 15.2vw, 204px);
+      height: clamp(136px, 15.2vw, 204px);
+    }
+    .diagram-hotspot[data-index="1"] .hotspot.hotspot--lens {
+      width: clamp(156px, 16.8vw, 226px);
+      height: clamp(156px, 16.8vw, 226px);
     }
     .hotspot__ring {
-      position: absolute;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 2px solid var(--color-primary-500);
-      opacity: 0.5;
-      animation: hotspotPulse 2s ease-in-out infinite;
+      display: none;
     }
-    .hotspot.active .hotspot__ring {
-      animation: none;
+    .diagram-hotspot .hotspot.hotspot--lens {
       opacity: 1;
-      width: 36px;
-      height: 36px;
-      background: var(--color-primary-50);
-      border-color: var(--color-primary-400);
-      transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    /* Label-only hotspot (no lens) — e.g. central bottom callout */
+    .diagram-hotspot--label {
+      z-index: 16;
+    }
+    .hotspot.hotspot--label {
+      position: relative;
+      width: max-content;
+      max-width: min(340px, 92vw);
+      height: auto;
+      min-height: 0;
+      margin: 0;
+      padding: 0;
+      opacity: 1;
+      display: block;
+      cursor: pointer;
+    }
+    .diagram-hotspot .hotspot.hotspot--label {
+      opacity: 1;
+    }
+    .diagram-hotspot--label .callout {
+      position: relative;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      transform: none;
+      opacity: 1;
+      max-width: min(340px, 92vw);
+      width: max-content;
+    }
+    .diagram-hotspot--label .hotspot--label .callout__body {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: flex-start;
+      width: max-content;
+      max-width: 100%;
+      padding: 10px 14px;
+      gap: 8px;
+      border-color: rgba(255, 255, 255, 0.95);
+      min-width: min-content;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 2px 12px rgba(13, 30, 44, 0.18);
+    }
+    .diagram-hotspot--label .hotspot--label .callout__text {
+      font-size: clamp(11px, 2.65vw, 13px);
+      font-weight: 600;
+      line-height: 1.3;
+      text-align: left;
+      flex: 0 1 auto;
+      width: auto;
+      max-width: none;
+      white-space: nowrap;
+    }
+    .diagram-hotspot--label .hotspot--label .cost-pill {
+      font-size: clamp(11px, 2.65vw, 13px);
+      padding: 5px 10px;
+      align-self: center;
+      white-space: nowrap;
+      flex-shrink: 0;
+      line-height: 1.3;
+    }
+    .diagram-hotspot--label .callout.active .callout__body {
+      border-color: #fff;
+      box-shadow: 0 2px 14px rgba(13, 30, 44, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.55);
+    }
+    .hotspot--label .hotspot__num {
+      display: none;
+    }
+    /* Shown on mobile only — desktop label uses inline callout */
+    .hotspot--label .hotspot__dot {
+      display: none;
+    }
+    .hotspot:focus-visible {
+      outline: 2px solid var(--color-border-2);
+      outline-offset: 3px;
     }
     .hotspot__dot {
-      width: 14px;
-      height: 14px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background: var(--color-primary-500);
-      border: 2px solid var(--color-surface);
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.2s ease, background 0.2s ease;
+      background: #fff;
+      border: 2px solid #fff;
+      box-shadow: var(--shadow-sm), 0 0 0 1px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
       position: relative;
       z-index: 1;
     }
     .hotspot.active .hotspot__dot {
-      background: var(--color-primary-400);
-      transform: scale(1.2);
+      background: #fff;
+      border-color: #fff;
+      transform: scale(1.12);
+      box-shadow: var(--shadow-md), 0 0 0 1px rgba(0, 0, 0, 0.06);
     }
     .hotspot__num {
       display: none;
     }
-    @keyframes hotspotPulse {
-      0%, 100% { transform: scale(1); opacity: 0.5; }
-      50% { transform: scale(1.5); opacity: 0; }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .hotspot__lens-stack {
+        width: clamp(108px, 12vw, 158px);
+        height: clamp(108px, 12vw, 158px);
+      }
+      .hotspot.hotspot--lens {
+        width: clamp(124px, 13.5vw, 176px);
+        height: clamp(124px, 13.5vw, 176px);
+      }
+      .diagram-hotspot[data-index="0"] .hotspot__lens-stack {
+        width: clamp(114px, 12.6vw, 172px);
+        height: clamp(114px, 12.6vw, 172px);
+      }
+      .diagram-hotspot[data-index="0"] .hotspot.hotspot--lens {
+        width: clamp(132px, 14.2vw, 192px);
+        height: clamp(132px, 14.2vw, 192px);
+      }
+      .diagram-hotspot[data-index="1"] .hotspot__lens-stack {
+        width: clamp(122px, 13.5vw, 182px);
+        height: clamp(122px, 13.5vw, 182px);
+      }
+      .diagram-hotspot[data-index="1"] .hotspot.hotspot--lens {
+        width: clamp(142px, 15vw, 202px);
+        height: clamp(142px, 15vw, 202px);
+      }
+    }
+    @media (min-width: 769px) {
+      .diagram-hotspot .hotspot {
+        pointer-events: none;
+        cursor: default;
+      }
     }
     .callout {
       position: absolute;
@@ -479,6 +816,28 @@
       opacity: 0;
       pointer-events: none;
       max-width: min(320px, 58vw);
+    }
+    .diagram-hotspot .hotspot__lens-stack .callout {
+      position: absolute;
+      z-index: 2;
+      left: 18%;
+      right: auto;
+      bottom: 6px;
+      width: max-content;
+      max-width: min(520px, 92vw);
+      min-width: 0;
+      margin: 0;
+      flex-shrink: 0;
+      opacity: 1;
+      visibility: visible;
+      overflow: visible;
+      pointer-events: none;
+      transform: translateX(8px);
+    }
+    /* Hotspot 0 — Plugged drain field: callout sits further left on the lens */
+    .diagram-hotspot[data-index="0"] .hotspot__lens-stack .callout {
+      left: 6%;
+      transform: translateX(-6px);
     }
     .callout.active .callout__body {
       box-shadow: var(--shadow-md);
@@ -507,6 +866,51 @@
       color: var(--color-text);
       line-height: 1.45;
     }
+    .diagram-hotspot .hotspot__lens-stack .callout__text {
+      font-size: clamp(11px, 2.65vw, 13px);
+      font-weight: 600;
+      line-height: 1.3;
+      text-align: left;
+      flex: 0 1 auto;
+      width: auto;
+      max-width: none;
+      white-space: nowrap;
+    }
+    .diagram-hotspot .hotspot__lens-stack .callout__body {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: flex-start;
+      width: max-content;
+      max-width: inherit;
+      padding: 10px 14px;
+      gap: 8px;
+      border-color: rgba(255, 255, 255, 0.95);
+      min-width: min-content;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 2px 12px rgba(13, 30, 44, 0.18);
+    }
+    .diagram-hotspot .hotspot__lens-stack .callout.active .callout__body {
+      border-color: #fff;
+      box-shadow: 0 2px 14px rgba(13, 30, 44, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.55);
+    }
+    .diagram-hotspot .cost-pill {
+      font-size: clamp(11px, 2.65vw, 13px);
+      padding: 5px 10px;
+      line-height: 1.3;
+    }
+    .diagram-hotspot .hotspot__lens-stack .cost-pill {
+      font-size: clamp(11px, 2.65vw, 13px);
+      padding: 5px 10px;
+      align-self: center;
+      white-space: nowrap;
+      text-align: center;
+      flex-shrink: 0;
+      line-height: 1.3;
+    }
     .cost-pill {
       display: inline-flex;
       align-items: center;
@@ -522,10 +926,9 @@
       color: var(--color-cost-pill-text);
       flex-shrink: 0;
     }
-    .callout--0 { top: 26%; left: 4%; }
-    .callout--1 { top: 14%; right: 4%; }
-    .callout--2 { bottom: 14%; left: 30%; }
-    .callout--3 { bottom: 26%; left: 2%; }
+    .diagram-section .cost-pill {
+      border-radius: 4px;
+    }
     .diagram-cards {
       display: none;
       list-style: none;
@@ -568,18 +971,22 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background: var(--color-primary-50);
-      color: var(--color-primary-500);
+      font-family: var(--font-display);
+      background: var(--color-surface);
+      color: var(--color-secondary-600);
+      border: 1.5px solid var(--color-border);
       font-size: 13px;
       font-weight: 700;
       display: grid;
       place-items: center;
       flex-shrink: 0;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      box-sizing: border-box;
     }
     .diagram-card.active .diagram-card__num {
-      background: var(--color-primary-500);
-      color: var(--color-surface);
+      background: var(--color-primary-50);
+      color: var(--color-secondary-600);
+      border-color: var(--color-secondary-600);
     }
     .diagram-card__head {
       display: flex;
@@ -594,8 +1001,8 @@
       min-width: 0;
     }
     .diagram-card__title {
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: 600;
       color: var(--color-text);
       margin-bottom: 4px;
     }
@@ -608,46 +1015,156 @@
       line-height: 1.5;
     }
     @media (max-width: 768px) {
-      .callout { display: none; }
-      .hotspot__num {
+      /* Image + solid white dots only; copy lives in cards below */
+      .diagram-hotspot .hotspot__lens-stack {
+        display: none !important;
+      }
+      .diagram-hotspot--label .callout {
+        display: none !important;
+      }
+      /* Fixed-size anchor per hotspot so hit boxes don’t stack on a collapsed parent */
+      .diagram-hotspot {
+        width: 52px;
+        height: 52px;
+        max-width: 52px;
+        max-height: 52px;
+        box-sizing: border-box;
+      }
+      /* Keep all four markers on-screen; spaced to reduce 52px circles overlapping */
+      .diagram-hotspot[data-index="0"] {
+        left: 6% !important;
+        top: 36% !important;
+      }
+      .diagram-hotspot[data-index="1"] {
+        left: 28% !important;
+        top: 58% !important;
+      }
+      .diagram-hotspot[data-index="2"] {
+        left: 84% !important;
+        top: 20% !important;
+      }
+      .diagram-hotspot[data-index="3"] {
+        left: 52% !important;
+        top: 64% !important;
+      }
+      .hotspot.hotspot--lens {
+        position: relative;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        margin-left: 0;
+        margin-top: 0;
+        opacity: 1;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        place-items: center;
+      }
+      .hotspot--lens .hotspot__ring {
+        display: none;
+      }
+      .hotspot--lens .hotspot__dot {
+        display: block;
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .diagram-hotspot--label .hotspot.hotspot--label {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        place-items: center;
+        position: relative;
+        left: 0;
+        top: 0;
+      }
+      .hotspot--label .hotspot__dot {
+        display: block;
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .diagram-hotspot--label .hotspot--label .callout__text {
+        white-space: normal;
+      }
+      /* Numbers 1–4 centered on white dots */
+      .diagram-hotspot .hotspot__num {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        height: 100%;
-        font-size: 11px;
-        font-weight: 700;
-        color: var(--color-surface);
-        position: relative;
+        grid-column: 1;
+        grid-row: 1;
         z-index: 2;
-      }
-      .hotspot__dot { display: none; }
-      .hotspot__ring {
         width: 28px;
         height: 28px;
-        background: var(--color-primary-500);
-        border: none;
-        opacity: 0.95;
+        margin: 0;
+        padding: 0;
+        font-family: var(--font-display);
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--color-secondary-600);
+        letter-spacing: -0.03em;
+        line-height: 1;
+        pointer-events: none;
       }
-      .hotspot.active .hotspot__ring {
-        background: var(--color-secondary-600);
+      .hotspot__dot {
+        width: 28px;
+        height: 28px;
+        border: none;
+        box-shadow: 0 2px 10px rgba(13, 30, 44, 0.22);
+      }
+      .hotspot.active .hotspot__dot {
+        transform: scale(1.12);
+        box-shadow: 0 3px 14px rgba(13, 30, 44, 0.3);
+      }
+      .hotspot.active .hotspot__num {
+        color: var(--color-secondary-600);
+      }
+      .diagram-card__head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .diagram-card__head .diagram-card__title {
+        flex: none;
+        width: 100%;
+      }
+      .diagram-card__cost.cost-pill {
+        margin-top: 0;
+        align-self: flex-start;
+      }
+      .diagram-card__num {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
       }
       .diagram-cards {
         display: flex;
         flex-direction: row;
+        flex-wrap: nowrap;
         gap: 12px;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         padding: 16px var(--pad-x) 20px;
-        scrollbar-width: none;
         margin-top: 8px;
+        scrollbar-width: none;
       }
       .diagram-cards .diagram-card {
         width: 220px;
         max-width: 220px;
+        flex: 0 0 auto;
       }
-      .diagram-cards::-webkit-scrollbar { display: none; }
+      .diagram-cards::-webkit-scrollbar {
+        display: none;
+      }
     }
 
     /* Trust stats marquee — after #problem */
@@ -744,40 +1261,147 @@
       }
     }
 
-    /* Cost callout — light panel on problem section */
+    /* Press logos — below hero */
+    .logo-marquee-wrap {
+      background: var(--color-bg);
+      padding-block: clamp(20px, 3vw, 32px);
+      position: relative;
+    }
+    .logo-marquee__sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .logo-marquee {
+      --logo-marquee-gap: clamp(32px, 5vw, 72px);
+      position: relative;
+    }
+    .logo-marquee__viewport {
+      overflow: hidden;
+      position: relative;
+      margin-inline: auto;
+      max-width: 100%;
+    }
+    .logo-marquee__viewport:hover .logo-marquee__track {
+      animation-play-state: paused;
+    }
+    .logo-marquee__fade {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: clamp(48px, 8vw, 120px);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .logo-marquee__fade--left {
+      left: 0;
+      background: linear-gradient(to right, var(--color-bg), transparent);
+    }
+    .logo-marquee__fade--right {
+      right: 0;
+      background: linear-gradient(to left, var(--color-bg), transparent);
+    }
+    .logo-marquee__track {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      width: max-content;
+      animation: logoMarqueeScroll 120s linear infinite;
+      will-change: transform;
+    }
+    .logo-marquee__set {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .logo-marquee__item {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: clamp(38px, 6.2vw, 60px);
+      margin-right: var(--logo-marquee-gap);
+    }
+    .logo-marquee__item img {
+      display: block;
+      height: 100%;
+      width: auto;
+      max-width: min(280px, 44vw);
+      object-fit: contain;
+      object-position: center;
+      opacity: 0.92;
+      filter: grayscale(1);
+      transition: opacity 0.25s ease;
+    }
+    @keyframes logoMarqueeScroll {
+      to { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .logo-marquee__fade {
+        display: none;
+      }
+      .logo-marquee__viewport:hover .logo-marquee__track {
+        animation-play-state: running;
+      }
+      .logo-marquee__track {
+        animation: none;
+        transform: none;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        max-width: var(--max-w);
+        box-sizing: border-box;
+        padding-inline: var(--pad-x);
+        margin-inline: auto;
+      }
+      .logo-marquee__set:last-of-type {
+        display: none;
+      }
+      .logo-marquee__set {
+        gap: var(--logo-marquee-gap);
+        justify-content: center;
+      }
+      .logo-marquee__item {
+        margin-right: 0;
+      }
+    }
+
+    /* Cost callout — centered editorial + CTA (reference layout) */
     .cost-banner {
-      background: rgba(255, 255, 255, 1);
-      border-radius: var(--radius-lg);
-      padding: clamp(20px, 3vw, 28px) clamp(20px, 3vw, 36px);
-      display: flex; align-items: center;
-      justify-content: space-between; gap: 24px;
-      flex-wrap: wrap;
+      background: rgba(244, 245, 247, 0);
+      border-radius: 0;
+      padding: clamp(48px, 7vw, 88px) clamp(20px, 4vw, 40px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
-    .cost-banner__left {}
-    .cost-banner__label {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--color-text-3);
-      margin-bottom: 8px;
+    .cost-banner__inner {
+      max-width: 720px;
+      margin-inline: auto;
     }
-    .cost-banner__amount {
-      display: inline-block;
-      font-family: var(--font-display); font-size: clamp(52px, 6vw, 80px);
+    .cost-banner__headline {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(26px, 4.2vw, 44px);
       font-weight: 800;
-      color: var(--color-cost-pill-text);
-      background: var(--color-cost-pill-bg);
-      line-height: 1;
-      letter-spacing: -0.03em;
-      padding: clamp(10px, 1.4vw, 14px) clamp(18px, 2.8vw, 32px);
-      border-radius: 16px;
-      margin-bottom: 6px;
+      line-height: 1.22;
+      letter-spacing: -0.025em;
+      color: #001d4a;
     }
-    .cost-banner__amount .cost-counter__prefix,
-    .cost-banner__amount .cost-counter__num,
-    .cost-banner__amount .cost-counter__suffix {
-      color: inherit;
+    .cost-banner__figure {
+      color: #c00;
+      font-weight: 800;
+      white-space: nowrap;
     }
-    .cost-banner__amount .cost-counter__num {
-      letter-spacing: -0.065em;
+    .cost-banner__figure .cost-counter__num {
+      letter-spacing: -0.04em;
     }
     .cost-counter__suffix {
       opacity: 0;
@@ -787,17 +1411,25 @@
     .cost-counter__suffix.visible {
       opacity: 1;
     }
-    .cost-banner__sub { font-size: 14px; color: var(--color-text-2); max-width: 300px; line-height: 1.5; }
-    .cost-banner__cta-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
+    .cost-banner__cta {
+      margin-top: clamp(28px, 4vw, 44px);
+    }
+    .cost-banner .cost-banner__cta.btn--primary {
+      background: #1d63d1;
+      color: #fff;
+    }
+    .cost-banner .cost-banner__cta.btn--primary:hover {
+      background: #1858c0;
+      box-shadow: 0 8px 24px rgba(29, 99, 209, 0.35);
     }
 
     /* ── SECTION: SOLUTION ───────────────────────────────── */
     .solution { background: var(--color-bg); }
+    #solution {
+      /* Tighter gap before “Fits your space”; top still uses .sec --space-section */
+      padding-bottom: clamp(40px, 5vw, 64px);
+    }
+    #solution .wrap { max-width: 1400px; }
     .solution__top {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -806,6 +1438,7 @@
       margin-bottom: clamp(56px, 7vw, 88px);
     }
     .solution__video-wrap {
+      position: relative;
       border-radius: var(--radius-lg);
       overflow: hidden;
       background: var(--color-surface-2);
@@ -816,6 +1449,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      background: #000;
     }
     .solution__copy .d2 { margin: 0 0 20px; color: var(--color-secondary-600); }
     .solution__copy p {
@@ -850,14 +1484,16 @@
       object-fit: contain;
       display: block;
     }
-
     /* ── FITS YOUR SPACE (below #solution) ─ */
     .space-fit {
       background: var(--color-bg);
     }
+    #fits-your-space .wrap {
+      max-width: 1400px;
+    }
     .space-fit__row {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
       gap: clamp(28px, 4.5vw, 56px);
       align-items: center;
     }
@@ -868,22 +1504,118 @@
       margin: 0;
       color: var(--color-secondary-600);
       max-width: 22ch;
-      font-size: clamp(28px, 3.75vw, 52px);
     }
     .space-fit__media-wrap {
       position: relative;
       width: 100%;
+      max-width: min(560px, 100%);
+      justify-self: end;
       border-radius: var(--radius-lg);
       overflow: hidden;
       background: var(--color-secondary-700);
-      aspect-ratio: 16 / 10;
+      aspect-ratio: 4 / 5;
       box-shadow: var(--shadow-md);
     }
-    .space-fit__video {
-      display: block;
+    .space-fit__frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: var(--color-surface-2);
+    }
+    .space-fit__frame img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .space-fit__thumbs {
+      position: absolute;
+      z-index: 3;
+      left: auto;
+      top: auto;
+      right: clamp(12px, 2vw, 20px);
+      bottom: clamp(12px, 2vw, 20px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      width: auto;
+      max-width: calc(100% - 24px);
+      box-sizing: border-box;
+    }
+    .space-fit__thumb {
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      border: 2px solid var(--color-surface);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--color-surface);
+      box-shadow: 0 2px 8px rgba(13, 30, 44, 0.12);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .space-fit__thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .space-fit__thumb:hover {
+      border-color: var(--color-primary-200);
+    }
+    .space-fit__thumb--active {
+      border-color: var(--color-primary-500);
+      box-shadow: 0 0 0 1px var(--color-primary-500), 0 2px 10px rgba(42, 101, 227, 0.25);
+    }
+    .space-fit__thumb:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 2px;
+    }
+    .space-fit__progress,
+    .product__gallery-progress {
+      position: absolute;
+      z-index: 2;
+      left: clamp(14px, 2.2vw, 22px);
+      right: auto;
+      bottom: clamp(14px, 2.2vw, 22px);
+      width: min(24%, 108px);
+      height: 6px;
+      box-sizing: border-box;
+      background: rgba(255, 255, 255, 0.22);
+      border-radius: 9999px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .space-fit__progress-fill,
+    .product__gallery-progress-fill {
+      height: 100%;
+      width: 100%;
+      transform: scaleX(0);
+      transform-origin: left center;
+      background: #fff;
+      border-radius: 9999px;
+      will-change: transform;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .space-fit__progress,
+      .product__gallery-progress {
+        display: none;
+      }
+    }
+    @media (max-width: 960px) {
+      .space-fit__progress,
+      .product__gallery-progress {
+        left: clamp(20px, 5vw, 28px);
+        bottom: clamp(22px, 5.5vw, 36px);
+      }
     }
 
     /* ── TESTIMONIALS (9:16 video cards) ─────────────────── */
@@ -896,8 +1628,9 @@
     .testi__carousel {
       position: relative;
       display: flex;
+      flex-direction: column;
       align-items: stretch;
-      gap: 12px;
+      gap: 0;
       margin-bottom: 48px;
       width: 100vw;
       max-width: 100vw;
@@ -905,6 +1638,9 @@
       margin-right: calc(50% - 50vw);
       padding-inline: 0;
       box-sizing: border-box;
+    }
+    .testi__nav-row {
+      display: none;
     }
     .testi__viewport {
       flex: 1;
@@ -929,7 +1665,6 @@
     .testi__nav {
       display: none;
       flex-shrink: 0;
-      align-self: center;
       width: 44px;
       height: 44px;
       padding: 0;
@@ -963,12 +1698,27 @@
       }
     }
     @media (max-width: 1200px) {
+      .testi__carousel {
+        gap: clamp(16px, 3vw, 24px);
+      }
+      .testi__nav-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        width: 100%;
+        flex-shrink: 0;
+        padding-inline: var(--pad-x);
+        box-sizing: border-box;
+      }
       .testi__nav {
         display: grid;
         place-items: center;
       }
       .testi__viewport {
         scroll-snap-type: x mandatory;
+        width: 100%;
+        flex: none;
       }
       .testi__grid .testi-vcard {
         flex: 0 0 clamp(240px, 78vw, 360px);
@@ -977,18 +1727,30 @@
       }
     }
     .testi-vcard {
-      background: var(--color-surface);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--color-border);
-      overflow: hidden;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
     }
     .testi-vcard__frame {
       position: relative;
       width: 100%;
+      max-width: min(450px, 100%);
       aspect-ratio: 9 / 16;
-      background: var(--color-secondary-700);
+      height: auto;
+      margin-inline: auto;
+      flex: 0 0 auto;
+      overflow: hidden;
+      border: none;
+      border-radius: 16px;
+      background: #000;
+      box-shadow: none;
     }
     .testi-vcard__video {
       position: absolute;
@@ -996,70 +1758,104 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center;
       display: block;
+      border: none;
+      border-radius: 16px;
+      background: #000;
+      box-shadow: none;
+      cursor: pointer;
     }
-    .testi-vcard__meta {
-      padding: 16px 18px 20px;
+    .testi-vcard__chrome {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
       gap: 8px;
+      padding: 10px 12px 12px;
+      background: linear-gradient(to top, rgba(13, 30, 44, 0.82), rgba(13, 30, 44, 0));
+      pointer-events: none;
+      border-radius: 0 0 16px 16px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
     }
-    .stars { display: flex; gap: 3px; }
-    .star { width: 12px; height: 12px; background: #E8A020;
-      clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%); }
-    .testi-vcard .tname { font-size: 13.5px; font-weight: 600; color: var(--color-text); }
-    .testi-vcard .tloc { font-size: 11.5px; color: var(--color-text-3); }
+    .testi-vcard__frame:hover .testi-vcard__chrome,
+    .testi-vcard__chrome.is-visible {
+      opacity: 1;
+    }
+    .testi-vcard__chrome > * {
+      pointer-events: auto;
+    }
+    .testi-vcard__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.16);
+      color: #fff;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .testi-vcard__btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+    .testi-vcard__btn:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 2px;
+    }
+    .testi-vcard__icon[hidden] {
+      display: none !important;
+    }
 
     /* ── PRODUCT (reference: split card, feature chips, gallery + thumbs) ─ */
     .product { background: var(--color-bg); }
+    #product {
+      padding-top: var(--space-section);
+      padding-bottom: 0px;
+    }
     #product .wrap {
       max-width: 1400px;
     }
     .product__inner {
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-xl);
+      border-radius: 16px;
       overflow: hidden;
-      background: var(--color-surface);
+      background: transparent;
     }
     .product__top {
       padding: 0;
       border-bottom: none;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0;
+      gap: clamp(12px, 1.8vw, 20px);
       align-items: stretch;
+    }
+    @media (min-width: 961px) {
+      .product__inner {
+        display: flex;
+        flex-direction: column;
+        min-height: clamp(760px, 76vh, 1040px);
+      }
+      .product__top {
+        flex: 1 1 auto;
+        min-height: 0;
+      }
     }
     .product__left {
       padding: clamp(28px, 4.5vw, 56px) clamp(24px, 4vw, 48px);
       display: flex;
       flex-direction: column;
-    }
-    .product__badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px 6px 8px;
-      background: var(--color-primary-50);
-      border-radius: var(--radius-pill);
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--color-primary-500);
-      margin-bottom: 16px;
-      width: fit-content;
-    }
-    .product__badge-dot {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--color-primary-500);
-      display: grid;
-      place-items: center;
-      line-height: 0;
-    }
-    .product__badge-dot img {
-      width: 13px;
-      height: 13px;
-      display: block;
+      background: var(--color-surface);
+      border-radius: 12px;
+      min-width: 0;
     }
     .product__body {
       font-size: 15px;
@@ -1081,7 +1877,7 @@
       padding: 14px 16px;
       background: var(--color-bg);
       border-radius: var(--radius-md);
-      border: 1px solid var(--color-border);
+      border: none;
       font-size: 14px;
       font-weight: 600;
       color: var(--color-text);
@@ -1097,47 +1893,44 @@
       background: var(--color-surface);
       border: 1px solid var(--color-border);
     }
-    .product__fcard__icon img {
-      width: 16px;
-      height: 16px;
-      display: block;
-    }
     .product__fcard__icon--clock {
       color: var(--color-primary-500);
     }
     .product__fcard__icon--clock svg {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       display: block;
+      flex-shrink: 0;
+      object-fit: contain;
     }
 
-    /* Product accordions: same .faq-* as FAQ section. Each list is a single item, so the list
-       carries the top rule (item is :first-child and would otherwise have no visible border). */
-    .product .faq-list {
+    .product__incl {
       margin-top: 0;
       margin-bottom: 28px;
+      padding-top: 16px;
       border-top: 1px solid var(--color-border);
     }
-    .product .faq-list .faq-item:first-child { border-top: none; }
-    .product .easy-block .faq-list { margin-top: 0; margin-bottom: 0; }
-    .incl-list { list-style: none; display: flex; flex-direction: column; gap: 0; margin: 0; }
+    .product__incl-title {
+      margin: 0 0 12px;
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--color-text);
+      line-height: 1.3;
+    }
+    .incl-list { list-style: none; display: flex; flex-direction: column; gap: 0; margin: 0; padding: 0; }
     .incl-list li {
       display: flex; align-items: center; gap: 12px;
       font-size: 14.5px; color: var(--color-text);
       padding: 11px 0; border-bottom: 1px solid var(--color-border);
     }
     .incl-list li:last-child { border-bottom: none; }
-    .incl-list li::before {
-      content: '✓'; width: 20px; height: 20px; border-radius: 50%;
-      background: var(--color-primary-500); display: grid; place-items: center;
-      font-size: 10px; color: var(--color-surface); font-weight: 700; flex-shrink: 0;
-    }
 
     .product__right {
       min-width: 0;
       min-height: 0;
       background: #e8eef3;
-      border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+      border-radius: 12px;
       padding: 0;
       overflow: hidden;
       display: flex;
@@ -1159,12 +1952,18 @@
     }
     .product__thumbs {
       position: absolute;
-      top: clamp(12px, 2vw, 20px);
+      left: auto;
+      top: auto;
       right: clamp(12px, 2vw, 20px);
+      bottom: clamp(12px, 2vw, 20px);
       display: flex;
       flex-direction: column;
+      align-items: flex-end;
       gap: 10px;
-      z-index: 2;
+      z-index: 3;
+      width: auto;
+      max-width: calc(100% - 24px);
+      box-sizing: border-box;
     }
     .product__thumb {
       width: 56px;
@@ -1198,7 +1997,7 @@
     .product__media-frame {
       position: relative;
       flex: 1 1 auto;
-      min-height: min(320px, 55vw);
+      min-height: clamp(480px, 52vh, 800px);
       width: 100%;
       border-radius: 0;
       overflow: hidden;
@@ -1219,63 +2018,94 @@
       width: 100%;
       justify-content: center;
       margin-top: auto;
-      padding-top: 8px;
-    }
-    .easy-block { margin-bottom: 20px; }
-    .easy-items { list-style: none; display: flex; flex-direction: column; gap: 0; margin: 0; }
-    .easy-items li {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 14px; color: var(--color-text-2);
-      padding: 11px 0; border-bottom: 1px solid var(--color-border);
-    }
-    .easy-items li:last-child { border-bottom: none; }
-    .easy-items li::before {
-      content: '';
-      width: 16px; height: 16px; border-radius: 50%;
-      background: var(--color-primary-50);
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 8l2.5 2.5L12 5' stroke='%232A65E3' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-size: contain; flex-shrink: 0;
     }
 
-    /* ── HOW IT WORKS ────────────────────────────────────── */
-    .how { background: var(--color-secondary-600); }
-    .how__top {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 80px; align-items: start;
-      margin-bottom: 48px;
+    /* ── HOW IT WORKS (desktop: centered intro + 5-card row + CTA) ─ */
+    .how {
+      background: var(--color-bg);
     }
-    .how__left .d2 { color: var(--color-surface); margin: 12px 0 20px; }
-    .how__left p { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.72; }
-    .step-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
-    .step-item {
-      display: flex; align-items: flex-start; gap: 20px;
-      padding: 20px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+    .how .wrap {
+      max-width: 1400px;
     }
-    .step-item:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
-    .step-n {
-      font-family: var(--font-display); font-size: 28px; font-weight: 700;
-      color: var(--color-primary-400); line-height: 1; flex-shrink: 0; width: 28px;
+    .how__intro {
+      text-align: center;
+      max-width: 720px;
+      margin-inline: auto;
+      margin-bottom: clamp(40px, 5vw, 56px);
     }
-    .step-txt { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.55; padding-top: 6px; }
-
-    .video-frame {
-      background: rgba(255,255,255,0.03);
-      border: 1.5px dashed rgba(255,255,255,0.1);
-      border-radius: var(--radius-lg);
-      height: 280px; display: grid; place-items: center;
+    .how__intro .label {
+      margin-bottom: 14px;
     }
-    .video-play {
-      width: 60px; height: 60px; border-radius: 50%;
-      background: rgba(42,101,227,0.2);
-      border: 1.5px solid rgba(42,101,227,0.35);
-      display: grid; place-items: center;
-      cursor: pointer; margin: 0 auto 10px;
-      transition: background 0.2s, transform 0.15s;
+    .how__title {
+      margin: 0 0 16px;
+      color: var(--color-secondary-600);
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.2vw, 40px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
     }
-    .video-play:hover { background: rgba(42,101,227,0.36); transform: scale(1.06); }
-    .video-play::before { content: '▶'; color: var(--color-primary-400); font-size: 16px; margin-left: 3px; }
-    .video-lbl { font-size: 13px; color: rgba(255,255,255,0.3); text-align: center; }
+    .how__title em {
+      font-style: normal;
+      color: var(--color-primary-500);
+    }
+    .how__lede {
+      margin: 0;
+      font-size: clamp(15px, 1.35vw, 17px);
+      color: var(--color-text-2);
+      line-height: 1.65;
+    }
+    .how__steps {
+      list-style: none;
+      margin: 0 0 clamp(40px, 5vw, 52px);
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: clamp(12px, 1.6vw, 20px);
+      align-items: stretch;
+    }
+    .how__card {
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      padding: clamp(18px, 2vw, 24px);
+      box-shadow:
+        0 4px 24px rgba(13, 30, 44, 0.07),
+        0 1px 3px rgba(13, 30, 44, 0.05);
+      border: 1px solid rgba(13, 30, 44, 0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      min-height: 100%;
+      text-align: left;
+    }
+    .how__card-num {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 2.4vw, 34px);
+      font-weight: 800;
+      color: var(--color-secondary-600);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .how__card-txt {
+      margin: 0;
+      font-size: 14px;
+      color: var(--color-text-2);
+      line-height: 1.5;
+    }
+    .how__actions {
+      text-align: center;
+    }
+    @media (max-width: 960px) {
+      .how__steps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 520px) {
+      .how__steps {
+        grid-template-columns: 1fr;
+      }
+    }
 
     /* ── FAQ ─────────────────────────────────────────────── */
     .faq { background: var(--color-bg); }
@@ -1362,7 +2192,6 @@
       gap: 24px; flex-wrap: wrap; margin-top: 24px;
     }
     .final__trust-item { font-size: 12.5px; color: var(--color-text-3); display: flex; align-items: center; gap: 6px; }
-    .final__trust-item::before { content: '✓'; color: var(--color-primary-500); font-weight: 700; }
 
     /* ── FOOTER ──────────────────────────────────────────── */
     .footer {
@@ -1374,65 +2203,130 @@
     /* ── SCROLL REVEAL ───────────────────────────────────── */
     .reveal { opacity: 0; transform: translateY(20px); }
     @media (prefers-reduced-motion: no-preference) {
-      .reveal { transition: opacity 0.65s ease, transform 0.65s ease; }
+      .reveal { transition: opacity 0.4s ease, transform 0.4s ease; }
     }
 
     /* ── RESPONSIVE ──────────────────────────────────────── */
     @media (max-width: 960px) {
       .hero { grid-template-columns: 1fr; min-height: auto; gap: 0; }
       .hero__right {
-        height: 52vw;
-        min-height: 220px;
+        height: clamp(280px, 72vw, 520px);
         margin: 0;
         margin-inline: 0;
         width: 100%;
       }
       .hero__video-wrap {
-        padding: 0 clamp(20px, 6vw, 64px) clamp(28px, 6vw, 54px);
+        /* Equal inset on top / left / right; slightly deeper bottom to clear hero edge */
+        padding: clamp(14px, 4vw, 32px) clamp(14px, 4vw, 32px) clamp(20px, 5vw, 40px);
       }
-      .hero__video-wrap video { width: min(150px, 40vw); }
+      .hero__video-inner .hero__video { width: min(150px, 40vw); }
       .hero__left { padding: 88px 24px 48px; }
-      .solution__top, .how__top, .product__top { grid-template-columns: 1fr; gap: 0; }
+      .solution__top, .product__top { grid-template-columns: 1fr; gap: clamp(12px, 1.8vw, 20px); }
+      .solution__copy.reveal {
+        padding-top: clamp(32px, 6vw, 48px);
+      }
       .space-fit__row {
         grid-template-columns: 1fr;
         gap: clamp(24px, 4vw, 40px);
       }
+      .space-fit__media-wrap {
+        max-width: min(440px, 100%);
+        justify-self: center;
+        position: relative;
+        aspect-ratio: 4 / 5;
+        min-height: min(280px, 92vw);
+      }
+      .space-fit__frame {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .space-fit__thumbs {
+        position: absolute;
+        z-index: 4;
+        left: auto;
+        top: auto;
+        right: clamp(10px, 3vw, 18px);
+        bottom: clamp(10px, 3vw, 18px);
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: flex-end;
+        gap: 8px;
+        width: auto;
+        max-width: calc(100% - 20px);
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background: none;
+        pointer-events: none;
+      }
+      .space-fit__thumb {
+        pointer-events: auto;
+      }
       .product__right {
-        border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-        min-height: min(360px, 72vw);
+        border-radius: 12px;
+        min-height: 0;
+        order: -1;
       }
       .product__gallery {
+        position: relative;
+        width: 100%;
         max-width: 100%;
         flex: none;
-      }
-      .product__thumbs {
-        position: static;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        order: -1;
-        width: 100%;
-        margin: 12px 12px 8px;
-        top: auto;
-        right: auto;
+        aspect-ratio: 2 / 3;
+        min-height: min(440px, 110vw);
       }
       .product__media-frame {
+        position: absolute;
+        inset: 0;
         flex: none;
         width: 100%;
-        aspect-ratio: 4 / 5;
-        min-height: min(260px, 70vw);
+        height: 100%;
+        min-height: 0;
         border-radius: 0;
+      }
+      .product__thumbs {
+        position: absolute;
+        z-index: 4;
+        left: auto;
+        top: auto;
+        right: clamp(10px, 3vw, 18px);
+        bottom: clamp(10px, 3vw, 18px);
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: flex-end;
+        gap: 8px;
+        width: auto;
+        max-width: calc(100% - 20px);
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background: none;
+        pointer-events: none;
+      }
+      .product__thumb {
+        pointer-events: auto;
       }
       .product__feature-cards {
         grid-template-columns: 1fr;
       }
       .product__left {
-        border-bottom: 1px solid rgba(13, 30, 44, 0.08);
         padding-bottom: clamp(28px, 4.5vw, 40px);
       }
     }
     @media (max-width: 600px) {
-      .cost-banner { flex-direction: column; padding: 20px clamp(16px, 4vw, 24px); gap: 20px; }
+      .cost-banner {
+        padding: clamp(40px, 10vw, 56px) clamp(16px, 4vw, 24px);
+      }
+      .cost-banner__headline {
+        font-size: clamp(22px, 6.2vw, 28px);
+      }
+      .cost-banner__figure {
+        white-space: normal;
+      }
     }
 
     /* ── TESTIMONIAL CAROUSEL (reusable — source: #cleanr-testimonial-carousel) ── */
@@ -1738,8 +2632,8 @@
         </svg>
       </a>
       <div class="nav__links">
-        <a href="#problem" class="nav__link nav__link--semibold">Why you should care</a>
-        <a href="#solution" class="nav__link nav__link--semibold">What CLEANR does</a>
+        <a href="#problem" class="nav__link nav__link--semibold">The Problem</a>
+        <a href="#solution" class="nav__link nav__link--semibold">The Solution</a>
         <a href="#product" class="nav__buy-bar" aria-label="Buy CLEANR filter, $229">
           <span class="nav__buy-bar__price">$229</span>
           <span class="nav__buy-bar__action">Buy</span>
@@ -1808,22 +2702,98 @@
     </div>
 
     <div class="hero__video-wrap">
-      <video
-        class="hero__video"
-        src="video/Ad_Well%20Video_2.webm"
-        controls
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-        aria-label="Product video"
-      ></video>
+      <div class="hero__video-inner">
+        <video
+          class="hero__video"
+          src="video/Ad_Well%20Video_2.webm"
+          autoplay
+          muted
+          loop
+          playsinline
+          webkit-playsinline=""
+          preload="auto"
+          aria-label="Product video"
+        ></video>
+        <div class="vid-controls">
+          <button type="button" class="vid-btn vid-btn--play" aria-pressed="true" aria-label="Pause video">
+            <svg class="vid-icon vid-icon--play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M8 5v14l11-7z"/></svg>
+            <svg class="vid-icon vid-icon--pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
+          </button>
+          <button type="button" class="vid-btn vid-btn--mute" aria-pressed="true" aria-label="Unmute video">
+            <svg class="vid-icon vid-icon--volume" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden>
+              <path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.47 4.47 0 0 0 16.5 12z"/>
+            </svg>
+            <svg class="vid-icon vid-icon--muted" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18V20.5c1.3-.31 2.48-.96 3.46-1.83L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
 
   </div>
 
 </section>
+
+<div class="logo-marquee-wrap">
+  <p class="logo-marquee__sr-only" id="logo-marquee-desc">
+    Media outlets: Daily Mail, Forbes, Ideastream, Inc., New York Post, Sound of Ideas, Yahoo Finance.
+  </p>
+  <div class="logo-marquee" role="presentation" aria-hidden="true">
+    <div class="logo-marquee__viewport">
+      <div class="logo-marquee__fade logo-marquee__fade--left" aria-hidden="true"></div>
+      <div class="logo-marquee__fade logo-marquee__fade--right" aria-hidden="true"></div>
+      <div class="logo-marquee__track">
+        <div class="logo-marquee__set">
+          <div class="logo-marquee__item">
+            <img src="images/logos/Daily-Mail.png%201.png" alt="Daily Mail" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/Forbes-logo-scaled-e1772895165258.png%201.png" alt="Forbes" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/Ideastream.png%201.png" alt="Ideastream" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/Inc-Magazine.png%201.png" alt="Inc. Magazine" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/NY-Post.png%201.png" alt="New York Post" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/Sound-of-Ideas.png%201.png" alt="Sound of Ideas" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/Yahoo-Finance.png%201.png" alt="Yahoo Finance" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+        </div>
+        <div class="logo-marquee__set" aria-hidden="true">
+          <div class="logo-marquee__item">
+            <img src="images/logos/Daily-Mail.png%201.png" alt="" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/Forbes-logo-scaled-e1772895165258.png%201.png" alt="" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/Ideastream.png%201.png" alt="" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/Inc-Magazine.png%201.png" alt="" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/NY-Post.png%201.png" alt="" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/Sound-of-Ideas.png%201.png" alt="" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+          <div class="logo-marquee__item">
+            <img src="images/logos/Yahoo-Finance.png%201.png" alt="" width="160" height="40" loading="lazy" decoding="async" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ═══ 2 · PROBLEM ═══════════════════════════════════════ -->
 <section class="problem sec" id="problem" aria-labelledby="problem-h2">
@@ -1840,7 +2810,7 @@
         class="diagram-stage"
         id="diagram-stage"
         role="img"
-        aria-label="Cross-section diagram of a buried septic tank with inlet, chambers, pump, outlet to drain field, and grass above. Four numbered hotspots highlight where laundry debris causes reduced efficiency, slow drainage, sewage backups, and drain field damage."
+        aria-label="Cross-section diagram of a buried septic system. Four callouts: plugged drain field, clogged sump or filter, too frequent pumping, and burnt out aerator, with typical repair cost ranges."
       >
         <img
           src="images/septic-diagram-2.png"
@@ -1852,50 +2822,98 @@
           decoding="async"
         />
 
-        <button type="button" class="hotspot" data-index="0" style="top:38%; left:22%;" aria-pressed="false" aria-label="Hotspot 1: Lint and debris buildup slowly reduces flow and efficiency">
-          <span class="hotspot__ring" aria-hidden="true"></span>
-          <span class="hotspot__dot" aria-hidden="true"></span>
-          <span class="hotspot__num" aria-hidden="true">1</span>
-        </button>
-        <button type="button" class="hotspot" data-index="1" style="top:28%; left:68%;" aria-pressed="false" aria-label="Hotspot 2: Slow drainage and partial clogs strain the entire septic system">
-          <span class="hotspot__ring" aria-hidden="true"></span>
-          <span class="hotspot__dot" aria-hidden="true"></span>
-          <span class="hotspot__num" aria-hidden="true">2</span>
-        </button>
-        <button type="button" class="hotspot" data-index="2" style="top:70%; left:40%;" aria-pressed="false" aria-label="Hotspot 3: Sewage can back up into your home and yard when flow stops">
-          <span class="hotspot__ring" aria-hidden="true"></span>
-          <span class="hotspot__dot" aria-hidden="true"></span>
-          <span class="hotspot__num" aria-hidden="true">3</span>
-        </button>
-        <button type="button" class="hotspot" data-index="3" style="top:52%; left:18%;" aria-pressed="false" aria-label="Hotspot 4: Drain field damage often requires a costly full system replacement">
-          <span class="hotspot__ring" aria-hidden="true"></span>
-          <span class="hotspot__dot" aria-hidden="true"></span>
-          <span class="hotspot__num" aria-hidden="true">4</span>
-        </button>
+        <div class="diagram-hotspot" data-index="0" style="left: 10%; top: 54%;">
+          <button
+            type="button"
+            class="hotspot hotspot--lens"
+            data-index="0"
+            aria-pressed="false"
+            aria-label="Plugged drain field: close-up and typical replacement cost"
+          >
+            <span class="hotspot__ring" aria-hidden="true"></span>
+            <span class="hotspot__dot" aria-hidden="true"></span>
+            <span class="hotspot__lens-stack">
+              <span class="hotspot__lens">
+                <img src="images/hotspot-01.png" alt="" width="160" height="160" loading="lazy" decoding="async" />
+              </span>
+              <div class="callout" data-index="0">
+                <div class="callout__body">
+                  <p class="callout__text">Plugged Drain Field</p>
+                  <span class="cost-pill" aria-label="Typical replacement cost range">$3k–$20k+</span>
+                </div>
+              </div>
+            </span>
+            <span class="hotspot__num" aria-hidden="true">1</span>
+          </button>
+        </div>
 
-        <div class="callout callout--0" data-index="0">
-          <div class="callout__body">
-            <p class="callout__text">Lint and debris buildup in your system slowly reduces flow and efficiency.</p>
-            <span class="cost-pill" aria-label="Typical extra cost">$250–$500</span>
-          </div>
+        <div class="diagram-hotspot" data-index="1" style="left: calc(44% - 120px); top: 88%;">
+          <button
+            type="button"
+            class="hotspot hotspot--lens"
+            data-index="1"
+            aria-pressed="false"
+            aria-label="Clogged sump or filter: close-up and typical repair cost"
+          >
+            <span class="hotspot__ring" aria-hidden="true"></span>
+            <span class="hotspot__dot" aria-hidden="true"></span>
+            <span class="hotspot__lens-stack">
+              <span class="hotspot__lens">
+                <img src="images/hotspot-02.png" alt="" width="160" height="160" loading="lazy" decoding="async" />
+              </span>
+              <div class="callout" data-index="1">
+                <div class="callout__body">
+                  <p class="callout__text">Clogged Sump/filter</p>
+                  <span class="cost-pill" aria-label="Typical repair cost">$2k</span>
+                </div>
+              </div>
+            </span>
+            <span class="hotspot__num" aria-hidden="true">2</span>
+          </button>
         </div>
-        <div class="callout callout--1" data-index="1">
-          <div class="callout__body">
-            <p class="callout__text">Slow drainage and partial clogs strain your entire septic system.</p>
-            <span class="cost-pill" aria-label="Typical repair cost range">$500–$2k</span>
-          </div>
+
+        <div class="diagram-hotspot" data-index="2" style="left: 82%; top: 22%;">
+          <button
+            type="button"
+            class="hotspot hotspot--lens"
+            data-index="2"
+            aria-pressed="false"
+            aria-label="Too frequent pumping from inlet strain: close-up and typical extra cost"
+          >
+            <span class="hotspot__ring" aria-hidden="true"></span>
+            <span class="hotspot__dot" aria-hidden="true"></span>
+            <span class="hotspot__lens-stack">
+              <span class="hotspot__lens">
+                <img src="images/hotspot-03.png" alt="" width="160" height="160" loading="lazy" decoding="async" />
+              </span>
+              <div class="callout" data-index="2">
+                <div class="callout__body">
+                  <p class="callout__text">Too Frequent Pumping</p>
+                  <span class="cost-pill" aria-label="Typical extra cost range">$250–$500</span>
+                </div>
+              </div>
+            </span>
+            <span class="hotspot__num" aria-hidden="true">3</span>
+          </button>
         </div>
-        <div class="callout callout--2" data-index="2">
-          <div class="callout__body">
-            <p class="callout__text">When flow stops completely, sewage can back up into your home and yard.</p>
-            <span class="cost-pill" aria-label="Typical backup cleanup and repair cost">$2k+</span>
-          </div>
-        </div>
-        <div class="callout callout--3" data-index="3">
-          <div class="callout__body">
-            <p class="callout__text">Drain field damage often leads to a costly full system replacement.</p>
-            <span class="cost-pill" aria-label="Typical replacement cost range">$3k–$20k+</span>
-          </div>
+
+        <div class="diagram-hotspot diagram-hotspot--label" data-index="3" style="left: calc(50% + 100px); top: 71%;">
+          <button
+            type="button"
+            class="hotspot hotspot--label"
+            data-index="3"
+            aria-pressed="false"
+            aria-label="Burnt out aerator: typical repair cost $500 to $2,000"
+          >
+            <span class="hotspot__dot" aria-hidden="true"></span>
+            <span class="hotspot__num" aria-hidden="true">4</span>
+            <div class="callout" data-index="3">
+              <div class="callout__body">
+                <p class="callout__text">Burnt Out Aerator</p>
+                <span class="cost-pill" aria-label="Typical repair cost range">$500–$2k</span>
+              </div>
+            </div>
+          </button>
         </div>
       </div>
 
@@ -1905,10 +2923,10 @@
             <span class="diagram-card__num" aria-hidden="true">1</span>
             <div class="diagram-card__content">
               <div class="diagram-card__head">
-                <div class="diagram-card__title">Reduced Efficiency</div>
-                <span class="diagram-card__cost cost-pill">$250–$500</span>
+                <div class="diagram-card__title">Plugged Drain Field</div>
+                <span class="diagram-card__cost cost-pill">$3k–$20k+</span>
               </div>
-              <div class="diagram-card__body">Lint and hair buildup slowly reduces your system’s flow rate and capacity.</div>
+              <div class="diagram-card__body">When the drain field plugs, effluent can’t percolate — often leading to a full system replacement.</div>
             </div>
           </button>
         </li>
@@ -1917,10 +2935,10 @@
             <span class="diagram-card__num" aria-hidden="true">2</span>
             <div class="diagram-card__content">
               <div class="diagram-card__head">
-                <div class="diagram-card__title">System Strain</div>
-                <span class="diagram-card__cost cost-pill">$500–$2k</span>
+                <div class="diagram-card__title">Clogged Sump/filter</div>
+                <span class="diagram-card__cost cost-pill">$2k</span>
               </div>
-              <div class="diagram-card__body">Partial clogs force your septic to work harder, stressing every connected drain.</div>
+              <div class="diagram-card__body">Pump and filter clogs strain the tank, slow drainage, and can trigger costly pump-outs and repairs.</div>
             </div>
           </button>
         </li>
@@ -1929,10 +2947,10 @@
             <span class="diagram-card__num" aria-hidden="true">3</span>
             <div class="diagram-card__content">
               <div class="diagram-card__head">
-                <div class="diagram-card__title">Sewage Backups</div>
-                <span class="diagram-card__cost cost-pill">$2k+</span>
+                <div class="diagram-card__title">Too Frequent Pumping</div>
+                <span class="diagram-card__cost cost-pill">$250–$500</span>
               </div>
-              <div class="diagram-card__body">When flow stops completely, waste reverses back into your home and yard.</div>
+              <div class="diagram-card__body">Lint and debris force more pump-outs and maintenance — extra cost before bigger failures show up.</div>
             </div>
           </button>
         </li>
@@ -1941,10 +2959,10 @@
             <span class="diagram-card__num" aria-hidden="true">4</span>
             <div class="diagram-card__content">
               <div class="diagram-card__head">
-                <div class="diagram-card__title">Drain Field Failure</div>
-                <span class="diagram-card__cost cost-pill">$3k–$20k+</span>
+                <div class="diagram-card__title">Burnt Out Aerator</div>
+                <span class="diagram-card__cost cost-pill">$500–$2k</span>
               </div>
-              <div class="diagram-card__body">The most expensive outcome — full system replacement, often without any warning.</div>
+              <div class="diagram-card__body">When the aerator fails, the system loses treatment capacity — repairs or replacement often run from $500 to $2,000.</div>
             </div>
           </button>
         </li>
@@ -1952,22 +2970,23 @@
     </div>
 
     <div class="cost-banner reveal">
-      <div class="cost-banner__left">
-        <div class="cost-banner__label">Financial Risk</div>
-        <div class="cost-banner__amount" id="cost-counter" aria-live="polite" aria-atomic="true">
-          <span class="cost-counter__prefix">$</span><span
-            class="cost-counter__num"
-            id="cost-counter-num"
-            data-target="20000"
-          >0</span><span
-            class="cost-counter__suffix"
-            id="cost-counter-suffix"
-          >+</span>
-        </div>
-        <div class="cost-banner__sub">Septic system damage can cost up to $20,000+ to repair — often with no prior warning.</div>
-      </div>
-      <div class="cost-banner__cta-col">
-        <a href="#product" class="btn btn--primary btn--lg">Stop Buildup Before It Starts</a>
+      <div class="cost-banner__inner" id="cost-counter" aria-live="polite" aria-atomic="true">
+        <h2 class="cost-banner__headline">
+          Septic system damage can<br />
+          cost up to
+          <span class="cost-banner__figure">
+            <span class="cost-counter__prefix">$</span><span
+              class="cost-counter__num"
+              id="cost-counter-num"
+              data-target="20000"
+            >0</span><span
+              class="cost-counter__suffix"
+              id="cost-counter-suffix"
+            >+</span>
+          </span>
+          to repair
+        </h2>
+        <a href="#product" class="btn btn--primary cost-banner__cta">Stop Buildup Before It Starts</a>
       </div>
     </div>
 
@@ -2011,11 +3030,26 @@
             muted
             loop
             playsinline
+            webkit-playsinline=""
             preload="auto"
             aria-label="Animation showing CLEANR capturing lint and debris from wash water"
           >
             <source src="video/4.3_250917_VORTX-Animation.mp4" type="video/mp4" />
           </video>
+          <div class="vid-controls">
+            <button type="button" class="vid-btn vid-btn--play" aria-pressed="true" aria-label="Pause video">
+              <svg class="vid-icon vid-icon--play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M8 5v14l11-7z"/></svg>
+              <svg class="vid-icon vid-icon--pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
+            </button>
+            <button type="button" class="vid-btn vid-btn--mute" aria-pressed="true" aria-label="Unmute video">
+              <svg class="vid-icon vid-icon--volume" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden>
+                <path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.47 4.47 0 0 0 16.5 12z"/>
+              </svg>
+              <svg class="vid-icon vid-icon--muted" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18V20.5c1.3-.31 2.48-.96 3.46-1.83L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -2055,17 +3089,35 @@
         <span class="label label--primary">Fits in your space</span>
         <h2 class="d2" id="space-fit-h2">CLEANR is easy to install, and is designed to fit your space</h2>
       </div>
-      <div class="space-fit__media-wrap" role="region" aria-label="Installation video">
-        <video
-          class="space-fit__video"
-          controls
-          playsinline
-          webkit-playsinline=""
-          preload="metadata"
-          aria-label="Video: how to install CLEANR in your laundry space"
-        >
-          <source src="video/install-video.mp4" type="video/mp4" />
-        </video>
+      <div class="space-fit__media-wrap" data-space-fit-carousel role="region" aria-label="CLEANR in different laundry spaces">
+        <div class="space-fit__thumbs" role="tablist" aria-label="Space photos">
+          <button type="button" class="space-fit__thumb space-fit__thumb--active" role="tab" aria-selected="true" aria-label="Space photo 1" data-space-fit-thumb="0">
+            <img src="images/img-space-01.png" alt="" width="104" height="104" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" class="space-fit__thumb" role="tab" aria-selected="false" aria-label="Space photo 2" data-space-fit-thumb="1">
+            <img src="images/img-space-02.png" alt="" width="104" height="104" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" class="space-fit__thumb" role="tab" aria-selected="false" aria-label="Space photo 3" data-space-fit-thumb="2">
+            <img src="images/img-space-03.png" alt="" width="104" height="104" loading="lazy" decoding="async" />
+          </button>
+          <button type="button" class="space-fit__thumb" role="tab" aria-selected="false" aria-label="Space photo 4" data-space-fit-thumb="3">
+            <img src="images/img-space-04.png" alt="" width="104" height="104" loading="lazy" decoding="async" />
+          </button>
+        </div>
+        <div class="space-fit__frame">
+          <img
+            id="space-fit-gallery-main"
+            src="images/img-space-01.png"
+            alt="CLEANR filter installed in a laundry area"
+            width="800"
+            height="1000"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div class="space-fit__progress" aria-hidden="true">
+          <div class="space-fit__progress-fill" data-space-fit-progress-fill></div>
+        </div>
       </div>
     </div>
   </div>
@@ -2079,98 +3131,106 @@
     </div>
 
     <div class="testi__carousel reveal" data-testi-carousel>
-      <button type="button" class="testi__nav testi__nav--prev" aria-label="Previous testimonials" data-testi-prev>
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-      </button>
       <div class="testi__viewport" data-testi-viewport>
         <div class="testi__grid">
       <article class="testi-vcard">
         <div class="testi-vcard__frame">
           <video
             class="testi-vcard__video"
-            controls
             playsinline
+            webkit-playsinline=""
             preload="metadata"
+            disablePictureInPicture
             aria-label="Video testimonial from Mark R., Verified Buyer in Tennessee"
           >
             <source src="video/kim.webm" type="video/webm" />
           </video>
-        </div>
-        <div class="testi-vcard__meta">
-          <div class="stars" aria-hidden="true"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
-          <div class="tname">Mark R.</div>
-          <div class="tloc">Verified Buyer — Tennessee</div>
+          <div class="testi-vcard__chrome">
+            <button type="button" class="testi-vcard__btn testi-vcard__btn--play" aria-pressed="false" aria-label="Play video">
+              <svg class="testi-vcard__icon testi-vcard__icon--play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="testi-vcard__icon testi-vcard__icon--pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
+            </button>
+            <button type="button" class="testi-vcard__btn testi-vcard__btn--mute" aria-pressed="false" aria-label="Mute video">
+              <svg class="testi-vcard__icon testi-vcard__icon--volume" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.47 4.47 0 0 0 16.5 12z"/></svg>
+              <svg class="testi-vcard__icon testi-vcard__icon--muted" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18V20.5c1.3-.31 2.48-.96 3.46-1.83L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></svg>
+            </button>
+          </div>
         </div>
       </article>
       <article class="testi-vcard">
         <div class="testi-vcard__frame">
           <video
             class="testi-vcard__video"
-            controls
             playsinline
+            webkit-playsinline=""
             preload="metadata"
+            disablePictureInPicture
             aria-label="Video testimonial from Jennifer L., Verified in North Carolina"
           >
             <source src="video/kathie.webm" type="video/webm" />
           </video>
-        </div>
-        <div class="testi-vcard__meta">
-          <div class="stars" aria-hidden="true"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
-          <div class="tname">Jennifer L.</div>
-          <div class="tloc">Verified — North Carolina</div>
+          <div class="testi-vcard__chrome">
+            <button type="button" class="testi-vcard__btn testi-vcard__btn--play" aria-pressed="false" aria-label="Play video">
+              <svg class="testi-vcard__icon testi-vcard__icon--play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="testi-vcard__icon testi-vcard__icon--pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
+            </button>
+            <button type="button" class="testi-vcard__btn testi-vcard__btn--mute" aria-pressed="false" aria-label="Mute video">
+              <svg class="testi-vcard__icon testi-vcard__icon--volume" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.47 4.47 0 0 0 16.5 12z"/></svg>
+              <svg class="testi-vcard__icon testi-vcard__icon--muted" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18V20.5c1.3-.31 2.48-.96 3.46-1.83L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></svg>
+            </button>
+          </div>
         </div>
       </article>
       <article class="testi-vcard">
         <div class="testi-vcard__frame">
           <video
             class="testi-vcard__video"
-            controls
             playsinline
+            webkit-playsinline=""
             preload="metadata"
+            disablePictureInPicture
             aria-label="Video: laundry as a major source of microplastics in water"
           >
             <source src="video/AD%20-%20Did%20you%20know%20that%20laundry%20is%20one%20of%20the%20biggest%20sources%20of%20microplastics%20in%20the%20waterAs%20a%20m.mp4" type="video/mp4" />
           </video>
-        </div>
-        <div class="testi-vcard__meta">
-          <div class="stars" aria-hidden="true"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
-          <div class="tname">Dave B.</div>
-          <div class="tloc">Verified — Vermont</div>
+          <div class="testi-vcard__chrome">
+            <button type="button" class="testi-vcard__btn testi-vcard__btn--play" aria-pressed="false" aria-label="Play video">
+              <svg class="testi-vcard__icon testi-vcard__icon--play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="testi-vcard__icon testi-vcard__icon--pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
+            </button>
+            <button type="button" class="testi-vcard__btn testi-vcard__btn--mute" aria-pressed="false" aria-label="Mute video">
+              <svg class="testi-vcard__icon testi-vcard__icon--volume" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.47 4.47 0 0 0 16.5 12z"/></svg>
+              <svg class="testi-vcard__icon testi-vcard__icon--muted" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18V20.5c1.3-.31 2.48-.96 3.46-1.83L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></svg>
+            </button>
+          </div>
         </div>
       </article>
         </div>
       </div>
-      <button type="button" class="testi__nav testi__nav--next" aria-label="Next testimonials" data-testi-next>
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-      </button>
-    </div>
-
-    <div style="text-align:center;">
-      <a href="#product" class="btn btn--secondary reveal">Buy the CLEANR Filter</a>
+      <div class="testi__nav-row" role="group" aria-label="Carousel controls">
+        <button type="button" class="testi__nav testi__nav--prev" aria-label="Previous testimonials" data-testi-prev>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <button type="button" class="testi__nav testi__nav--next" aria-label="Next testimonials" data-testi-next>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ═══ 5 · PRODUCT ═══════════════════════════════════════ -->
-<section class="product sec" id="product" aria-labelledby="prod-h2">
+<section class="product sec" id="product" aria-labelledby="prod-h3">
   <div class="wrap">
 
     <div class="product__inner reveal">
       <div class="product__top">
         <div class="product__left">
-          <div class="product__badge">
-            <div class="product__badge-dot" aria-hidden="true">
-              <img src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" />
-            </div>
-            Septic Safe Certified
-          </div>
-          <h2 class="d3" id="prod-h2" style="margin-bottom:4px;">Washing Machine Filter Package for Septic Homeowners</h2>
+          <h3 class="d2" id="prod-h3" style="margin-bottom:4px;">Washing Machine Filter Package for Septic Homeowners</h3>
           <p class="product__body" style="margin-top:12px;">A complete, easy-to-install septic-safe system that starts protecting your septic immediately — no tools, no plumber, and no guesswork.</p>
           <div class="product__feature-cards">
             <div class="product__fcard">
-              <span class="product__fcard__icon" aria-hidden="true">
-                <img src="images/check-icon.svg" alt="" width="16" height="16" decoding="async" />
-              </span>
+              <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
               Works with any washing machine
             </div>
             <div class="product__fcard">
@@ -2180,47 +3240,30 @@
               Installs in minutes
             </div>
           </div>
-          <div class="faq-list" role="presentation">
-            <div class="faq-item">
-              <button type="button" class="faq-btn" aria-expanded="false" aria-controls="product-incl-panel" id="product-incl-trigger">
-                What's Included
-                <span class="faq-ico" aria-hidden="true">
-                  <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
-                  <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
-                </span>
-              </button>
-              <div class="faq-ans" id="product-incl-panel" role="region" aria-labelledby="product-incl-trigger">
-                <ul class="incl-list" role="list">
-                  <li>CLEANR Washing Machine Filter</li>
-                  <li>1 full year of filter pods (50 pods / 250 washes)</li>
-                  <li>Free shipping</li>
-                  <li>12-month warranty</li>
-                  <li>Smart app tracking</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="easy-block">
-            <div class="faq-list" role="presentation">
-              <div class="faq-item">
-                <button type="button" class="faq-btn" aria-expanded="false" aria-controls="product-easy-panel" id="product-easy-trigger">
-                  Why It's Easy
-                  <span class="faq-ico" aria-hidden="true">
-                    <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
-                    <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
-                  </span>
-                </button>
-                <div class="faq-ans" id="product-easy-panel" role="region" aria-labelledby="product-easy-trigger">
-                  <ul class="easy-items" role="list">
-                    <li>Installs in 15 minutes — no tools required</li>
-                    <li>Works with any washing machine make or model</li>
-                    <li>No plumber needed</li>
-                    <li>~30 seconds of maintenance per week</li>
-                    <li>App alerts tell you when to change the filter</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          <div class="product__incl">
+            <h4 class="product__incl-title" id="product-incl-heading">What's Included</h4>
+            <ul class="incl-list" role="list" aria-labelledby="product-incl-heading">
+              <li>
+                <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+                CLEANR Washing Machine Filter
+              </li>
+              <li>
+                <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+                1 full year of filter pods (50 pods / 250 washes)
+              </li>
+              <li>
+                <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+                Free shipping
+              </li>
+              <li>
+                <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+                12-month warranty
+              </li>
+              <li>
+                <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+                Smart app tracking
+              </li>
+            </ul>
           </div>
           <a href="#" class="btn btn--primary btn--lg product__cta">Buy Now</a>
         </div>
@@ -2249,6 +3292,9 @@
                 decoding="async"
               />
             </div>
+            <div class="product__gallery-progress" aria-hidden="true">
+              <div class="product__gallery-progress-fill" data-product-gallery-progress-fill></div>
+            </div>
           </div>
         </div>
       </div>
@@ -2260,27 +3306,35 @@
 <!-- ═══ 6 · HOW IT WORKS ══════════════════════════════════ -->
 <section class="how sec" aria-labelledby="how-h2">
   <div class="wrap">
-    <div class="how__top">
-      <div class="how__left reveal">
-        <span class="label" style="color:rgba(255,255,255,0.4);">Setup</span>
-        <h2 class="d2" id="how-h2">Install Once to <em>Protect Every Load</em></h2>
-        <p>CLEANR works automatically with every wash, capturing debris before it ever reaches your septic system.</p>
-      </div>
-      <div class="reveal">
-        <ul class="step-list" role="list">
-          <li class="step-item" role="listitem"><span class="step-n">1</span><span class="step-txt">Install your filter — no tools required</span></li>
-          <li class="step-item" role="listitem"><span class="step-n">2</span><span class="step-txt">Water flows from your washing machine</span></li>
-          <li class="step-item" role="listitem"><span class="step-n">3</span><span class="step-txt">CLEANR captures hair, lint &amp; debris</span></li>
-          <li class="step-item" role="listitem"><span class="step-n">4</span><span class="step-txt">Clean water flows safely into your septic</span></li>
-          <li class="step-item" role="listitem"><span class="step-n">5</span><span class="step-txt">Debris stays contained for easy disposal</span></li>
-        </ul>
-      </div>
-    </div>
-    <div class="video-frame reveal" role="img" aria-label="See CLEANR in Action">
-      <div>
-        <div class="video-play" tabindex="0" role="button" aria-label="Play video"></div>
-        <div class="video-lbl">See CLEANR in Action</div>
-      </div>
+    <header class="how__intro reveal">
+      <span class="label label--primary">Setup</span>
+      <h2 class="how__title" id="how-h2">Install Once to <em>Protect Every Load</em></h2>
+      <p class="how__lede">CLEANR works automatically with every wash, capturing debris before it ever reaches your septic system.</p>
+    </header>
+    <ul class="how__steps reveal">
+      <li class="how__card">
+        <span class="how__card-num">01</span>
+        <p class="how__card-txt">Install your filter — no tools required</p>
+      </li>
+      <li class="how__card">
+        <span class="how__card-num">02</span>
+        <p class="how__card-txt">Water flows from your washing machine</p>
+      </li>
+      <li class="how__card">
+        <span class="how__card-num">03</span>
+        <p class="how__card-txt">CLEANR captures hair, lint, and debris</p>
+      </li>
+      <li class="how__card">
+        <span class="how__card-num">04</span>
+        <p class="how__card-txt">Clean water flows safely into your septic</p>
+      </li>
+      <li class="how__card">
+        <span class="how__card-num">05</span>
+        <p class="how__card-txt">Debris stays contained for easy disposal</p>
+      </li>
+    </ul>
+    <div class="how__actions reveal">
+      <a href="#product" class="btn btn--primary">Add to Cart</a>
     </div>
   </div>
 </section>
@@ -2338,10 +3392,22 @@
       <p class="final__body reveal">By the time you notice a septic issue, the damage is already done — and costly to fix. CLEANR gives you a simple, affordable way to protect your system before that happens.</p>
       <a href="#product" class="btn btn--primary btn--lg reveal">Buy the CLEANR Filter</a>
       <div class="final__trust reveal">
-        <span class="final__trust-item">Septic Safe Certified</span>
-        <span class="final__trust-item">Free Shipping</span>
-        <span class="final__trust-item">12-Month Warranty</span>
-        <span class="final__trust-item">No Plumber Needed</span>
+        <span class="final__trust-item">
+          <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+          Septic Safe Certified
+        </span>
+        <span class="final__trust-item">
+          <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+          Free Shipping
+        </span>
+        <span class="final__trust-item">
+          <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+          12-Month Warranty
+        </span>
+        <span class="final__trust-item">
+          <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+          No Plumber Needed
+        </span>
       </div>
     </div>
   </div>
@@ -2487,31 +3553,151 @@
 
   initCleanrTestimonialCarousel(document.getElementById('h-quotes'));
 
-  /* Product gallery — main image follows selected thumbnail */
-  (function initProductGallery() {
-    var root = document.querySelector('[data-product-gallery]');
+  /* Thumbnail + main image carousel with timed advance and progress bar (Fits your space + product gallery) */
+  function initTimedThumbCarousel(cfg) {
+    var root = cfg.root;
     if (!root) return;
-    var main = document.getElementById('product-gallery-main');
-    var thumbs = root.querySelectorAll('.product__thumb');
+    var main = typeof cfg.main === 'string' ? document.getElementById(cfg.main) : cfg.main;
+    var thumbs = root.querySelectorAll(cfg.thumbSelector);
     if (!main || !thumbs.length) return;
+
+    var n = thumbs.length;
+    var current = 0;
+    var rafId = null;
+    var cycleStartMs = 0;
+    var INTERVAL_MS = cfg.intervalMs != null ? cfg.intervalMs : 8000;
+    var mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var inView = false;
+    var hoverFocusPause = false;
+    var progressFill = cfg.progressFillSelector ? root.querySelector(cfg.progressFillSelector) : null;
+    var activeClass = cfg.activeClass;
+    var thumbIndexAttr = cfg.thumbIndexAttr;
+
+    var initial = Array.prototype.findIndex.call(thumbs, function (b) {
+      return b.classList.contains(activeClass);
+    });
+    if (initial >= 0) current = initial;
+
+    function reducingMotion() {
+      return mqReduce.matches;
+    }
+
+    function setProgress(t) {
+      if (!progressFill) return;
+      progressFill.style.transform = 'scaleX(' + Math.max(0, Math.min(1, t)) + ')';
+    }
+
+    function stopTimer() {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      cycleStartMs = 0;
+      setProgress(0);
+    }
+
+    function tick(now) {
+      rafId = null;
+      if (reducingMotion() || document.hidden || !inView || hoverFocusPause) {
+        return;
+      }
+      if (!cycleStartMs) cycleStartMs = now;
+      var elapsed = now - cycleStartMs;
+      var p = elapsed / INTERVAL_MS;
+      if (p >= 1) {
+        selectIndex((current + 1) % n);
+        return;
+      }
+      setProgress(p);
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function startTimer() {
+      stopTimer();
+      if (reducingMotion() || document.hidden || !inView || hoverFocusPause) return;
+      cycleStartMs = 0;
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function selectIndex(i) {
+      if (i < 0 || i >= n) return;
+      current = i;
+      var btn = thumbs[i];
+      var thumbImg = btn.querySelector('img');
+      if (thumbImg && thumbImg.src) {
+        main.src = thumbImg.currentSrc || thumbImg.src;
+      }
+      if (thumbImg && thumbImg.alt) {
+        main.alt = thumbImg.alt;
+      }
+      thumbs.forEach(function (b, j) {
+        var on = j === i;
+        b.classList.toggle(activeClass, on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      stopTimer();
+      startTimer();
+    }
 
     thumbs.forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var thumbImg = btn.querySelector('img');
-        if (thumbImg && thumbImg.src) {
-          main.src = thumbImg.currentSrc || thumbImg.src;
-        }
-        if (thumbImg && thumbImg.alt) {
-          main.alt = thumbImg.alt;
-        }
-        thumbs.forEach(function (b) {
-          var on = b === btn;
-          b.classList.toggle('product__thumb--active', on);
-          b.setAttribute('aria-selected', on ? 'true' : 'false');
-        });
+        var idx = parseInt(btn.getAttribute(thumbIndexAttr), 10);
+        if (!Number.isNaN(idx)) selectIndex(idx);
       });
     });
-  })();
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        var e = entries[0];
+        inView = e ? e.isIntersecting : false;
+        if (inView && !document.hidden && !hoverFocusPause && !reducingMotion()) startTimer();
+        else stopTimer();
+      },
+      { threshold: 0.2, rootMargin: '0px' }
+    );
+    io.observe(root);
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stopTimer();
+      else startTimer();
+    });
+
+    root.addEventListener('mouseenter', function () {
+      hoverFocusPause = true;
+      stopTimer();
+    });
+    root.addEventListener('mouseleave', function () {
+      hoverFocusPause = false;
+      startTimer();
+    });
+    root.addEventListener('focusin', function () {
+      hoverFocusPause = true;
+      stopTimer();
+    });
+    root.addEventListener('focusout', function (ev) {
+      if (!root.contains(ev.relatedTarget)) {
+        hoverFocusPause = false;
+        startTimer();
+      }
+    });
+
+    if (typeof mqReduce.addEventListener === 'function') {
+      mqReduce.addEventListener('change', function () {
+        stopTimer();
+        startTimer();
+      });
+    }
+  }
+
+  initTimedThumbCarousel({
+    root: document.querySelector('[data-product-gallery]'),
+    main: 'product-gallery-main',
+    thumbSelector: '[data-product-thumb]',
+    thumbIndexAttr: 'data-product-thumb',
+    activeClass: 'product__thumb--active',
+    progressFillSelector: '[data-product-gallery-progress-fill]',
+    intervalMs: 8000,
+  });
 
   /* ── Problem section: interactive septic diagram ───────────────── */
   (function () {
@@ -2519,11 +3705,29 @@
     const stage = document.getElementById('diagram-stage');
     if (!section || !stage) return;
 
+    const hotspotCount = section.querySelectorAll('.diagram-hotspot').length;
+    if (!hotspotCount) return;
+
     const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mqDesktopDiagram = window.matchMedia('(min-width: 769px)');
+    function isDesktopDiagram() {
+      return mqDesktopDiagram.matches;
+    }
+
     let currentHotspot = 0;
     let autoTourTimer = null;
     let autoTourActive = false;
     let autoTourDelayId = null;
+
+    function clearDiagramSelection() {
+      document.querySelectorAll('.hotspot').forEach((h) => {
+        h.classList.remove('active');
+        h.setAttribute('aria-pressed', 'false');
+      });
+      document.querySelectorAll('.callout').forEach((c) => c.classList.remove('active'));
+      document.querySelectorAll('.diagram-card').forEach((c) => c.classList.remove('active'));
+      document.querySelectorAll('.diagram-hotspot').forEach((el) => el.classList.remove('active'));
+    }
 
     function stopAutoTour() {
       autoTourActive = false;
@@ -2538,16 +3742,18 @@
     }
 
     function startAutoTour() {
+      if (isDesktopDiagram()) return;
       if (!window.matchMedia('(hover: hover)').matches) return;
       stopAutoTour();
       autoTourActive = true;
       autoTourTimer = setInterval(() => {
         if (!autoTourActive) return;
-        activateHotspot((currentHotspot + 1) % 4);
+        activateHotspot((currentHotspot + 1) % hotspotCount);
       }, 2500);
     }
 
     function scheduleAutoTour(delay) {
+      if (isDesktopDiagram()) return;
       if (!window.matchMedia('(hover: hover)').matches) return;
       if (autoTourDelayId) clearTimeout(autoTourDelayId);
       autoTourDelayId = setTimeout(() => {
@@ -2558,7 +3764,7 @@
 
     function activateHotspot(index) {
       const i = parseInt(String(index), 10);
-      if (i < 0 || i > 3 || Number.isNaN(i)) return;
+      if (i < 0 || i >= hotspotCount || Number.isNaN(i)) return;
 
       document.querySelectorAll('.hotspot').forEach((h) => {
         h.classList.remove('active');
@@ -2566,16 +3772,19 @@
       });
       document.querySelectorAll('.callout').forEach((c) => c.classList.remove('active'));
       document.querySelectorAll('.diagram-card').forEach((c) => c.classList.remove('active'));
+      document.querySelectorAll('.diagram-hotspot').forEach((el) => el.classList.remove('active'));
 
       const hotspot = document.querySelector('.hotspot[data-index="' + i + '"]');
       const callout = document.querySelector('.callout[data-index="' + i + '"]');
       const card = document.querySelector('.diagram-card[data-index="' + i + '"]');
+      const cluster = document.querySelector('.diagram-hotspot[data-index="' + i + '"]');
 
       if (hotspot) {
         hotspot.classList.add('active');
         hotspot.setAttribute('aria-pressed', 'true');
       }
       if (callout) callout.classList.add('active');
+      if (cluster) cluster.classList.add('active');
       if (card) {
         card.classList.add('active');
         if (window.matchMedia('(max-width: 768px)').matches) {
@@ -2592,6 +3801,7 @@
 
     document.querySelectorAll('.hotspot').forEach((btn) => {
       btn.addEventListener('click', () => {
+        if (isDesktopDiagram()) return;
         stopAutoTour();
         activateHotspot(btn.getAttribute('data-index'));
       });
@@ -2599,14 +3809,25 @@
 
     document.querySelectorAll('.diagram-card').forEach((card) => {
       card.addEventListener('click', () => {
+        if (isDesktopDiagram()) return;
         stopAutoTour();
         activateHotspot(card.getAttribute('data-index'));
       });
     });
 
+    if (isDesktopDiagram()) {
+      document.querySelectorAll('.diagram-hotspot .hotspot').forEach((btn) => {
+        btn.setAttribute('tabindex', '-1');
+      });
+    }
+
     if (prefersReduce) {
       stage.style.opacity = '1';
       stage.style.transform = 'none';
+      document.querySelectorAll('.diagram-hotspot').forEach((el) => {
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+      });
       document.querySelectorAll('.callout').forEach((el) => {
         el.style.opacity = '1';
       });
@@ -2614,10 +3835,10 @@
         el.style.opacity = '1';
         el.style.transform = 'none';
       });
-      activateHotspot(0);
+      if (isDesktopDiagram()) clearDiagramSelection();
+      else activateHotspot(0);
     } else {
-      gsap.set('.hotspot', { scale: 0, opacity: 0 });
-      gsap.set('.callout', { autoAlpha: 0 });
+      gsap.set('.diagram-hotspot', { autoAlpha: 0 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -2631,36 +3852,26 @@
         opacity: 1,
         scale: 1,
         y: 0,
-        duration: 0.8,
+        duration: 0.5,
         ease: 'power2.out',
       });
 
       tl.to(
-        '.callout',
+        '.diagram-hotspot',
         {
           autoAlpha: 1,
-          duration: 0.4,
-          stagger: 0.18,
+          duration: 0.35,
+          stagger: 0.12,
           ease: 'power2.out',
         },
-        '-=0.2'
-      );
-
-      tl.to(
-        '.hotspot',
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.55,
-          stagger: 0.15,
-          ease: 'back.out(1.4)',
-        },
-        '<'
+        '-=0.15'
       );
 
       tl.call(() => {
-        activateHotspot(0);
+        if (isDesktopDiagram()) clearDiagramSelection();
+        else activateHotspot(0);
         setTimeout(() => {
+          if (isDesktopDiagram()) return;
           if (!window.matchMedia('(hover: hover)').matches) return;
           const r = section.getBoundingClientRect();
           if (r.bottom < 0 || r.top > window.innerHeight) return;
@@ -2674,7 +3885,9 @@
         end: 'bottom 20%',
         onLeave: stopAutoTour,
         onLeaveBack: stopAutoTour,
-        onEnterBack: () => scheduleAutoTour(1800),
+        onEnterBack: () => {
+          if (!isDesktopDiagram()) scheduleAutoTour(1800);
+        },
       });
     }
   })();
@@ -2708,6 +3921,8 @@
       requestAnimationFrame(tick);
     }
 
+    const mqCostMobile = window.matchMedia('(max-width: 768px)');
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       counterEl.textContent = TARGET.toLocaleString('en-US');
       suffixEl.classList.add('visible');
@@ -2719,6 +3934,11 @@
         onEnter: () => {
           if (hasRun) return;
           hasRun = true;
+          if (mqCostMobile.matches) {
+            counterEl.textContent = TARGET.toLocaleString('en-US');
+            suffixEl.classList.add('visible');
+            return;
+          }
           setTimeout(() => {
             animateCounter(counterEl, TARGET, DURATION_MS, () => {
               suffixEl.classList.add('visible');
@@ -2732,13 +3952,13 @@
   /* Scroll reveals */
   gsap.utils.toArray('.reveal').forEach(el => {
     gsap.to(el, {
-      opacity: 1, y: 0, duration: 0.65, ease: 'power2.out',
+      opacity: 1, y: 0, duration: 0.4, ease: 'power2.out',
       scrollTrigger: { trigger: el, start: 'top 87%', toggleActions: 'play none none none' }
     });
   });
 
-  /* FAQ + product “What’s Included” accordion (scoped per .faq-list) */
-  document.querySelectorAll('.faq-btn').forEach(btn => {
+  /* FAQ accordion (#faqs only — product “What’s Included” is static) */
+  document.querySelectorAll('#faqs .faq-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const item = btn.closest('.faq-item');
       const list = btn.closest('.faq-list');
@@ -2754,6 +3974,16 @@
         btn.setAttribute('aria-expanded', 'true');
       }
     });
+  });
+
+  initTimedThumbCarousel({
+    root: document.querySelector('[data-space-fit-carousel]'),
+    main: 'space-fit-gallery-main',
+    thumbSelector: '[data-space-fit-thumb]',
+    thumbIndexAttr: 'data-space-fit-thumb',
+    activeClass: 'space-fit__thumb--active',
+    progressFillSelector: '[data-space-fit-progress-fill]',
+    intervalMs: 8000,
   });
 
   /* Testimonials — single row; ≤1200px horizontal scroll (scrollbar hidden) + arrow controls */
@@ -2802,6 +4032,101 @@
       mq.addListener(updateNav);
     }
     updateNav();
+  })();
+
+  /* Minimal custom video controls — hero, solution, testimonials */
+  function initVideoControls(videoEl, controlsEl) {
+    if (!videoEl || !controlsEl) return;
+    var isTesti = controlsEl.classList.contains('testi-vcard__chrome');
+    var playBtn = controlsEl.querySelector(isTesti ? '.testi-vcard__btn--play' : '.vid-btn--play');
+    var muteBtn = controlsEl.querySelector(isTesti ? '.testi-vcard__btn--mute' : '.vid-btn--mute');
+    if (!playBtn || !muteBtn) return;
+
+    var iconPlay = playBtn.querySelector(isTesti ? '.testi-vcard__icon--play' : '.vid-icon--play');
+    var iconPause = playBtn.querySelector(isTesti ? '.testi-vcard__icon--pause' : '.vid-icon--pause');
+    var iconVol = muteBtn.querySelector(isTesti ? '.testi-vcard__icon--volume' : '.vid-icon--volume');
+    var iconMuted = muteBtn.querySelector(isTesti ? '.testi-vcard__icon--muted' : '.vid-icon--muted');
+
+    function syncControlsVisible() {
+      if (videoEl.paused || videoEl.ended) {
+        controlsEl.classList.add('is-visible');
+      } else {
+        controlsEl.classList.remove('is-visible');
+      }
+    }
+
+    function syncPlay() {
+      var playing = !videoEl.paused && !videoEl.ended;
+      playBtn.setAttribute('aria-pressed', playing ? 'true' : 'false');
+      playBtn.setAttribute('aria-label', playing ? 'Pause video' : 'Play video');
+      if (iconPlay) iconPlay.hidden = playing;
+      if (iconPause) iconPause.hidden = !playing;
+      syncControlsVisible();
+    }
+
+    function syncMute() {
+      var m = videoEl.muted;
+      muteBtn.setAttribute('aria-pressed', m ? 'true' : 'false');
+      muteBtn.setAttribute('aria-label', m ? 'Unmute video' : 'Mute video');
+      if (iconVol) iconVol.hidden = m;
+      if (iconMuted) iconMuted.hidden = !m;
+    }
+
+    function togglePlay() {
+      if (videoEl.paused) {
+        if (isTesti) {
+          document.querySelectorAll('.testi-vcard__video').forEach(function (v) {
+            if (v !== videoEl) v.pause();
+          });
+        }
+        videoEl.play().catch(function () {});
+      } else {
+        videoEl.pause();
+      }
+    }
+
+    playBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      togglePlay();
+    });
+
+    muteBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      videoEl.muted = !videoEl.muted;
+      syncMute();
+    });
+
+    videoEl.addEventListener('click', function () {
+      togglePlay();
+    });
+
+    videoEl.addEventListener('play', syncPlay);
+    videoEl.addEventListener('pause', syncPlay);
+    videoEl.addEventListener('ended', syncPlay);
+    videoEl.addEventListener('volumechange', syncMute);
+
+    syncPlay();
+    syncMute();
+  }
+
+  (function initAllVideoControls() {
+    var heroVideo = document.querySelector('.hero__video');
+    var heroControls = heroVideo && heroVideo.closest('.hero__video-wrap')
+      ? heroVideo.closest('.hero__video-wrap').querySelector('.vid-controls')
+      : null;
+    if (heroVideo && heroControls) initVideoControls(heroVideo, heroControls);
+
+    var solutionVideo = document.querySelector('.solution__video');
+    var solutionControls = solutionVideo && solutionVideo.closest('.solution__video-wrap')
+      ? solutionVideo.closest('.solution__video-wrap').querySelector('.vid-controls')
+      : null;
+    if (solutionVideo && solutionControls) initVideoControls(solutionVideo, solutionControls);
+
+    document.querySelectorAll('.testi-vcard').forEach(function (card) {
+      var video = card.querySelector('.testi-vcard__video');
+      var chrome = card.querySelector('.testi-vcard__chrome');
+      if (video && chrome) initVideoControls(video, chrome);
+    });
   })();
 
   /* Smooth scroll */

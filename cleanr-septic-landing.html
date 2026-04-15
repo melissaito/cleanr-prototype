@@ -461,41 +461,6 @@
       }
     }
 
-    /* Small promo clip — bottom-right of hero photo column */
-    .hero__video-wrap {
-      position: relative;
-      z-index: 5;
-      margin-top: auto;
-      align-self: flex-end;
-      padding: 0 40px 36px;
-      max-width: 100%;
-      box-sizing: border-box;
-      pointer-events: auto;
-    }
-
-    .hero__video-inner {
-      position: relative;
-      display: inline-block;
-      max-width: 100%;
-      vertical-align: bottom;
-    }
-
-    .hero__video-inner .hero__video {
-      display: block;
-      width: min(180px, 34vw);
-      max-width: 100%;
-      aspect-ratio: 9 / 16;
-      height: auto;
-      object-fit: cover;
-      object-position: center;
-      border-radius: var(--radius-md);
-      box-shadow:
-        0 8px 22px rgba(13, 30, 44, 0.14),
-        0 2px 8px rgba(13, 30, 44, 0.08),
-        0 0 0 1px rgba(255, 255, 255, 0.14);
-      background: #000;
-    }
-
     /* Minimal video controls overlay (hero / solution) */
     .vid-controls {
       position: absolute;
@@ -508,7 +473,6 @@
       opacity: 0;
       transition: opacity 0.2s ease;
     }
-    .hero__video-wrap:hover .vid-controls,
     .solution__video-wrap:hover .vid-controls,
     .vid-controls.is-visible {
       opacity: 1;
@@ -544,6 +508,7 @@
     /* LAICA: centered editorial, clean whitespace */
     #problem {
       background-color: rgba(241, 243, 244, 1);
+      padding-top: var(--space-section-sm);
       padding-bottom: var(--space-section-sm);
     }
     .problem__intro {
@@ -1498,6 +1463,9 @@
     .space-fit {
       background: var(--color-bg);
     }
+    #fits-your-space {
+      padding-block: var(--space-section-sm);
+    }
     #fits-your-space .wrap {
       max-width: 1400px;
     }
@@ -1752,92 +1720,39 @@
       position: relative;
       width: 100%;
       max-width: min(450px, 100%);
-      aspect-ratio: 9 / 16;
-      height: auto;
       margin-inline: auto;
       flex: 0 0 auto;
-      overflow: hidden;
-      border: none;
       border-radius: 16px;
-      background: #000;
-      box-shadow: none;
+      background: var(--color-surface);
+      border: 1px solid rgba(13, 30, 44, 0.10);
+      box-shadow: 0 12px 34px rgba(13, 30, 44, 0.08);
+      padding: clamp(20px, 2.4vw, 28px);
     }
-    .testi-vcard__video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      border: none;
-      border-radius: 16px;
-      background: #000;
-      box-shadow: none;
-      cursor: pointer;
+    .testi-vcard__quote {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--color-text-2);
+      margin: 0 0 18px;
     }
-    .testi-vcard__chrome {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 2;
+    .testi-vcard__quote::before { content: "“"; }
+    .testi-vcard__quote::after { content: "”"; }
+    .testi-vcard__meta {
       display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 8px;
-      padding: 10px 12px 12px;
-      background: linear-gradient(to top, rgba(13, 30, 44, 0.82), rgba(13, 30, 44, 0));
-      pointer-events: none;
-      border-radius: 0 0 16px 16px;
-      opacity: 0;
-      transition: opacity 0.2s ease;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(13, 30, 44, 0.10);
+      color: var(--color-text);
     }
-    .testi-vcard__frame:hover .testi-vcard__chrome,
-    .testi-vcard__chrome.is-visible {
-      opacity: 1;
+    .testi-vcard__name {
+      font-weight: 700;
+      font-size: 14px;
     }
-    .testi-vcard__chrome > * {
-      pointer-events: auto;
-    }
-    .testi-vcard__btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 44px;
-      height: 44px;
-      padding: 0;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.16);
-      color: #fff;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: background 0.2s ease, color 0.2s ease;
-    }
-    .testi-vcard__btn:hover {
-      background: rgba(255, 255, 255, 0.28);
-    }
-    /* Hide audio control until video is playing */
-    .testi-vcard__btn--mute {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transform: translateY(2px);
-      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
-    }
-    .testi-vcard__chrome.is-playing .testi-vcard__btn--mute {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      transform: none;
-    }
-    .testi-vcard__btn:focus-visible {
-      outline: 2px solid var(--color-border-focus);
-      outline-offset: 2px;
-    }
-    .testi-vcard__icon[hidden] {
-      display: none !important;
+    .testi-vcard__note {
+      font-size: 12.5px;
+      color: var(--color-text-3);
+      white-space: nowrap;
     }
 
     /* ── PRODUCT (reference: split card, feature chips, gallery + thumbs) ─ */
@@ -2240,11 +2155,6 @@
         margin-inline: 0;
         width: 100%;
       }
-      .hero__video-wrap {
-        /* Equal inset on top / left / right; slightly deeper bottom to clear hero edge */
-        padding: clamp(14px, 4vw, 32px) clamp(14px, 4vw, 32px) clamp(20px, 5vw, 40px);
-      }
-      .hero__video-inner .hero__video { width: min(150px, 40vw); }
       .hero__left { padding: 88px 24px 48px; }
       .solution__top, .product__top { grid-template-columns: 1fr; gap: clamp(12px, 1.8vw, 20px); }
       .solution__copy.reveal {
@@ -2692,11 +2602,11 @@
     </div>
 
     <h1 class="d1 hero__h1" style="opacity:0" id="h-h1">
-      Protect Your Septic System from <em>Lint &amp; Debris</em>
+      Protect Your Septic System from <em>Hair &amp; Lint</em>
     </h1>
 
     <p class="hero__sub" style="opacity:0" id="h-sub">
-      Think of CLEANR as a lint trap for your washing machine. It captures hair, lint, and debris before they reach your septic system — preventing backups, drain field damage, and expensive repairs.
+      Think of CLEANR as a lint trap for your washing machine. CLEANR captures hair from the wash before it clogs your septic system.
     </p>
 
     <div class="hero__ctas" style="opacity:0" id="h-ctas">
@@ -2724,36 +2634,6 @@
 
     <div class="hero__product-visual">
       <img src="images/product-img-01.png" alt="CLEANR washing machine lint filter" width="800" height="1000" loading="eager" decoding="async" />
-    </div>
-
-    <div class="hero__video-wrap">
-      <div class="hero__video-inner">
-        <video
-          class="hero__video"
-          src="video/Ad_Well%20Video_2.webm"
-          autoplay
-          muted
-          loop
-          playsinline
-          webkit-playsinline=""
-          preload="auto"
-          aria-label="Product video"
-        ></video>
-        <div class="vid-controls">
-          <button type="button" class="vid-btn vid-btn--play" aria-pressed="true" aria-label="Pause video">
-            <svg class="vid-icon vid-icon--play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M8 5v14l11-7z"/></svg>
-            <svg class="vid-icon vid-icon--pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
-          </button>
-          <button type="button" class="vid-btn vid-btn--mute" aria-pressed="true" aria-label="Unmute video">
-            <svg class="vid-icon vid-icon--volume" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden>
-              <path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.47 4.47 0 0 0 16.5 12z"/>
-            </svg>
-            <svg class="vid-icon vid-icon--muted" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18V20.5c1.3-.31 2.48-.96 3.46-1.83L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/>
-            </svg>
-          </button>
-        </div>
-      </div>
     </div>
 
   </div>
@@ -2827,7 +2707,7 @@
     <div class="problem__intro reveal">
       <span class="label">the problem</span>
       <h2 class="d2" id="problem-h2">Lint can wreck your septic system. <em>And your wallet.</em></h2>
-      <p>Septic systems are designed to break down waste — not handle the constant flow of hair, lint, and microplastics from modern laundry. Over time, that buildup reduces flow, clogs your system, and leads to serious issues.</p>
+      <p>Septic systems are designed to break down waste, not handle the constant flow of hair and lint from modern laundry. Over time, that buildup reduces flow, clogs your system, and leads to serious (and expensive) issues.</p>
     </div>
 
     <div class="diagram-section" id="diagram-section">
@@ -3113,6 +2993,24 @@
       <div class="space-fit__copy">
         <span class="label label--primary">Fits in your space</span>
         <h2 class="d2" id="space-fit-h2">CLEANR is easy to install, and is designed to fit your space</h2>
+        <ul class="solution-check-list" role="list" aria-label="Installation placement options">
+          <li>
+            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+            On top of your washer
+          </li>
+          <li>
+            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+            Beside your washer/dryer
+          </li>
+          <li>
+            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+            On the floor
+          </li>
+          <li>
+            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+            Inside a cabinet
+          </li>
+        </ul>
       </div>
       <div class="space-fit__media-wrap" data-space-fit-carousel role="region" aria-label="CLEANR in different laundry spaces">
         <div class="space-fit__thumbs" role="tablist" aria-label="Space photos">
@@ -3159,74 +3057,29 @@
       <div class="testi__viewport" data-testi-viewport>
         <div class="testi__grid">
       <article class="testi-vcard">
-        <div class="testi-vcard__frame">
-          <video
-            class="testi-vcard__video"
-            playsinline
-            webkit-playsinline=""
-            preload="metadata"
-            disablePictureInPicture
-            aria-label="Video testimonial from Mark R., Verified Buyer in Tennessee"
-          >
-            <source src="video/kim.webm" type="video/webm" />
-          </video>
-          <div class="testi-vcard__chrome">
-            <button type="button" class="testi-vcard__btn testi-vcard__btn--play" aria-pressed="false" aria-label="Play video">
-              <svg class="testi-vcard__icon testi-vcard__icon--play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-              <svg class="testi-vcard__icon testi-vcard__icon--pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
-            </button>
-            <button type="button" class="testi-vcard__btn testi-vcard__btn--mute" aria-pressed="false" aria-label="Mute video">
-              <svg class="testi-vcard__icon testi-vcard__icon--volume" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.47 4.47 0 0 0 16.5 12z"/></svg>
-              <svg class="testi-vcard__icon testi-vcard__icon--muted" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18V20.5c1.3-.31 2.48-.96 3.46-1.83L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></svg>
-            </button>
+        <div class="testi-vcard__frame" role="group" aria-label="Testimonial from Mark R.">
+          <p class="testi-vcard__quote">We installed CLEANR in under 15 minutes and it immediately started catching lint we didn’t realize was going into our septic. It’s simple, sturdy, and gives us peace of mind.</p>
+          <div class="testi-vcard__meta">
+            <span class="testi-vcard__name">Mark R.</span>
+            <span class="testi-vcard__note">Verified Buyer · Tennessee</span>
           </div>
         </div>
       </article>
       <article class="testi-vcard">
-        <div class="testi-vcard__frame">
-          <video
-            class="testi-vcard__video"
-            playsinline
-            webkit-playsinline=""
-            preload="metadata"
-            disablePictureInPicture
-            aria-label="Video testimonial from Jennifer L., Verified in North Carolina"
-          >
-            <source src="video/kathie.webm" type="video/webm" />
-          </video>
-          <div class="testi-vcard__chrome">
-            <button type="button" class="testi-vcard__btn testi-vcard__btn--play" aria-pressed="false" aria-label="Play video">
-              <svg class="testi-vcard__icon testi-vcard__icon--play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-              <svg class="testi-vcard__icon testi-vcard__icon--pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
-            </button>
-            <button type="button" class="testi-vcard__btn testi-vcard__btn--mute" aria-pressed="false" aria-label="Mute video">
-              <svg class="testi-vcard__icon testi-vcard__icon--volume" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.47 4.47 0 0 0 16.5 12z"/></svg>
-              <svg class="testi-vcard__icon testi-vcard__icon--muted" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18V20.5c1.3-.31 2.48-.96 3.46-1.83L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></svg>
-            </button>
+        <div class="testi-vcard__frame" role="group" aria-label="Testimonial from Jennifer L.">
+          <p class="testi-vcard__quote">Our drains were getting slower and we were worried about the septic. CLEANR has been an easy fix — the pods make maintenance quick and we’ve had zero issues since.</p>
+          <div class="testi-vcard__meta">
+            <span class="testi-vcard__name">Jennifer L.</span>
+            <span class="testi-vcard__note">Verified · North Carolina</span>
           </div>
         </div>
       </article>
       <article class="testi-vcard">
-        <div class="testi-vcard__frame">
-          <video
-            class="testi-vcard__video"
-            playsinline
-            webkit-playsinline=""
-            preload="metadata"
-            disablePictureInPicture
-            aria-label="Video: laundry as a major source of microplastics in water"
-          >
-            <source src="video/AD%20-%20Did%20you%20know%20that%20laundry%20is%20one%20of%20the%20biggest%20sources%20of%20microplastics%20in%20the%20waterAs%20a%20m.mp4" type="video/mp4" />
-          </video>
-          <div class="testi-vcard__chrome">
-            <button type="button" class="testi-vcard__btn testi-vcard__btn--play" aria-pressed="false" aria-label="Play video">
-              <svg class="testi-vcard__icon testi-vcard__icon--play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-              <svg class="testi-vcard__icon testi-vcard__icon--pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
-            </button>
-            <button type="button" class="testi-vcard__btn testi-vcard__btn--mute" aria-pressed="false" aria-label="Mute video">
-              <svg class="testi-vcard__icon testi-vcard__icon--volume" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.47 4.47 0 0 0 16.5 12z"/></svg>
-              <svg class="testi-vcard__icon testi-vcard__icon--muted" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18V20.5c1.3-.31 2.48-.96 3.46-1.83L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></svg>
-            </button>
+        <div class="testi-vcard__frame" role="group" aria-label="Testimonial from Alex S.">
+          <p class="testi-vcard__quote">If you’re on septic, this is a no-brainer. The amount of hair and lint it catches is shocking — and it’s one less thing to worry about with an expensive system.</p>
+          <div class="testi-vcard__meta">
+            <span class="testi-vcard__name">Alex S.</span>
+            <span class="testi-vcard__note">Septic Homeowner</span>
           </div>
         </div>
       </article>
@@ -3278,7 +3131,7 @@
               </li>
             </ul>
           </div>
-          <a href="#" class="btn btn--primary btn--lg product__cta">Buy Now</a>
+          <a href="#" class="btn btn--primary btn--lg product__cta">Buy Now — $229</a>
         </div>
 
         <div class="product__right">
@@ -3338,7 +3191,7 @@
       </li>
       <li class="how__card">
         <span class="how__card-num">03</span>
-        <p class="how__card-txt">CLEANR captures hair, lint, and debris</p>
+        <p class="how__card-txt">CLEANR captures hair and lint from your laundry</p>
       </li>
       <li class="how__card">
         <span class="how__card-num">04</span>
@@ -3350,7 +3203,7 @@
       </li>
     </ul>
     <div class="how__actions reveal">
-      <a href="#product" class="btn btn--primary">Add to Cart</a>
+      <a href="#product" class="btn btn--primary">Buy Now</a>
     </div>
   </div>
 </section>
@@ -4053,15 +3906,14 @@
   /* Minimal custom video controls — hero, solution, testimonials */
   function initVideoControls(videoEl, controlsEl) {
     if (!videoEl || !controlsEl) return;
-    var isTesti = controlsEl.classList.contains('testi-vcard__chrome');
-    var playBtn = controlsEl.querySelector(isTesti ? '.testi-vcard__btn--play' : '.vid-btn--play');
-    var muteBtn = controlsEl.querySelector(isTesti ? '.testi-vcard__btn--mute' : '.vid-btn--mute');
+    var playBtn = controlsEl.querySelector('.vid-btn--play');
+    var muteBtn = controlsEl.querySelector('.vid-btn--mute');
     if (!playBtn || !muteBtn) return;
 
-    var iconPlay = playBtn.querySelector(isTesti ? '.testi-vcard__icon--play' : '.vid-icon--play');
-    var iconPause = playBtn.querySelector(isTesti ? '.testi-vcard__icon--pause' : '.vid-icon--pause');
-    var iconVol = muteBtn.querySelector(isTesti ? '.testi-vcard__icon--volume' : '.vid-icon--volume');
-    var iconMuted = muteBtn.querySelector(isTesti ? '.testi-vcard__icon--muted' : '.vid-icon--muted');
+    var iconPlay = playBtn.querySelector('.vid-icon--play');
+    var iconPause = playBtn.querySelector('.vid-icon--pause');
+    var iconVol = muteBtn.querySelector('.vid-icon--volume');
+    var iconMuted = muteBtn.querySelector('.vid-icon--muted');
 
     function syncControlsVisible() {
       if (videoEl.paused || videoEl.ended) {
@@ -4077,9 +3929,6 @@
       playBtn.setAttribute('aria-label', playing ? 'Pause video' : 'Play video');
       if (iconPlay) iconPlay.hidden = playing;
       if (iconPause) iconPause.hidden = !playing;
-      if (isTesti) {
-        controlsEl.classList.toggle('is-playing', playing);
-      }
       syncControlsVisible();
     }
 
@@ -4093,11 +3942,6 @@
 
     function togglePlay() {
       if (videoEl.paused) {
-        if (isTesti) {
-          document.querySelectorAll('.testi-vcard__video').forEach(function (v) {
-            if (v !== videoEl) v.pause();
-          });
-        }
         videoEl.play().catch(function () {});
       } else {
         videoEl.pause();
@@ -4129,23 +3973,12 @@
   }
 
   (function initAllVideoControls() {
-    var heroVideo = document.querySelector('.hero__video');
-    var heroControls = heroVideo && heroVideo.closest('.hero__video-wrap')
-      ? heroVideo.closest('.hero__video-wrap').querySelector('.vid-controls')
-      : null;
-    if (heroVideo && heroControls) initVideoControls(heroVideo, heroControls);
-
     var solutionVideo = document.querySelector('.solution__video');
     var solutionControls = solutionVideo && solutionVideo.closest('.solution__video-wrap')
       ? solutionVideo.closest('.solution__video-wrap').querySelector('.vid-controls')
       : null;
     if (solutionVideo && solutionControls) initVideoControls(solutionVideo, solutionControls);
 
-    document.querySelectorAll('.testi-vcard').forEach(function (card) {
-      var video = card.querySelector('.testi-vcard__video');
-      var chrome = card.querySelector('.testi-vcard__chrome');
-      if (video && chrome) initVideoControls(video, chrome);
-    });
   })();
 
   /* Smooth scroll */

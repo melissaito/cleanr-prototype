@@ -197,11 +197,12 @@
       line-height: 0;
       text-decoration: none;
     }
-    .nav__logo svg {
+    .nav__logo img {
       display: block;
-      height: 66px;
+      height: 48px;
       width: auto;
-      color: var(--color-logo);
+      max-width: 100%;
+      object-fit: contain;
     }
     .nav__links { display: flex; align-items: center; gap: 24px; }
     .nav__link { font-size: 13.5px; color: var(--color-text-2); text-decoration: none; transition: color 0.2s; }
@@ -276,8 +277,8 @@
         min-width: 0;
         max-width: min(240px, 56vw);
       }
-      .nav__logo svg {
-        height: 50px;
+      .nav__logo img {
+        height: 38px;
         width: auto;
         max-width: 100%;
       }
@@ -359,7 +360,13 @@
       font-size: 12.5px; color: var(--color-text-3);
     }
 
-    .hero__h1 { color: var(--color-text); margin-bottom: 28px; }
+    .hero__h1 {
+      color: var(--color-text);
+      margin-bottom: 28px;
+      font-size: clamp(26px, 3.5vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.022em;
+    }
     .hero__h1 em { color: var(--color-primary-500); font-style: normal; }
 
     .hero__sub {
@@ -810,6 +817,65 @@
       object-fit: cover;
       display: block;
       border-radius: 0;
+    }
+
+    /* Desktop (non-Mill): thumb badge hidden; open row = title, image, copy — bottom padding only + gap image→copy */
+    @media (min-width: 769px) {
+      /* Thumbnail step badge hidden on desktop; step digit stays in the title row */
+      #split-diagram-accordion .split-diagram__accordion-num--thumb {
+        display: none !important;
+      }
+
+      #split-diagram-accordion .split-diagram__accordion-panel-inner {
+        padding: 0;
+      }
+
+      .split-diagram__accordion-item.is-active {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding-bottom: 24px;
+      }
+
+      .split-diagram__accordion-item.is-active .split-diagram__accordion-text-col {
+        flex: 0 0 auto;
+        width: 100%;
+        min-width: 0;
+      }
+
+      .split-diagram__accordion-item.is-active .split-diagram__accordion-trigger {
+        padding-bottom: 0;
+      }
+
+      .split-diagram__accordion-item.is-active .split-diagram__accordion-thumb-wrap {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        position: relative;
+        width: 100%;
+        flex-shrink: 0;
+        margin: 0;
+        padding: 12px 0 0;
+      }
+
+      .split-diagram__accordion-item.is-active .split-diagram__accordion-thumb {
+        display: block;
+        width: min(140px, 55%);
+        max-width: 140px;
+        aspect-ratio: 240 / 136;
+        height: auto;
+        margin: 0;
+        border-radius: var(--radius-md);
+      }
+
+      .split-diagram__accordion-item.is-active .split-diagram__accordion-panel {
+        flex: 0 0 auto;
+        width: 100%;
+        min-width: 0;
+        margin-top: 12px;
+        padding: 0;
+      }
     }
 
     .split-diagram__accordion-desc {
@@ -1587,7 +1653,7 @@
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      gap: 0;
+      gap: clamp(16px, 3vw, 24px);
       margin-bottom: 48px;
       width: 100vw;
       max-width: 100vw;
@@ -1597,7 +1663,14 @@
       box-sizing: border-box;
     }
     .testi__nav-row {
-      display: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      flex-shrink: 0;
+      padding-inline: var(--pad-x);
+      box-sizing: border-box;
     }
     .testi__viewport {
       flex: 1;
@@ -1620,7 +1693,8 @@
       min-width: min-content;
     }
     .testi__nav {
-      display: none;
+      display: grid;
+      place-items: center;
       flex-shrink: 0;
       width: 44px;
       height: 44px;
@@ -1647,31 +1721,19 @@
     }
     @media (min-width: 1201px) {
       .testi__viewport {
-        overflow-x: visible;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
       }
       .testi__grid .testi-vcard {
-        flex: 1 1 0;
+        flex: 0 0 clamp(280px, 28vw, 400px);
         min-width: 0;
+        scroll-snap-align: start;
+        scroll-snap-stop: normal;
       }
     }
     @media (max-width: 1200px) {
-      .testi__carousel {
-        gap: clamp(16px, 3vw, 24px);
-      }
-      .testi__nav-row {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 16px;
-        width: 100%;
-        flex-shrink: 0;
-        padding-inline: var(--pad-x);
-        box-sizing: border-box;
-      }
-      .testi__nav {
-        display: grid;
-        place-items: center;
-      }
       .testi__viewport {
         scroll-snap-type: x mandatory;
         width: 100%;
@@ -1789,6 +1851,16 @@
       border-radius: 12px;
       min-width: 0;
     }
+    .product__left h3#prod-h3 {
+      font-size: clamp(22px, 2.2vw, 31px);
+      line-height: 1.14;
+    }
+    @media (max-width: 768px) {
+      .product__left h3#prod-h3 {
+        font-size: clamp(26px, 3.55vw, 33px);
+        line-height: 1.12;
+      }
+    }
     .product__body {
       font-size: 15px;
       color: var(--color-text-2);
@@ -1857,6 +1929,32 @@
       padding: 11px 0; border-bottom: 1px solid var(--color-border);
     }
     .incl-list li:last-child { border-bottom: none; }
+
+    /* Product “What’s Included” — same accordion pattern as FAQ, scoped to #product */
+    #product-incl-accordion.faq-list {
+      margin-top: 4px;
+      margin-bottom: 0;
+    }
+    #product-incl-accordion .faq-btn {
+      font-size: 15px;
+      padding: 14px 0;
+    }
+    #product-incl-accordion .faq-ans {
+      padding-bottom: 14px;
+    }
+    .product-incl-ans {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 0;
+      font-size: 14.5px;
+      color: var(--color-text-2);
+      line-height: 1.65;
+    }
+    .product-incl-ans .solution-check-list__icon {
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
 
     .product__right {
       min-width: 0;
@@ -3004,18 +3102,13 @@
   <div class="wrap">
     <div class="nav__inner">
       <a href="#" class="nav__logo" aria-label="CLEANR home">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 718 376" aria-hidden="true" focusable="false">
-          <g fill="currentColor">
-            <polygon points="538.8 138 579.5 194.2 581 194.5 581 138 599.5 138 599.5 232 585.8 232 544.5 175.2 543.5 175.8 543.5 231.2 542.8 232 525.2 232 525 138 538.8 138"/>
-            <path d="M676.2,138c19.6,2.2,32.4,24.1,24.8,42.3-3.4,8.2-9.5,11.7-16.1,16.9l20.5,34.8h-20l-20.2-33h-13.8l-.5,1.2v31.8h-18.5v-94h43.8ZM651.5,183.5h20.2c10.3,0,15.8-13.1,11.2-21.7s-6.2-6.8-9.2-6.8h-22.2v28.5Z"/>
-            <path d="M409.5,232l33.3-93.5,23-.5,34.7,94h-18.2l-7.5-17h-38.9c0,.1-7.1,17-7.1,17h-19.2ZM442.2,198h26.8l-13.8-38-13.6,36.5.6,1.5Z"/>
-            <path d="M387.5,138v16.8l-.8.8h-39.8v20l1.2.5h35l.8.8v16.2h-36.2l-.8.8v20.8l1.2.5h39.8v15.8c0,.1.4.3.4.5l-.6.8h-59.2v-94h59Z"/>
-            <path d="M204.1,166.4c-18-24.8-58.4-12.1-57.1,19.9,1.2,31.1,40.8,40.6,57.8,16.7l15.7,8.5c-4.1,8.9-14.1,16.1-23.4,19.4-38.2,13.4-75.8-16.5-67.5-57s67.6-51.4,90.8-16.5c.1.7-.5,1-1,1.4-1.3,1.1-10.6,6.3-12.4,7s-2,1.1-2.9.6Z"/>
-            <polygon points="266 138 266 214.2 266.8 215 303 215 303 231.2 302.2 232 247.8 232 247 231.2 247 138 266 138"/>
-            <path d="M31.8,206.7c7,4,13.4,9.7,21.5,11.6,13.6-5.6,27.4-21.7,43.5-19.2,11.8,1.8,6.8,15.9,3.7,23.1-20.4,47.6-96.9,34.4-97.9-16.9-.4-20,21.3-3.2,29.3,1.5ZM7.9,199.1l-1.4,2.1c6.1,15.8,24.5,24.2,40.5,19,.2-.8-9.2-5.4-10.6-6.3-5.8-3.6-11.3-7.9-17.4-11.1-2.9-1.5-7.8-4.8-11.1-3.7ZM7,211.5c8.9,42.4,66.7,51.3,88.2,12.9s9.1-19.2,1.9-21.8c-12.3-4.5-31.8,14.8-43.4,19.3-12.9,5-28.3,4.2-39.6-4.3-1.3-1-6.1-7.1-7.1-6.1Z"/>
-            <path d="M55.3,119.2c11.3,7.7,41,45.9,43.8,59s-.8,11.4-6.2,15c-12,7.9-27.6-1.2-39.1-5.7-12.4,4.5-31.9,15.4-42.9,3-6-6.8-3-12.6.3-19.6,9.3-19.7,26.2-38.4,42.3-52.7.8,0,1.4.7,2,1.1ZM80.7,153.3c-8-11.2-17-21.8-27.4-30.8-12.1,11.2-23.5,24.2-32.3,38.2s-18,26.3-.7,31.7c6.4,2,12-.2,18-2.4,17.7-6.2,34.5-19.7,54.2-17.6-3.1-6.9-7.4-13.1-11.8-19.2ZM58.6,185.9c8.8,3.1,19.4,9.8,28.9,6.3,5.6-2.1,11.8-9.3,6.1-14.5s-26.8,3.6-35,6.8v1.4Z"/>
-          </g>
-        </svg>
+        <img
+          src="images/CLEANR-LOGO-REGISTERED_CLEANR-Logo-Navy.png"
+          alt=""
+          width="718"
+          height="376"
+          decoding="async"
+        />
       </a>
       <div class="nav__links">
         <a href="#problem" class="nav__link nav__link--semibold">The Problem</a>
@@ -3053,11 +3146,12 @@
     </div>
 
     <h1 class="d1 hero__h1" style="opacity:0" id="h-h1">
-      Protect Your Septic System from <em>Hair &amp; Lint</em>
+      Septic repair=$20,000<br />
+      Septic repair prevention=$229
     </h1>
 
     <p class="hero__sub" style="opacity:0" id="h-sub">
-      Think of CLEANR as a lint trap for your washing machine. CLEANR captures hair from the wash before it clogs your septic system.
+      Septic repairs are expensive. The #1 culprit? Lint and hair from laundry. Luckily, there’s an easy fix: CLEANR’s washing machine filter. It’s a small step that can prevent a massive expense.
     </p>
 
     <div class="hero__ctas" style="opacity:0" id="h-ctas">
@@ -3581,6 +3675,54 @@
           </div>
         </div>
       </article>
+      <article class="testi-vcard">
+        <div class="testi-vcard__frame" role="group" aria-label="Testimonial from Diane M.">
+          <div class="testi-vcard__stars" role="img" aria-label="5 out of 5 stars">
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+          </div>
+          <p class="testi-vcard__quote">Between kids and pets we do a lot of laundry. CLEANR catches hair and fuzz we never saw in the lint trap — glad it’s not ending up in our tank anymore.</p>
+          <div class="testi-vcard__meta">
+            <span class="testi-vcard__name">Diane M.</span>
+            <span class="testi-vcard__note">Verified · Michigan</span>
+          </div>
+        </div>
+      </article>
+      <article class="testi-vcard">
+        <div class="testi-vcard__frame" role="group" aria-label="Testimonial from Robert T.">
+          <div class="testi-vcard__stars" role="img" aria-label="5 out of 5 stars">
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+          </div>
+          <p class="testi-vcard__quote">We run multiple loads a week for work clothes and sports gear. Install was straightforward and the filter has stayed solid — no backups since we added it.</p>
+          <div class="testi-vcard__meta">
+            <span class="testi-vcard__name">Robert T.</span>
+            <span class="testi-vcard__note">Verified Buyer · Texas</span>
+          </div>
+        </div>
+      </article>
+      <article class="testi-vcard">
+        <div class="testi-vcard__frame" role="group" aria-label="Testimonial from Sandra W.">
+          <div class="testi-vcard__stars" role="img" aria-label="5 out of 5 stars">
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+            <span class="testi-vcard__star" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.084 3.527 1.287 5.269c.271 1.056-.91 1.918-1.856 1.364L12 18.622l-4.388 2.95c-.946.554-2.127-.308-1.856-1.364l1.287-5.269-4.084-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/></svg></span>
+          </div>
+          <p class="testi-vcard__quote">We care a lot about what goes into our soil and water. CLEANR is a small change at the washer that feels like a big win for our septic and the creek down the road.</p>
+          <div class="testi-vcard__meta">
+            <span class="testi-vcard__name">Sandra W.</span>
+            <span class="testi-vcard__note">Verified · Oregon</span>
+          </div>
+        </div>
+      </article>
         </div>
       </div>
       <div class="testi__nav-row" role="group" aria-label="Carousel controls">
@@ -3602,32 +3744,87 @@
     <div class="product__inner reveal">
       <div class="product__top">
         <div class="product__left">
-          <h3 class="d2" id="prod-h3" style="margin-bottom:4px;">Washing Machine Filter Package for Septic Homeowners</h3>
+          <h3 class="d2" id="prod-h3" style="margin-bottom:4px;">CLEANR Septic Guard</h3>
           <p class="product__body" style="margin-top:12px;">A complete, easy-to-install septic-safe system that starts protecting your septic immediately — no tools, no plumber, and no guesswork.</p>
           <div class="product__incl">
             <h4 class="product__incl-title" id="product-incl-heading">What's Included</h4>
-            <ul class="incl-list" role="list" aria-labelledby="product-incl-heading">
-              <li>
-                <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
-                CLEANR Washing Machine Filter
-              </li>
-              <li>
-                <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
-                1 full year of filter pods (50 pods / 250 washes)
-              </li>
-              <li>
-                <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
-                Free shipping
-              </li>
-              <li>
-                <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
-                12-month warranty
-              </li>
-              <li>
-                <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
-                Smart app tracking
-              </li>
-            </ul>
+            <div class="faq-list" id="product-incl-accordion" role="presentation" aria-labelledby="product-incl-heading">
+              <div class="faq-item">
+                <button type="button" class="faq-btn" aria-expanded="false" aria-controls="incl-p1" id="incl-p1-trigger">
+                  CLEANR Washing Machine Filter
+                  <span class="faq-ico" aria-hidden="true">
+                    <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+                    <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+                  </span>
+                </button>
+                <div class="faq-ans" id="incl-p1" role="region" aria-labelledby="incl-p1-trigger">
+                  <p class="product-incl-ans">
+                    <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+                    Connects to your washer drain hose and captures hair and lint before it reaches your septic system.
+                  </p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <button type="button" class="faq-btn" aria-expanded="false" aria-controls="incl-p2" id="incl-p2-trigger">
+                  1 full year of filter pods (50 pods / 250 washes)
+                  <span class="faq-ico" aria-hidden="true">
+                    <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+                    <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+                  </span>
+                </button>
+                <div class="faq-ans" id="incl-p2" role="region" aria-labelledby="incl-p2-trigger">
+                  <p class="product-incl-ans">
+                    <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+                    Enough pods for about a year of typical laundry — swap when the app reminds you.
+                  </p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <button type="button" class="faq-btn" aria-expanded="false" aria-controls="incl-p3" id="incl-p3-trigger">
+                  Free shipping
+                  <span class="faq-ico" aria-hidden="true">
+                    <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+                    <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+                  </span>
+                </button>
+                <div class="faq-ans" id="incl-p3" role="region" aria-labelledby="incl-p3-trigger">
+                  <p class="product-incl-ans">
+                    <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+                    Standard free shipping on this package — no extra delivery charge at checkout.
+                  </p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <button type="button" class="faq-btn" aria-expanded="false" aria-controls="incl-p4" id="incl-p4-trigger">
+                  12-month warranty
+                  <span class="faq-ico" aria-hidden="true">
+                    <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+                    <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+                  </span>
+                </button>
+                <div class="faq-ans" id="incl-p4" role="region" aria-labelledby="incl-p4-trigger">
+                  <p class="product-incl-ans">
+                    <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+                    Twelve months of coverage on the filter hardware for added peace of mind.
+                  </p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <button type="button" class="faq-btn" aria-expanded="false" aria-controls="incl-p5" id="incl-p5-trigger">
+                  Smart app tracking
+                  <span class="faq-ico" aria-hidden="true">
+                    <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+                    <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+                  </span>
+                </button>
+                <div class="faq-ans" id="incl-p5" role="region" aria-labelledby="incl-p5-trigger">
+                  <p class="product-incl-ans">
+                    <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
+                    Use the CLEANR app for pod-change reminders and simple wash tracking.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
           <a href="https://cleanr.life/cleanrfilter/buy-bridge?dest=https%3A%2F%2Fcleanrinc.myshopify.com%2Fcart%2F47831741006056%3A1" class="btn btn--primary btn--lg product__cta">Buy Now — $229</a>
         </div>
@@ -4472,8 +4669,8 @@
     });
   });
 
-  /* FAQ accordion (#faqs only — product “What’s Included” is static) */
-  document.querySelectorAll('#faqs .faq-btn').forEach(btn => {
+  /* FAQ accordion + product “What’s Included” (exclusive open within each list) */
+  document.querySelectorAll('#faqs .faq-btn, #product-incl-accordion .faq-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const item = btn.closest('.faq-item');
       const list = btn.closest('.faq-list');
@@ -4501,7 +4698,7 @@
     intervalMs: 8000,
   });
 
-  /* Testimonials — single row; ≤1200px horizontal scroll (scrollbar hidden) + arrow controls */
+  /* Testimonials — horizontal row + prev/next (scrollbar hidden; arrows at all widths) */
   (function () {
     const root = document.querySelector('[data-testi-carousel]');
     if (!root) return;
@@ -4512,27 +4709,24 @@
     const cards = root.querySelectorAll('.testi-vcard');
     if (!viewport || !prev || !next || !grid || !cards.length) return;
 
-    const mq = window.matchMedia('(max-width: 1200px)');
-
     function gapPx() {
       const n = parseFloat(getComputedStyle(grid).gap);
       return Number.isFinite(n) ? n : 16;
     }
 
     function stepScroll(dir) {
-      if (!mq.matches) return;
       const w = cards[0].getBoundingClientRect().width;
       viewport.scrollBy({ left: dir * (w + gapPx()), behavior: 'smooth' });
     }
 
     function updateNav() {
-      if (!mq.matches) {
-        prev.disabled = false;
-        next.disabled = false;
-        return;
-      }
       const maxScroll = viewport.scrollWidth - viewport.clientWidth;
       const x = viewport.scrollLeft;
+      if (maxScroll <= 2) {
+        prev.disabled = true;
+        next.disabled = true;
+        return;
+      }
       prev.disabled = x <= 2;
       next.disabled = x >= maxScroll - 2;
     }
@@ -4541,11 +4735,6 @@
     next.addEventListener('click', () => stepScroll(1));
     viewport.addEventListener('scroll', updateNav, { passive: true });
     window.addEventListener('resize', () => requestAnimationFrame(updateNav));
-    if (typeof mq.addEventListener === 'function') {
-      mq.addEventListener('change', updateNav);
-    } else {
-      mq.addListener(updateNav);
-    }
     updateNav();
   })();
 

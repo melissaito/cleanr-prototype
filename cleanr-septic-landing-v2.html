@@ -34,6 +34,7 @@
       --color-primary-900: #0E2154;
 
       /* Secondary — Navy */
+      --color-secondary-200: #A7B6C3;
       --color-secondary-500: #16293A;
       --color-secondary-600: #0D1E2C;
       --color-secondary-700: #091722;
@@ -254,9 +255,6 @@
     }
 
     @media (max-width: 768px) {
-      body {
-        padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
-      }
       .nav {
         padding-top: max(8px, env(safe-area-inset-top, 0px));
         padding-bottom: 8px;
@@ -292,27 +290,8 @@
       .nav__links > a.nav__link {
         display: none;
       }
-      /* Same padding / gap / pill metrics as desktop .nav__buy-bar */
       .nav__buy-bar {
-        position: fixed;
-        left: max(12px, env(safe-area-inset-left, 0px));
-        right: max(12px, env(safe-area-inset-right, 0px));
-        bottom: max(12px, env(safe-area-inset-bottom, 0px));
-        z-index: 250;
-        flex-shrink: 0;
-        max-width: 100%;
-        white-space: nowrap;
-        padding: 5px 8px 5px clamp(16px, 2.2vw, 22px);
-        gap: clamp(10px, 1.4vw, 16px);
-        box-shadow: var(--shadow-md);
-      }
-      .nav__buy-bar__price {
-        font-size: 15.5px;
-      }
-      .nav__buy-bar__action {
-        padding: 10px 18px;
-        min-height: 40px;
-        font-size: 15px;
+        display: none;
       }
 
       /* Prevent full-bleed carousel from causing page-wide horizontal overflow */
@@ -321,30 +300,6 @@
         max-width: 100%;
         margin-left: 0;
         margin-right: 0;
-      }
-    }
-    @media (max-width: 360px) {
-      .nav__buy-bar__price {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-      /* Buy-only: outer inset matches desktop vertical + end padding */
-      .nav__buy-bar {
-        padding: 5px 8px;
-        gap: 0;
-        justify-content: center;
-      }
-      .nav__buy-bar__action {
-        padding: 10px 18px;
-        min-height: 40px;
-        font-size: 15px;
       }
     }
 
@@ -528,6 +483,9 @@
       padding-top: var(--space-section-sm);
       padding-bottom: var(--space-section-sm);
     }
+    #problem .wrap {
+      max-width: 1320px;
+    }
     .problem__intro {
       max-width: 640px;
       margin-inline: auto;
@@ -538,367 +496,328 @@
     #problem-h2 em { color: var(--color-primary-500); }
     .problem__intro p { font-size: 17px; color: var(--color-text-2); line-height: 1.75; }
 
-    /* Interactive septic diagram */
-    .diagram-section {
-      margin-bottom: clamp(48px, 6vw, 64px);
-      /* Room for callouts/lenses that extend past the image box (stage is overflow: visible) */
+    /* ══════════════════════════════════════════════════════════
+       Split layout: problem diagram (sticky image + accordion)
+       ══════════════════════════════════════════════════════════ */
+    .split-diagram {
+      margin-bottom: clamp(48px, 6vw, 80px);
       padding-block: clamp(16px, 2.5vw, 32px);
       overflow: visible;
     }
-    .diagram-stage {
-      position: relative;
-      border-radius: var(--radius-lg);
-      overflow: visible;
-      opacity: 0;
-      transform: scale(0.97) translateY(20px);
+
+    .split-diagram__split {
+      display: grid;
+      /* Wider diagram / image column, narrower accordion column */
+      grid-template-columns: minmax(0, 1.32fr) minmax(0, 0.68fr);
+      gap: clamp(20px, 3.2vw, 44px);
+      row-gap: 24px;
+      align-items: start;
     }
-    .diagram-img {
+
+    .split-diagram__image-col {
+      align-self: start;
+    }
+
+    .split-diagram__image-sticky {
+      position: sticky;
+      top: clamp(80px, 10vh, 120px);
+    }
+
+    .split-diagram__stage {
+      position: relative;
+      /* Taller “card” container */
+      background: var(--color-marquee-pill);
+      border-radius: 16px;
+      overflow: visible;
+      min-height: clamp(400px, 43vw, 600px);
+      padding: clamp(12px, 2vw, 18px);
+      display: grid;
+      align-content: center;
+      opacity: 0;
+      transform: scale(0.97) translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .split-diagram__stage.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Center the diagram image within the container */
+    .split-diagram__canvas {
+      position: relative;
+      width: min(100%, 1160px);
+      margin-inline: auto;
+      aspect-ratio: 1160 / 624;
+      display: grid;
+      place-items: center;
+    }
+    .split-diagram__canvas > img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .split-diagram__img {
       width: 100%;
       height: auto;
       display: block;
       user-select: none;
       pointer-events: none;
-      border-radius: var(--radius-lg);
-    }
-    /* Cluster: lens + callout overlaid on bottom of circular lens */
-    .diagram-hotspot {
-      position: absolute;
-      z-index: 15;
-      width: max-content;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      opacity: 0;
-      overflow: visible;
-    }
-    .diagram-hotspot.active {
-      z-index: 25;
-    }
-    .diagram-hotspot .hotspot {
-      pointer-events: auto;
-    }
-    .hotspot__lens-stack {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: clamp(118px, 13vw, 176px);
-      height: clamp(118px, 13vw, 176px);
-      z-index: 1;
-      pointer-events: none;
+      border-radius: 12px;
     }
 
-    .hotspot {
+    .split-diagram__dot {
       position: absolute;
-      width: 52px;
-      height: 52px;
+      width: 32px;
+      height: 32px;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      pointer-events: auto;
+      cursor: pointer;
       padding: 0;
-      margin-left: -26px;
-      margin-top: -26px;
+      border: none;
+      background: none;
+    }
+    .split-diagram__dot:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 4px;
+      border-radius: 999px;
+    }
+
+    .split-diagram__dot-inner {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 2px 10px rgba(13, 30, 44, 0.20);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--color-secondary-600);
+      letter-spacing: -0.03em;
+      transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+      z-index: 2;
+    }
+
+    .split-diagram__dot-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      animation: diagramDotPulse 2.4s ease-in-out infinite;
+      z-index: 1;
+    }
+    .split-diagram__dot[data-index="0"] .split-diagram__dot-ring { animation-delay: 0s; }
+    .split-diagram__dot[data-index="1"] .split-diagram__dot-ring { animation-delay: 0.4s; }
+    .split-diagram__dot[data-index="2"] .split-diagram__dot-ring { animation-delay: 0.8s; }
+    .split-diagram__dot[data-index="3"] .split-diagram__dot-ring { animation-delay: 1.2s; }
+
+    @keyframes diagramDotPulse {
+      0%, 100% { transform: scale(1); opacity: 0; }
+      40% { transform: scale(1.4); opacity: 0.5; }
+      70% { transform: scale(1.6); opacity: 0; }
+    }
+
+    .split-diagram__dot.is-active .split-diagram__dot-inner {
+      background: var(--color-primary-500);
+      color: #fff;
+      border-color: var(--color-primary-400);
+      box-shadow:
+        0 0 0 4px var(--color-primary-50),
+        0 4px 16px rgba(42, 101, 227, 0.35);
+      transform: scale(1.15);
+    }
+    .split-diagram__dot.is-active .split-diagram__dot-ring {
+      animation: none;
+      opacity: 0;
+    }
+
+    .split-diagram__accordion-col {
+      padding-top: 0;
+    }
+
+    /* Wrapper for trigger + panel — full width on desktop; Mill layout uses it on mobile */
+    .split-diagram__accordion-text-col {
+      width: 100%;
+      min-width: 0;
+    }
+
+    /* Row: title+cost (left) + image (right) on mobile; display:contents on desktop */
+    .split-diagram__accordion-card-head {
+      display: contents;
+    }
+
+    .split-diagram__accordion {
+      border-top: 1px solid var(--color-border);
+    }
+
+    .split-diagram__accordion-item {
+      border-bottom: 1px solid var(--color-border);
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    .split-diagram__accordion-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 0;
       background: none;
       border: none;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
+      text-align: left;
+      font-family: var(--font-body);
+      transition: opacity 0.15s ease;
+    }
+    .split-diagram__accordion-trigger:hover .split-diagram__accordion-title {
+      color: var(--color-primary-500);
+    }
+    .split-diagram__accordion-trigger:focus-visible {
+      outline: 2px solid var(--color-border-focus);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
+
+    .split-diagram__accordion-num {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--color-marquee-pill);
+      border: none;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--color-secondary-200);
+      flex-shrink: 0;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .split-diagram__accordion-title {
+      flex: 1;
+      font-size: clamp(14px, 1.35vw, 16px);
+      font-weight: 500;
+      color: var(--color-text-2);
+      line-height: 1.3;
+      transition: color 0.2s ease;
+    }
+
+    .split-diagram__accordion-cost {
+      flex-shrink: 0;
+    }
+
+    .split-diagram__accordion-chevron {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin-left: 4px;
+      display: inline-grid;
+      place-items: center;
+      position: relative;
+    }
+    /* Navy chevrons from assets (mask = shape, fill = token) */
+    .split-diagram__accordion-chevron-icon {
+      grid-area: 1 / 1;
+      width: 16px;
+      height: 16px;
+      background-color: var(--color-secondary-600);
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-position: center;
+      transition: opacity 0.2s ease;
+    }
+    .split-diagram__accordion-chevron-icon--down {
+      -webkit-mask-image: url(images/chevron--down.svg);
+      mask-image: url(images/chevron--down.svg);
+      opacity: 1;
+    }
+    .split-diagram__accordion-chevron-icon--up {
+      -webkit-mask-image: url(images/chevron--up.svg);
+      mask-image: url(images/chevron--up.svg);
       opacity: 0;
     }
-    .hotspot__lens {
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 3px solid #fff;
-      box-shadow:
-        0 2px 14px rgba(13, 30, 44, 0.22),
-        0 0 0 1px rgba(0, 0, 0, 0.06);
-      display: block;
-      background: var(--color-surface);
-      box-sizing: border-box;
+    .split-diagram__accordion-item.is-active .split-diagram__accordion-chevron-icon--down {
+      opacity: 0;
     }
-    .hotspot__lens img {
+    .split-diagram__accordion-item.is-active .split-diagram__accordion-chevron-icon--up {
+      opacity: 1;
+    }
+
+    .split-diagram__accordion-item.is-active .split-diagram__accordion-num--trigger {
+      background-color: rgba(42, 101, 227, 1);
+      border-color: var(--color-primary-500);
+      color: rgba(255, 255, 255, 1);
+    }
+    .split-diagram__accordion-item.is-active .split-diagram__accordion-title {
+      color: var(--color-primary-600);
+    }
+
+    .split-diagram__accordion-panel {
+      overflow: hidden;
+    }
+    .split-diagram__accordion-panel[hidden] {
+      display: none;
+    }
+    .split-diagram__accordion-panel-inner {
+      padding: 0 0 24px 40px;
+    }
+
+    .split-diagram__accordion-mobile-img {
+      display: none;
+      margin-bottom: 16px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+    }
+    .split-diagram__accordion-mobile-img img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
       display: block;
     }
-    .hotspot--lens .hotspot__dot {
+
+    /* Thumbnail lives on the card (mobile); hidden on desktop — panel is text-only */
+    .split-diagram__accordion-thumb-wrap {
+      display: contents;
+    }
+    .split-diagram__accordion-num--thumb {
       display: none;
     }
-    .hotspot.hotspot--lens {
-      position: relative;
-      width: clamp(134px, 14.5vw, 196px);
-      height: clamp(134px, 14.5vw, 196px);
-      margin-left: 0;
-      margin-top: 0;
-      z-index: 2;
-      flex-shrink: 0;
-    }
-    .diagram-hotspot[data-index="0"] .hotspot__lens-stack {
-      width: clamp(128px, 14.3vw, 190px);
-      height: clamp(128px, 14.3vw, 190px);
-    }
-    .diagram-hotspot[data-index="0"] .hotspot.hotspot--lens {
-      width: clamp(148px, 15.6vw, 210px);
-      height: clamp(148px, 15.6vw, 210px);
-    }
-    .diagram-hotspot[data-index="1"] .hotspot__lens-stack {
-      width: clamp(136px, 15.2vw, 204px);
-      height: clamp(136px, 15.2vw, 204px);
-    }
-    .diagram-hotspot[data-index="1"] .hotspot.hotspot--lens {
-      width: clamp(156px, 16.8vw, 226px);
-      height: clamp(156px, 16.8vw, 226px);
-    }
-    .hotspot__ring {
+
+    .split-diagram__accordion-thumb {
       display: none;
+      width: 104px;
+      height: 60px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--color-bg-alt);
+      border: 1px solid rgba(13, 30, 44, 0.08);
+      margin: 8px 0 10px;
     }
-    .diagram-hotspot .hotspot.hotspot--lens {
-      opacity: 1;
-    }
-    /* Label-only hotspot (no lens) — e.g. central bottom callout */
-    .diagram-hotspot--label {
-      z-index: 16;
-    }
-    .hotspot.hotspot--label {
-      position: relative;
-      width: max-content;
-      max-width: min(340px, 92vw);
-      height: auto;
-      min-height: 0;
-      margin: 0;
-      padding: 0;
-      opacity: 1;
+    .split-diagram__accordion-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
-      cursor: pointer;
+      border-radius: 0;
     }
-    .diagram-hotspot .hotspot.hotspot--label {
-      opacity: 1;
-    }
-    .diagram-hotspot--label .callout {
-      position: relative;
-      left: auto;
-      right: auto;
-      bottom: auto;
-      transform: none;
-      opacity: 1;
-      max-width: min(340px, 92vw);
-      width: max-content;
-    }
-    .diagram-hotspot--label .hotspot--label .callout__body {
-      flex-direction: row;
-      flex-wrap: nowrap;
-      align-items: center;
-      justify-content: flex-start;
-      width: max-content;
-      max-width: 100%;
-      padding: 10px 14px;
-      gap: 8px;
-      border-color: rgba(255, 255, 255, 0.95);
-      min-width: min-content;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border-radius: var(--radius-sm);
-      box-shadow: 0 2px 12px rgba(13, 30, 44, 0.18);
-    }
-    .diagram-hotspot--label .hotspot--label .callout__text {
-      font-size: clamp(11px, 2.65vw, 13px);
-      font-weight: 600;
-      line-height: 1.3;
-      text-align: left;
-      flex: 0 1 auto;
-      width: auto;
-      max-width: none;
-      white-space: nowrap;
-    }
-    .diagram-hotspot--label .hotspot--label .cost-pill {
-      font-size: clamp(11px, 2.65vw, 13px);
-      padding: 5px 10px;
-      align-self: center;
-      white-space: nowrap;
-      flex-shrink: 0;
-      line-height: 1.3;
-    }
-    .diagram-hotspot--label .callout.active .callout__body {
-      border-color: #fff;
-      box-shadow: 0 2px 14px rgba(13, 30, 44, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.55);
-    }
-    .hotspot--label .hotspot__num {
-      display: none;
-    }
-    /* Shown on mobile only — desktop label uses inline callout */
-    .hotspot--label .hotspot__dot {
-      display: none;
-    }
-    .hotspot:focus-visible {
-      outline: 2px solid var(--color-border-2);
-      outline-offset: 3px;
-    }
-    .hotspot__dot {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #fff;
-      border: 2px solid #fff;
-      box-shadow: var(--shadow-sm), 0 0 0 1px rgba(0, 0, 0, 0.08);
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-      position: relative;
-      z-index: 1;
-    }
-    .hotspot.active .hotspot__dot {
-      background: #fff;
-      border-color: #fff;
-      transform: scale(1.12);
-      box-shadow: var(--shadow-md), 0 0 0 1px rgba(0, 0, 0, 0.06);
-    }
-    .hotspot__num {
-      display: none;
-    }
-    @media (min-width: 769px) and (max-width: 1024px) {
-      .hotspot__lens-stack {
-        width: clamp(108px, 12vw, 158px);
-        height: clamp(108px, 12vw, 158px);
-      }
-      .hotspot.hotspot--lens {
-        width: clamp(124px, 13.5vw, 176px);
-        height: clamp(124px, 13.5vw, 176px);
-      }
-      .diagram-hotspot[data-index="0"] .hotspot__lens-stack {
-        width: clamp(114px, 12.6vw, 172px);
-        height: clamp(114px, 12.6vw, 172px);
-      }
-      .diagram-hotspot[data-index="0"] .hotspot.hotspot--lens {
-        width: clamp(132px, 14.2vw, 192px);
-        height: clamp(132px, 14.2vw, 192px);
-      }
-      .diagram-hotspot[data-index="1"] .hotspot__lens-stack {
-        width: clamp(122px, 13.5vw, 182px);
-        height: clamp(122px, 13.5vw, 182px);
-      }
-      .diagram-hotspot[data-index="1"] .hotspot.hotspot--lens {
-        width: clamp(142px, 15vw, 202px);
-        height: clamp(142px, 15vw, 202px);
-      }
-    }
-    @media (min-width: 769px) {
-      .diagram-hotspot .hotspot {
-        pointer-events: none;
-        cursor: default;
-      }
-    }
-    .callout {
-      position: absolute;
-      z-index: 20;
-      opacity: 0;
-      pointer-events: none;
-      max-width: min(320px, 58vw);
-    }
-    .diagram-hotspot .hotspot__lens-stack .callout {
-      position: absolute;
-      z-index: 2;
-      left: 18%;
-      right: auto;
-      bottom: 6px;
-      width: max-content;
-      max-width: min(520px, 92vw);
-      min-width: 0;
+
+    .split-diagram__accordion-desc {
+      font-size: clamp(13px, 1.25vw, 14.5px);
+      color: var(--color-text-2);
+      line-height: 1.7;
       margin: 0;
-      flex-shrink: 0;
-      opacity: 1;
-      visibility: visible;
-      overflow: visible;
-      pointer-events: none;
-      transform: translateX(8px);
     }
-    /* Hotspot 0 — Plugged drain field: callout sits further left on the lens */
-    .diagram-hotspot[data-index="0"] .hotspot__lens-stack .callout {
-      left: 6%;
-      bottom: 2px;
-      transform: translateX(-6px);
-    }
-    /* Hotspot 2 — Too Frequent Pumping: lower callout + shift label left */
-    .diagram-hotspot[data-index="2"] .hotspot__lens-stack .callout {
-      bottom: -8px;
-      transform: translateX(-42px); /* net ~50px left vs base +8px */
-    }
-    .callout.active .callout__body {
-      box-shadow: var(--shadow-md);
-      border-color: var(--color-primary-300);
-    }
-    .callout__body {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px 12px;
-      justify-content: space-between;
-      background: var(--color-surface);
-      border-radius: var(--radius-md);
-      padding: 10px 12px;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--color-border);
-      min-width: 0;
-      transition: box-shadow 0.2s ease, border-color 0.2s ease;
-    }
-    .callout__text {
-      margin: 0;
-      flex: 1 1 140px;
-      min-width: 0;
-      font-size: 12.5px;
-      font-weight: var(--weight-semibold);
-      color: var(--color-text);
-      line-height: 1.45;
-    }
-    .diagram-hotspot .hotspot__lens-stack .callout__text {
-      font-size: clamp(11px, 2.65vw, 13px);
-      font-weight: 600;
-      line-height: 1.3;
-      text-align: left;
-      flex: 0 1 auto;
-      width: auto;
-      max-width: none;
-      white-space: nowrap;
-    }
-    .diagram-hotspot .hotspot__lens-stack .callout__body {
-      flex-direction: row;
-      flex-wrap: nowrap;
-      align-items: center;
-      justify-content: flex-start;
-      width: max-content;
-      max-width: inherit;
-      padding: 10px 14px;
-      gap: 8px;
-      border-color: rgba(255, 255, 255, 0.95);
-      min-width: min-content;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border-radius: var(--radius-sm);
-      box-shadow: 0 2px 12px rgba(13, 30, 44, 0.18);
-    }
-    .diagram-hotspot .hotspot__lens-stack .callout.active .callout__body {
-      border-color: #fff;
-      box-shadow: 0 2px 14px rgba(13, 30, 44, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.55);
-    }
-    .diagram-hotspot .cost-pill {
-      font-size: clamp(11px, 2.65vw, 13px);
-      padding: 5px 10px;
-      line-height: 1.3;
-    }
-    .diagram-hotspot .hotspot__lens-stack .cost-pill {
-      font-size: clamp(11px, 2.65vw, 13px);
-      padding: 5px 10px;
-      align-self: center;
-      white-space: nowrap;
-      text-align: center;
-      flex-shrink: 0;
-      line-height: 1.3;
-    }
+
     .cost-pill {
       display: inline-flex;
       align-items: center;
@@ -914,244 +833,286 @@
       color: var(--color-cost-pill-text);
       flex-shrink: 0;
     }
-    .diagram-section .cost-pill {
-      border-radius: 4px;
+
+    @media (prefers-reduced-motion: reduce) {
+      .split-diagram__dot-ring { animation: none; }
+      .split-diagram__stage,
+      .split-diagram__accordion-item {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
     }
-    .diagram-cards {
-      display: none;
-      list-style: none;
-      margin: 0;
-      padding: 0;
+
+    /* Tablet: stack for more breathing room */
+    @media (max-width: 1024px) {
+      .split-diagram__split {
+        grid-template-columns: 1fr;
+        gap: clamp(14px, 2.5vw, 22px);
+      }
+      .split-diagram__image-sticky {
+        position: relative;
+        top: auto;
+      }
     }
-    .diagram-cards li {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      flex-shrink: 0;
-      scroll-snap-align: start;
-    }
-    .diagram-card {
-      flex-shrink: 0;
-      width: 100%;
-      min-height: 44px;
-      background: var(--color-surface);
-      border: 1.5px solid var(--color-border);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      text-align: left;
-      cursor: pointer;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      font-family: inherit;
-    }
-    .diagram-card:focus-visible {
-      outline: 2px solid var(--color-border-focus);
-      outline-offset: 2px;
-    }
-    .diagram-card.active {
-      border-color: var(--color-primary-500);
-      box-shadow: 0 0 0 3px var(--color-primary-50);
-      transform: translateY(-2px);
-    }
-    .diagram-card__num {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      font-family: var(--font-display);
-      background: var(--color-surface);
-      color: var(--color-secondary-600);
-      border: 1.5px solid var(--color-border);
-      font-size: 13px;
-      font-weight: 700;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-      box-sizing: border-box;
-    }
-    .diagram-card.active .diagram-card__num {
-      background: var(--color-primary-50);
-      color: var(--color-secondary-600);
-      border-color: var(--color-secondary-600);
-    }
-    .diagram-card__head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 4px;
-    }
-    .diagram-card__head .diagram-card__title {
-      margin-bottom: 0;
-      flex: 1;
-      min-width: 0;
-    }
-    .diagram-card__title {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--color-text);
-      margin-bottom: 4px;
-    }
-    .diagram-card__cost.cost-pill {
-      margin-top: 1px;
-    }
-    .diagram-card__body {
-      font-size: 12.5px;
-      color: var(--color-text-2);
-      line-height: 1.5;
-    }
+
     @media (max-width: 768px) {
-      /* Image + solid white dots only; copy lives in cards below */
-      .diagram-hotspot .hotspot__lens-stack {
-        display: none !important;
+      #diagram-section {
+        overflow-x: clip;
       }
-      .diagram-hotspot--label .callout {
-        display: none !important;
+      .split-diagram {
+        overflow-x: clip;
+        padding-inline: 0;
       }
-      /* Fixed-size anchor per hotspot so hit boxes don’t stack on a collapsed parent */
-      .diagram-hotspot {
-        width: 52px;
-        height: 52px;
-        max-width: 52px;
-        max-height: 52px;
-        box-sizing: border-box;
-      }
-      /* Keep all four markers on-screen; spaced to reduce 52px circles overlapping */
-      .diagram-hotspot[data-index="0"] {
-        left: 6% !important;
-        top: 36% !important;
-      }
-      .diagram-hotspot[data-index="1"] {
-        left: 28% !important;
-        top: 58% !important;
-      }
-      .diagram-hotspot[data-index="2"] {
-        left: 84% !important;
-        top: 20% !important;
-      }
-      .diagram-hotspot[data-index="3"] {
-        left: 52% !important;
-        top: 64% !important;
-      }
-      .hotspot.hotspot--lens {
-        position: relative;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
+      .split-diagram__split {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+        overflow: hidden;
         min-width: 0;
-        min-height: 0;
-        margin-left: 0;
-        margin-top: 0;
-        opacity: 1;
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        place-items: center;
       }
-      .hotspot--lens .hotspot__ring {
-        display: none;
+
+      .split-diagram__image-col {
+        min-width: 0;
+        max-width: 100%;
       }
-      .hotspot--lens .hotspot__dot {
-        display: block;
-        grid-column: 1;
-        grid-row: 1;
-      }
-      .diagram-hotspot--label .hotspot.hotspot--label {
-        width: 100%;
-        height: 100%;
-        min-height: 0;
-        max-width: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        place-items: center;
+
+      .split-diagram__image-sticky {
         position: relative;
-        left: 0;
-        top: 0;
+        top: auto;
+        margin-bottom: 0;
+        min-width: 0;
+        max-width: 100%;
       }
-      .hotspot--label .hotspot__dot {
+
+      .split-diagram__stage {
+        min-height: 0;
+        min-width: 0;
+        max-width: 100%;
+        height: auto;
         display: block;
-        grid-column: 1;
-        grid-row: 1;
+        padding: 10px;
+        overflow: visible;
+        border-radius: 16px;
+        background: var(--color-marquee-pill);
       }
-      .diagram-hotspot--label .hotspot--label .callout__text {
-        white-space: normal;
-      }
-      /* Numbers 1–4 centered on white dots */
-      .diagram-hotspot .hotspot__num {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        grid-column: 1;
-        grid-row: 1;
-        z-index: 2;
-        width: 28px;
-        height: 28px;
-        margin: 0;
-        padding: 0;
-        font-family: var(--font-display);
-        font-size: 14px;
-        font-weight: 800;
-        color: var(--color-secondary-600);
-        letter-spacing: -0.03em;
-        line-height: 1;
-        pointer-events: none;
-      }
-      .hotspot__dot {
-        width: 28px;
-        height: 28px;
-        border: none;
-        box-shadow: 0 2px 10px rgba(13, 30, 44, 0.22);
-      }
-      .hotspot.active .hotspot__dot {
-        transform: scale(1.12);
-        box-shadow: 0 3px 14px rgba(13, 30, 44, 0.3);
-      }
-      .hotspot.active .hotspot__num {
-        color: var(--color-secondary-600);
-      }
-      .diagram-card__head {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-      .diagram-card__head .diagram-card__title {
-        flex: none;
+
+      .split-diagram__canvas {
+        position: relative;
         width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin: 0 auto;
+        display: block;
+        overflow: visible;
       }
-      .diagram-card__cost.cost-pill {
-        margin-top: 0;
-        align-self: flex-start;
+
+      .split-diagram__canvas > img,
+      .split-diagram__canvas .split-diagram__img {
+        position: static;
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        object-fit: unset;
       }
-      .diagram-card__num {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
-      }
-      .diagram-cards {
+
+      .split-diagram__dot[data-index="0"] { left: 10% !important; top: 52% !important; }
+      .split-diagram__dot[data-index="1"] { left: 40% !important; top: 80% !important; }
+      .split-diagram__dot[data-index="2"] { left: 82% !important; top: 26% !important; }
+      .split-diagram__dot[data-index="3"] { left: 56% !important; top: 68% !important; }
+
+      .split-diagram__accordion {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        gap: 12px;
+        gap: 10px;
+        padding: 16px var(--pad-x) 20px;
+        scroll-padding-left: var(--pad-x);
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
-        padding: 16px var(--pad-x) 20px;
-        margin-top: 8px;
+        border-top: none;
         scrollbar-width: none;
+        margin: 0;
       }
-      .diagram-cards .diagram-card {
-        width: 220px;
-        max-width: 220px;
-        flex: 0 0 auto;
-      }
-      .diagram-cards::-webkit-scrollbar {
+      .split-diagram__accordion::-webkit-scrollbar {
         display: none;
+      }
+
+      .split-diagram__accordion-item {
+        flex: 0 0 min(300px, 82vw);
+        max-width: min(300px, 82vw);
+        scroll-snap-align: start;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        border: 1.5px solid var(--color-border);
+        border-radius: var(--radius-md);
+        background: var(--color-surface);
+        box-shadow: var(--shadow-sm);
+        padding: 14px;
+        border-bottom: 1.5px solid var(--color-border);
+        opacity: 1 !important;
+        transform: none !important;
+        visibility: visible !important;
+      }
+      .split-diagram__accordion-item.is-active {
+        border-color: var(--color-primary-500);
+        box-shadow: 0 0 0 3px var(--color-primary-50), var(--shadow-sm);
+      }
+
+      .split-diagram__accordion-card-head {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 12px;
+        width: 100%;
+      }
+
+      .split-diagram__accordion-thumb-wrap {
+        display: block;
+        position: relative;
+        flex-shrink: 0;
+        align-self: flex-start;
+        margin-left: auto;
+      }
+
+      .split-diagram__accordion-thumb {
+        display: block !important;
+        flex-shrink: 0;
+        width: 112px;
+        aspect-ratio: 240 / 136;
+        height: auto;
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        background: var(--color-bg-alt);
+        border: 1px solid rgba(13, 30, 44, 0.08);
+        margin: 0;
+      }
+      .split-diagram__accordion-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+        display: block;
+        border-radius: 0;
+      }
+
+      /* Step badge on thumbnail (upper-right of image); trigger keeps SR-only duplicate */
+      .split-diagram__accordion-num--thumb {
+        display: grid;
+        place-items: center;
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        left: auto;
+        z-index: 2;
+        width: 22px;
+        height: 22px;
+        margin: 0;
+        padding: 0;
+        border-radius: 50%;
+        background: var(--color-marquee-pill);
+        font-family: var(--font-display);
+        font-size: 10px;
+        font-weight: 800;
+        color: var(--color-secondary-200);
+        box-shadow: 0 1px 4px rgba(13, 30, 44, 0.2);
+        pointer-events: none;
+      }
+      .split-diagram__accordion-item.is-active .split-diagram__accordion-num--thumb {
+        background: var(--color-primary-500);
+        color: #fff;
+      }
+
+      .split-diagram__accordion-text-col {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      /* Title + cost only — step number is on the thumbnail */
+      .split-diagram__accordion-trigger {
+        position: relative;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        background: none;
+        border: none;
+        text-align: left;
+        cursor: default;
+        pointer-events: none;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        row-gap: 8px;
+        align-items: start;
+      }
+
+      .split-diagram__accordion-num--trigger {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .split-diagram__accordion-title {
+        grid-column: 1;
+        grid-row: 1;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--color-text);
+        line-height: 1.3;
+        min-width: 0;
+      }
+
+      .split-diagram__accordion-cost {
+        grid-column: 1;
+        grid-row: 2;
+        justify-self: start;
+        font-size: 11px;
+      }
+
+      .split-diagram__accordion-chevron {
+        display: none !important;
+      }
+
+      .split-diagram__accordion-mobile-img {
+        display: none !important;
+      }
+
+      .split-diagram__accordion-panel {
+        display: block !important;
+        overflow: visible;
+        height: auto !important;
+        opacity: 1 !important;
+        width: 100%;
+        flex-shrink: 0;
+      }
+      .split-diagram__accordion-panel[hidden] {
+        display: block !important;
+      }
+      .split-diagram__accordion-panel-inner {
+        padding: 0;
+        margin-top: 0;
+      }
+      .split-diagram__accordion-desc {
+        font-size: 12.5px;
+        color: var(--color-text-2);
+        line-height: 1.55;
+        margin: 0;
+      }
+
+      .split-diagram__accordion-item.is-active .split-diagram__accordion-title {
+        color: var(--color-primary-600);
       }
     }
 
@@ -1203,7 +1164,7 @@
       z-index: 1;
       display: flex;
       width: max-content;
-      animation: trustMarqueeScroll 42s linear infinite;
+      animation: trustMarqueeScroll 52s linear infinite;
       will-change: transform;
     }
     .trust-marquee__set {
@@ -1215,10 +1176,6 @@
     .trust-marquee .trust-marquee__pill {
       background-color: var(--color-marquee-pill);
       margin-right: var(--trust-marquee-gap);
-    }
-    /* Avoid a trailing blank space at the loop boundary */
-    .trust-marquee__set:last-of-type .trust-marquee__pill:last-child {
-      margin-right: 0;
     }
     @keyframes trustMarqueeScroll {
       to { transform: translateX(-50%); }
@@ -1368,7 +1325,8 @@
     .cost-banner {
       background: rgba(244, 245, 247, 0);
       border-radius: 0;
-      padding: clamp(48px, 7vw, 88px) clamp(20px, 4vw, 40px) 0;
+      /* Remove top padding; keep horizontal spacing only */
+      padding: 0 clamp(20px, 4vw, 40px) 0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -2952,6 +2910,90 @@
       }
     }
 
+    /* ── Mobile sticky CTA bar ──────────────────────────────────
+       Independent of the nav. Visible only on mobile (≤768px).
+       Matches Mill.com reference: info left, pill button right.
+    ──────────────────────────────────────────────────────────── */
+    .mob-cta-bar {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .mob-cta-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 300;
+        background: var(--color-surface);
+        border-top: 1px solid var(--color-border);
+        box-shadow: 0 -4px 20px rgba(13, 30, 44, 0.08);
+        padding: 12px 20px;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      }
+
+      .mob-cta-bar__info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex-shrink: 0;
+      }
+      .mob-cta-bar__name {
+        font-family: var(--font-body);
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--color-text);
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+      }
+      .mob-cta-bar__price {
+        font-family: var(--font-body);
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--color-text-2);
+        line-height: 1.2;
+      }
+
+      .mob-cta-bar__btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 28px;
+        border-radius: var(--radius-pill);
+        background: var(--color-primary-500);
+        color: #fff;
+        font-family: var(--font-body);
+        font-size: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+        min-height: 50px;
+        transition: background 0.2s ease, transform 0.15s ease;
+      }
+      .mob-cta-bar__btn:hover,
+      .mob-cta-bar__btn:focus-visible {
+        background: var(--color-primary-400);
+        transform: translateY(-1px);
+      }
+      .mob-cta-bar__btn:active {
+        transform: translateY(0);
+        background: var(--color-primary-600);
+      }
+      .mob-cta-bar__btn:focus-visible {
+        outline: 2px solid var(--color-border-focus);
+        outline-offset: 3px;
+      }
+
+      body {
+        padding-bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -3118,168 +3160,191 @@
       <p>Septic systems are designed to break down waste, not handle the constant flow of hair and lint from modern laundry. Over time, that buildup reduces flow, clogs your system, and leads to serious (and expensive) issues.</p>
     </div>
 
-    <div class="diagram-section" id="diagram-section">
-      <div
-        class="diagram-stage"
-        id="diagram-stage"
-        role="img"
-        aria-label="Cross-section diagram of a buried septic system. Four callouts: plugged drain field, clogged sump or filter, too frequent pumping, and burnt out aerator, with typical repair cost ranges."
-      >
-        <img
-          src="images/septic-diagram-2.png"
-          alt=""
-          class="diagram-img"
-          id="diagram-img"
-          width="1160"
-          height="624"
-          decoding="async"
-        />
+    <div class="split-diagram" id="diagram-section">
+      <div class="split-diagram__split">
+        <div class="split-diagram__image-col" id="split-diagram-image-col">
+          <div class="split-diagram__image-sticky" id="split-diagram-image-sticky">
+            <div class="split-diagram__stage" id="split-diagram-stage">
+              <div class="split-diagram__canvas">
+                <img
+                  src="images/septic-diagram-2.png"
+                  alt="Cross-section of a septic system showing four problem zones"
+                  class="split-diagram__img"
+                  id="split-diagram-img"
+                  width="1160"
+                  height="624"
+                  decoding="async"
+                />
 
-        <div class="diagram-hotspot" data-index="0" style="left: 10%; top: 54%;">
-          <button
-            type="button"
-            class="hotspot hotspot--lens"
-            data-index="0"
-            aria-pressed="false"
-            aria-label="Plugged drain field: close-up and typical replacement cost"
-          >
-            <span class="hotspot__ring" aria-hidden="true"></span>
-            <span class="hotspot__dot" aria-hidden="true"></span>
-            <span class="hotspot__lens-stack">
-              <span class="hotspot__lens">
-                <img src="images/hotspot-01.png" alt="" width="160" height="160" loading="lazy" decoding="async" />
-              </span>
-              <div class="callout" data-index="0">
-                <div class="callout__body">
-                  <p class="callout__text">Plugged Drain Field</p>
-                  <span class="cost-pill" aria-label="Typical replacement cost range">$3k–$20k+</span>
-                </div>
-              </div>
-            </span>
-            <span class="hotspot__num" aria-hidden="true">1</span>
-          </button>
-        </div>
-
-        <div class="diagram-hotspot" data-index="1" style="left: calc(44% - 120px); top: 88%;">
-          <button
-            type="button"
-            class="hotspot hotspot--lens"
-            data-index="1"
-            aria-pressed="false"
-            aria-label="Clogged sump or filter: close-up and typical repair cost"
-          >
-            <span class="hotspot__ring" aria-hidden="true"></span>
-            <span class="hotspot__dot" aria-hidden="true"></span>
-            <span class="hotspot__lens-stack">
-              <span class="hotspot__lens">
-                <img src="images/hotspot-02.png" alt="" width="160" height="160" loading="lazy" decoding="async" />
-              </span>
-              <div class="callout" data-index="1">
-                <div class="callout__body">
-                  <p class="callout__text">Clogged Sump/filter</p>
-                  <span class="cost-pill" aria-label="Typical repair cost">$2k</span>
-                </div>
-              </div>
-            </span>
-            <span class="hotspot__num" aria-hidden="true">2</span>
-          </button>
-        </div>
-
-        <div class="diagram-hotspot" data-index="2" style="left: 82%; top: 26%;">
-          <button
-            type="button"
-            class="hotspot hotspot--lens"
-            data-index="2"
-            aria-pressed="false"
-            aria-label="Too frequent pumping from inlet strain: close-up and typical extra cost"
-          >
-            <span class="hotspot__ring" aria-hidden="true"></span>
-            <span class="hotspot__dot" aria-hidden="true"></span>
-            <span class="hotspot__lens-stack">
-              <span class="hotspot__lens">
-                <img src="images/hotspot-03.png" alt="" width="160" height="160" loading="lazy" decoding="async" />
-              </span>
-              <div class="callout" data-index="2">
-                <div class="callout__body">
-                  <p class="callout__text">Too Frequent Pumping</p>
-                  <span class="cost-pill" aria-label="Typical extra cost range">$250–$500</span>
-                </div>
-              </div>
-            </span>
-            <span class="hotspot__num" aria-hidden="true">3</span>
-          </button>
-        </div>
-
-        <div class="diagram-hotspot diagram-hotspot--label" data-index="3" style="left: calc(50% + 100px); top: 71%;">
-          <button
-            type="button"
-            class="hotspot hotspot--label"
-            data-index="3"
-            aria-pressed="false"
-            aria-label="Burnt out aerator: typical repair cost $500 to $2,000"
-          >
-            <span class="hotspot__dot" aria-hidden="true"></span>
-            <span class="hotspot__num" aria-hidden="true">4</span>
-            <div class="callout" data-index="3">
-              <div class="callout__body">
-                <p class="callout__text">Burnt Out Aerator</p>
-                <span class="cost-pill" aria-label="Typical repair cost range">$500–$2k</span>
+                <button type="button" class="split-diagram__dot" data-index="0" style="left:10%; top:54%;"
+                        aria-label="Open: Plugged Drain Field">
+                  <span class="split-diagram__dot-ring"></span>
+                  <span class="split-diagram__dot-inner">1</span>
+                </button>
+                <button type="button" class="split-diagram__dot" data-index="1" style="left:calc(44% - 120px); top:88%;"
+                        aria-label="Open: Clogged Sump/Filter">
+                  <span class="split-diagram__dot-ring"></span>
+                  <span class="split-diagram__dot-inner">2</span>
+                </button>
+                <button type="button" class="split-diagram__dot" data-index="2" style="left:82%; top:26%;"
+                        aria-label="Open: Too Frequent Pumping">
+                  <span class="split-diagram__dot-ring"></span>
+                  <span class="split-diagram__dot-inner">3</span>
+                </button>
+                <button type="button" class="split-diagram__dot" data-index="3" style="left:calc(50% + 100px); top:71%;"
+                        aria-label="Open: Burnt Out Aerator">
+                  <span class="split-diagram__dot-ring"></span>
+                  <span class="split-diagram__dot-inner">4</span>
+                </button>
               </div>
             </div>
-          </button>
+          </div>
+        </div>
+
+        <div class="split-diagram__accordion-col" id="split-diagram-accordion-col">
+          <div class="split-diagram__accordion" id="split-diagram-accordion" role="list">
+            <div class="split-diagram__accordion-item" data-index="0" role="listitem">
+              <div class="split-diagram__accordion-card-head">
+                <div class="split-diagram__accordion-text-col">
+                  <button
+                    type="button"
+                    class="split-diagram__accordion-trigger"
+                    aria-expanded="false"
+                    aria-controls="split-diagram-panel-0"
+                    id="split-diagram-trigger-0"
+                  >
+                    <span class="split-diagram__accordion-num split-diagram__accordion-num--trigger">1</span>
+                    <span class="split-diagram__accordion-title">Plugged Drain Field</span>
+                    <span class="split-diagram__accordion-cost cost-pill" aria-label="Typical replacement cost">$3k–$20k+</span>
+                    <span class="split-diagram__accordion-chevron" aria-hidden="true">
+                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--down"></span>
+                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--up"></span>
+                    </span>
+                  </button>
+                </div>
+                <div class="split-diagram__accordion-thumb-wrap">
+                  <div class="split-diagram__accordion-thumb" aria-hidden="true">
+                    <img src="images/sump-pump-maintenance-2.jpeg" alt="" width="240" height="136" loading="lazy" decoding="async" />
+                  </div>
+                  <span class="split-diagram__accordion-num split-diagram__accordion-num--thumb" aria-hidden="true">1</span>
+                </div>
+              </div>
+              <div class="split-diagram__accordion-panel" id="split-diagram-panel-0" role="region" aria-labelledby="split-diagram-trigger-0" hidden>
+                <div class="split-diagram__accordion-panel-inner">
+                  <p class="split-diagram__accordion-desc">
+                    Hair and lint slip past the tank and clog the drain field over time. When the field plugs, wastewater can’t soak in — often requiring a full excavation and replacement.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="split-diagram__accordion-item" data-index="1" role="listitem">
+              <div class="split-diagram__accordion-card-head">
+                <div class="split-diagram__accordion-text-col">
+                  <button
+                    type="button"
+                    class="split-diagram__accordion-trigger"
+                    aria-expanded="false"
+                    aria-controls="split-diagram-panel-1"
+                    id="split-diagram-trigger-1"
+                  >
+                    <span class="split-diagram__accordion-num split-diagram__accordion-num--trigger">2</span>
+                    <span class="split-diagram__accordion-title">Clogged Sump/Filter</span>
+                    <span class="split-diagram__accordion-cost cost-pill" aria-label="Typical repair cost">$2k</span>
+                    <span class="split-diagram__accordion-chevron" aria-hidden="true">
+                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--down"></span>
+                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--up"></span>
+                    </span>
+                  </button>
+                </div>
+                <div class="split-diagram__accordion-thumb-wrap">
+                  <div class="split-diagram__accordion-thumb" aria-hidden="true">
+                    <img src="images/sump-pump-maintenance-2.jpeg" alt="" width="240" height="136" loading="lazy" decoding="async" />
+                  </div>
+                  <span class="split-diagram__accordion-num split-diagram__accordion-num--thumb" aria-hidden="true">2</span>
+                </div>
+              </div>
+              <div class="split-diagram__accordion-panel" id="split-diagram-panel-1" role="region" aria-labelledby="split-diagram-trigger-1" hidden>
+                <div class="split-diagram__accordion-panel-inner">
+                  <p class="split-diagram__accordion-desc">
+                    Fibres wrap around screens and filter media, choking flow until the pump strains or fails. Fixes usually mean a pump-out and parts replacement — and can add up fast.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="split-diagram__accordion-item" data-index="2" role="listitem">
+              <div class="split-diagram__accordion-card-head">
+                <div class="split-diagram__accordion-text-col">
+                  <button
+                    type="button"
+                    class="split-diagram__accordion-trigger"
+                    aria-expanded="false"
+                    aria-controls="split-diagram-panel-2"
+                    id="split-diagram-trigger-2"
+                  >
+                    <span class="split-diagram__accordion-num split-diagram__accordion-num--trigger">3</span>
+                    <span class="split-diagram__accordion-title">Too Frequent Pumping</span>
+                    <span class="split-diagram__accordion-cost cost-pill" aria-label="Typical extra cost per visit">$250–$500</span>
+                    <span class="split-diagram__accordion-chevron" aria-hidden="true">
+                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--down"></span>
+                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--up"></span>
+                    </span>
+                  </button>
+                </div>
+                <div class="split-diagram__accordion-thumb-wrap">
+                  <div class="split-diagram__accordion-thumb" aria-hidden="true">
+                    <img src="images/sump-pump-maintenance-2.jpeg" alt="" width="240" height="136" loading="lazy" decoding="async" />
+                  </div>
+                  <span class="split-diagram__accordion-num split-diagram__accordion-num--thumb" aria-hidden="true">3</span>
+                </div>
+              </div>
+              <div class="split-diagram__accordion-panel" id="split-diagram-panel-2" role="region" aria-labelledby="split-diagram-trigger-2" hidden>
+                <div class="split-diagram__accordion-panel-inner">
+                  <p class="split-diagram__accordion-desc">
+                    Lint adds extra solids that don’t break down, so the tank fills faster. That can shorten pumping intervals from years to months — adding recurring pump-out costs.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="split-diagram__accordion-item" data-index="3" role="listitem">
+              <div class="split-diagram__accordion-card-head">
+                <div class="split-diagram__accordion-text-col">
+                  <button
+                    type="button"
+                    class="split-diagram__accordion-trigger"
+                    aria-expanded="false"
+                    aria-controls="split-diagram-panel-3"
+                    id="split-diagram-trigger-3"
+                  >
+                    <span class="split-diagram__accordion-num split-diagram__accordion-num--trigger">4</span>
+                    <span class="split-diagram__accordion-title">Burnt Out Aerator</span>
+                    <span class="split-diagram__accordion-cost cost-pill" aria-label="Typical repair cost range">$500–$2k</span>
+                    <span class="split-diagram__accordion-chevron" aria-hidden="true">
+                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--down"></span>
+                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--up"></span>
+                    </span>
+                  </button>
+                </div>
+                <div class="split-diagram__accordion-thumb-wrap">
+                  <div class="split-diagram__accordion-thumb" aria-hidden="true">
+                    <img src="images/sump-pump-maintenance-2.jpeg" alt="" width="240" height="136" loading="lazy" decoding="async" />
+                  </div>
+                  <span class="split-diagram__accordion-num split-diagram__accordion-num--thumb" aria-hidden="true">4</span>
+                </div>
+              </div>
+              <div class="split-diagram__accordion-panel" id="split-diagram-panel-3" role="region" aria-labelledby="split-diagram-trigger-3" hidden>
+                <div class="split-diagram__accordion-panel-inner">
+                  <p class="split-diagram__accordion-desc">
+                    Fine fibres coat the diffuser and restrict airflow, forcing the motor to run hot. The decline is slow and easy to miss until performance drops or backups start.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <ul class="diagram-cards" id="diagram-cards" aria-label="Septic risk factors">
-        <li>
-          <button type="button" class="diagram-card" data-index="0">
-            <span class="diagram-card__num" aria-hidden="true">1</span>
-            <div class="diagram-card__content">
-              <div class="diagram-card__head">
-                <div class="diagram-card__title">Plugged Drain Field</div>
-                <span class="diagram-card__cost cost-pill">$3k–$20k+</span>
-              </div>
-              <div class="diagram-card__body">When the drain field plugs, effluent can’t percolate — often leading to a full system replacement.</div>
-            </div>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="diagram-card" data-index="1">
-            <span class="diagram-card__num" aria-hidden="true">2</span>
-            <div class="diagram-card__content">
-              <div class="diagram-card__head">
-                <div class="diagram-card__title">Clogged Sump/filter</div>
-                <span class="diagram-card__cost cost-pill">$2k</span>
-              </div>
-              <div class="diagram-card__body">Pump and filter clogs strain the tank, slow drainage, and can trigger costly pump-outs and repairs.</div>
-            </div>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="diagram-card" data-index="2">
-            <span class="diagram-card__num" aria-hidden="true">3</span>
-            <div class="diagram-card__content">
-              <div class="diagram-card__head">
-                <div class="diagram-card__title">Too Frequent Pumping</div>
-                <span class="diagram-card__cost cost-pill">$250–$500</span>
-              </div>
-              <div class="diagram-card__body">Lint and debris force more pump-outs and maintenance — extra cost before bigger failures show up.</div>
-            </div>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="diagram-card" data-index="3">
-            <span class="diagram-card__num" aria-hidden="true">4</span>
-            <div class="diagram-card__content">
-              <div class="diagram-card__head">
-                <div class="diagram-card__title">Burnt Out Aerator</div>
-                <span class="diagram-card__cost cost-pill">$500–$2k</span>
-              </div>
-              <div class="diagram-card__body">When the aerator fails, the system loses treatment capacity — repairs or replacement often run from $500 to $2,000.</div>
-            </div>
-          </button>
-        </li>
-      </ul>
     </div>
 
     <div class="cost-banner reveal">
@@ -3308,7 +3373,7 @@
 
 <div class="trust-marquee-wrap">
   <p class="trust-marquee__sr-only" id="trust-marquee-desc">
-    90%+ filtration tested by third parties. 5,000+ gallons filtered annually per home. Trusted in 9 states and 7+ countries.
+    90%+ filtration tested by third parties. 5,000+ gallons filtered annually per home. Trusted in 9 states and 7+ countries. No plumber — installs in 15 minutes.
   </p>
   <div class="trust-marquee" role="presentation" aria-hidden="true">
     <div class="trust-marquee__viewport">
@@ -3319,11 +3384,13 @@
           <span class="trust-marquee__pill">90%+ filtration tested by third parties</span>
           <span class="trust-marquee__pill">5,000+ gallons filtered annually per home</span>
           <span class="trust-marquee__pill">Trusted in 9 states and 7+ countries</span>
+          <span class="trust-marquee__pill">No plumber — installs in 15 minutes</span>
         </div>
         <div class="trust-marquee__set">
           <span class="trust-marquee__pill">90%+ filtration tested by third parties</span>
           <span class="trust-marquee__pill">5,000+ gallons filtered annually per home</span>
           <span class="trust-marquee__pill">Trusted in 9 states and 7+ countries</span>
+          <span class="trust-marquee__pill">No plumber — installs in 15 minutes</span>
         </div>
       </div>
     </div>
@@ -3690,6 +3757,76 @@
           </button>
           <div class="faq-ans" id="fa3" role="region" aria-labelledby="fa3-trigger">No. Installation takes less than 15 minutes with no tools. The package includes everything you need.</div>
         </div>
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa4" id="fa4-trigger">
+            Do septic tanks remove microplastics?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa4" role="region" aria-labelledby="fa4-trigger">Placeholder answer text.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa5" id="fa5-trigger">
+            Can microplastics reach my well water?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa5" role="region" aria-labelledby="fa5-trigger">Placeholder answer text.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa6" id="fa6-trigger">
+            What’s the simplest way to reduce microplastics from my home?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa6" role="region" aria-labelledby="fa6-trigger">Placeholder answer text.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa7" id="fa7-trigger">
+            Will a laundry filter affect my septic system?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa7" role="region" aria-labelledby="fa7-trigger">Placeholder answer text.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa8" id="fa8-trigger">
+            What happens if microplastics clog my septic’s soil pores?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa8" role="region" aria-labelledby="fa8-trigger">Placeholder answer text.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa9" id="fa9-trigger">
+            What are the warning signs my drainfield is stressed?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa9" role="region" aria-labelledby="fa9-trigger">Placeholder answer text.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa10" id="fa10-trigger">
+            Why should I filter before the septic system instead of at the tap?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa10" role="region" aria-labelledby="fa10-trigger">Placeholder answer text.</div>
+        </div>
       </div>
       <a href="#product" class="btn btn--secondary">Buy the CLEANR Filter</a>
     </div>
@@ -3740,6 +3877,20 @@
     <p class="footer__legal">© 2026 CLEANR. All rights reserved. | <a href="https://cleanr.life">cleanr.life</a></p>
   </div>
 </footer>
+
+<!-- ── Mobile sticky CTA bar ────────────────────────────────
+     Visible only on mobile (≤768px). Hidden on desktop via CSS.
+     Mirrors Mill.com reference: name+price left, pill button right.
+──────────────────────────────────────────────────────────── -->
+<div class="mob-cta-bar" id="mob-cta-bar" aria-label="Purchase CLEANR Filter">
+  <div class="mob-cta-bar__info">
+    <span class="mob-cta-bar__name">CLEANR Filter</span>
+    <span class="mob-cta-bar__price">$229</span>
+  </div>
+  <a href="#product" class="mob-cta-bar__btn">
+    Buy Now
+  </a>
+</div>
 
 <div id="contact-modal" class="contact-modal" hidden aria-hidden="true">
   <div class="contact-modal__backdrop" data-close-modal tabindex="-1" aria-hidden="true"></div>
@@ -4058,196 +4209,200 @@
     intervalMs: 8000,
   });
 
-  /* ── Problem section: interactive septic diagram ───────────────── */
+  /* ── Problem section: split diagram (accordion) ───── */
   (function () {
     const section = document.getElementById('diagram-section');
-    const stage = document.getElementById('diagram-stage');
-    if (!section || !stage) return;
+    if (!section) return;
 
-    const hotspotCount = section.querySelectorAll('.diagram-hotspot').length;
-    if (!hotspotCount) return;
-
+    const stage = document.getElementById('split-diagram-stage');
+    const items = Array.from(section.querySelectorAll('.split-diagram__accordion-item'));
+    const dots = Array.from(section.querySelectorAll('.split-diagram__dot'));
     const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const mqDesktopDiagram = window.matchMedia('(min-width: 769px)');
-    function isDesktopDiagram() {
-      return mqDesktopDiagram.matches;
+    const mqMobile = window.matchMedia('(max-width: 768px)');
+    function isMobile() {
+      return mqMobile.matches;
     }
 
-    let currentHotspot = 0;
-    let autoTourTimer = null;
-    let autoTourActive = false;
-    let autoTourDelayId = null;
+    let activeIndex = -1;
 
-    function clearDiagramSelection() {
-      document.querySelectorAll('.hotspot').forEach((h) => {
-        h.classList.remove('active');
-        h.setAttribute('aria-pressed', 'false');
+    function killPanelTween(panel) {
+      if (typeof gsap !== 'undefined' && panel && gsap.getTweensOf(panel).length) {
+        gsap.killTweensOf(panel);
+      }
+    }
+
+    function scrollActiveCardIntoView(item) {
+      if (!item || !isMobile()) return;
+      item.scrollIntoView({
+        behavior: prefersReduce ? 'auto' : 'smooth',
+        block: 'nearest',
+        inline: 'center',
       });
-      document.querySelectorAll('.callout').forEach((c) => c.classList.remove('active'));
-      document.querySelectorAll('.diagram-card').forEach((c) => c.classList.remove('active'));
-      document.querySelectorAll('.diagram-hotspot').forEach((el) => el.classList.remove('active'));
     }
 
-    function stopAutoTour() {
-      autoTourActive = false;
-      if (autoTourTimer) {
-        clearInterval(autoTourTimer);
-        autoTourTimer = null;
+    function activate(index) {
+      const next = typeof index === 'number' ? index : parseInt(String(index), 10);
+
+      if (Number.isNaN(next) || next < 0) {
+        items.forEach((item) => {
+          const trigger = item.querySelector('.split-diagram__accordion-trigger');
+          const panel = item.querySelector('.split-diagram__accordion-panel');
+          if (!trigger || !panel) return;
+          killPanelTween(panel);
+          item.classList.remove('is-active');
+          trigger.setAttribute('aria-expanded', 'false');
+          panel.setAttribute('hidden', '');
+          panel.style.height = '';
+          panel.style.opacity = '';
+        });
+        dots.forEach((dot) => dot.classList.remove('is-active'));
+        activeIndex = -1;
+        return;
       }
-      if (autoTourDelayId) {
-        clearTimeout(autoTourDelayId);
-        autoTourDelayId = null;
-      }
-    }
 
-    function startAutoTour() {
-      if (isDesktopDiagram()) return;
-      if (!window.matchMedia('(hover: hover)').matches) return;
-      stopAutoTour();
-      autoTourActive = true;
-      autoTourTimer = setInterval(() => {
-        if (!autoTourActive) return;
-        activateHotspot((currentHotspot + 1) % hotspotCount);
-      }, 2500);
-    }
+      items.forEach((item, i) => {
+        const trigger = item.querySelector('.split-diagram__accordion-trigger');
+        const panel = item.querySelector('.split-diagram__accordion-panel');
+        if (!trigger || !panel) return;
+        const isThis = i === next;
 
-    function scheduleAutoTour(delay) {
-      if (isDesktopDiagram()) return;
-      if (!window.matchMedia('(hover: hover)').matches) return;
-      if (autoTourDelayId) clearTimeout(autoTourDelayId);
-      autoTourDelayId = setTimeout(() => {
-        autoTourDelayId = null;
-        startAutoTour();
-      }, delay);
-    }
+        item.classList.toggle('is-active', isThis);
+        trigger.setAttribute('aria-expanded', String(isThis));
 
-    function activateHotspot(index) {
-      const i = parseInt(String(index), 10);
-      if (i < 0 || i >= hotspotCount || Number.isNaN(i)) return;
-
-      document.querySelectorAll('.hotspot').forEach((h) => {
-        h.classList.remove('active');
-        h.setAttribute('aria-pressed', 'false');
-      });
-      document.querySelectorAll('.callout').forEach((c) => c.classList.remove('active'));
-      document.querySelectorAll('.diagram-card').forEach((c) => c.classList.remove('active'));
-      document.querySelectorAll('.diagram-hotspot').forEach((el) => el.classList.remove('active'));
-
-      const hotspot = document.querySelector('.hotspot[data-index="' + i + '"]');
-      const callout = document.querySelector('.callout[data-index="' + i + '"]');
-      const card = document.querySelector('.diagram-card[data-index="' + i + '"]');
-      const cluster = document.querySelector('.diagram-hotspot[data-index="' + i + '"]');
-
-      if (hotspot) {
-        hotspot.classList.add('active');
-        hotspot.setAttribute('aria-pressed', 'true');
-      }
-      if (callout) callout.classList.add('active');
-      if (cluster) cluster.classList.add('active');
-      if (card) {
-        card.classList.add('active');
-        if (window.matchMedia('(max-width: 768px)').matches) {
-          card.scrollIntoView({
-            behavior: prefersReduce ? 'auto' : 'smooth',
-            block: 'nearest',
-            inline: 'center',
-          });
+        if (isThis) {
+          const wasHidden = panel.hasAttribute('hidden');
+          panel.removeAttribute('hidden');
+          if (!prefersReduce && typeof gsap !== 'undefined' && wasHidden) {
+            killPanelTween(panel);
+            gsap.fromTo(
+              panel,
+              { height: 0, opacity: 0 },
+              {
+                height: 'auto',
+                opacity: 1,
+                duration: 0.35,
+                ease: 'power2.out',
+                clearProps: 'height',
+              }
+            );
+          }
+        } else {
+          if (!prefersReduce && typeof gsap !== 'undefined' && !panel.hidden) {
+            killPanelTween(panel);
+            gsap.to(panel, {
+              height: 0,
+              opacity: 0,
+              duration: 0.25,
+              ease: 'power2.in',
+              onComplete: () => {
+                panel.setAttribute('hidden', '');
+                panel.style.height = '';
+                panel.style.opacity = '';
+              },
+            });
+          } else {
+            killPanelTween(panel);
+            panel.setAttribute('hidden', '');
+            panel.style.height = '';
+            panel.style.opacity = '';
+          }
         }
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === next);
+      });
+
+      if (isMobile()) scrollActiveCardIntoView(items[next]);
+
+      activeIndex = next;
+    }
+
+    items.forEach((item, i) => {
+      const trigger = item.querySelector('.split-diagram__accordion-trigger');
+      if (!trigger) return;
+      trigger.addEventListener('click', () => {
+        if (i === activeIndex) {
+          activate(-1);
+        } else {
+          activate(i);
+        }
+      });
+    });
+
+    /* Mobile: tap anywhere on the card (trigger uses pointer-events: none) */
+    items.forEach((item) => {
+      item.addEventListener('click', () => {
+        if (!isMobile()) return;
+        const idx = parseInt(String(item.getAttribute('data-index')), 10);
+        if (Number.isNaN(idx)) return;
+        activate(idx);
+      });
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const idx = parseInt(String(dot.getAttribute('data-index')), 10);
+        if (Number.isNaN(idx)) return;
+        if (idx === activeIndex) return;
+        activate(idx);
+      });
+    });
+
+    section.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && activeIndex >= 0) {
+        activate(-1);
       }
-
-      currentHotspot = i;
-    }
-
-    document.querySelectorAll('.hotspot').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        if (isDesktopDiagram()) return;
-        stopAutoTour();
-        activateHotspot(btn.getAttribute('data-index'));
-      });
     });
-
-    document.querySelectorAll('.diagram-card').forEach((card) => {
-      card.addEventListener('click', () => {
-        if (isDesktopDiagram()) return;
-        stopAutoTour();
-        activateHotspot(card.getAttribute('data-index'));
-      });
-    });
-
-    if (isDesktopDiagram()) {
-      document.querySelectorAll('.diagram-hotspot .hotspot').forEach((btn) => {
-        btn.setAttribute('tabindex', '-1');
-      });
-    }
 
     if (prefersReduce) {
-      stage.style.opacity = '1';
-      stage.style.transform = 'none';
-      document.querySelectorAll('.diagram-hotspot').forEach((el) => {
-        el.style.opacity = '1';
-        el.style.visibility = 'visible';
+      if (stage) stage.classList.add('is-visible');
+      items.forEach((item) => {
+        item.style.opacity = '1';
+        item.style.transform = 'none';
       });
-      document.querySelectorAll('.callout').forEach((el) => {
-        el.style.opacity = '1';
+      activate(0);
+    } else if (typeof gsap === 'undefined') {
+      if (stage) stage.classList.add('is-visible');
+      items.forEach((item) => {
+        item.style.opacity = '1';
+        item.style.transform = 'none';
       });
-      document.querySelectorAll('.hotspot').forEach((el) => {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-      });
-      if (isDesktopDiagram()) clearDiagramSelection();
-      else activateHotspot(0);
+      activate(0);
     } else {
-      gsap.set('.diagram-hotspot', { autoAlpha: 0 });
+      gsap.set('.split-diagram__accordion-item', { autoAlpha: 0, y: 12 });
+      gsap.set('.split-diagram__dot', { autoAlpha: 0, scale: 0.6 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: '#diagram-section',
-          start: 'top 80%',
+          start: 'top 78%',
           once: true,
         },
       });
 
-      tl.to('#diagram-stage', {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-      });
-
-      tl.to(
-        '.diagram-hotspot',
-        {
-          autoAlpha: 1,
-          duration: 0.35,
-          stagger: 0.12,
-          ease: 'power2.out',
-        },
-        '-=0.15'
-      );
-
       tl.call(() => {
-        if (isDesktopDiagram()) clearDiagramSelection();
-        else activateHotspot(0);
-        setTimeout(() => {
-          if (isDesktopDiagram()) return;
-          if (!window.matchMedia('(hover: hover)').matches) return;
-          const r = section.getBoundingClientRect();
-          if (r.bottom < 0 || r.top > window.innerHeight) return;
-          startAutoTour();
-        }, 1000);
-      });
-
-      ScrollTrigger.create({
-        trigger: '#diagram-section',
-        start: 'top 70%',
-        end: 'bottom 20%',
-        onLeave: stopAutoTour,
-        onLeaveBack: stopAutoTour,
-        onEnterBack: () => {
-          if (!isDesktopDiagram()) scheduleAutoTour(1800);
-        },
-      });
+        if (stage) stage.classList.add('is-visible');
+      })
+        .to('.split-diagram__accordion-item', {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.4,
+          stagger: 0.1,
+          ease: 'power2.out',
+        }, '+=0.15')
+        .to(
+          '.split-diagram__dot',
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 0.35,
+            stagger: 0.08,
+            ease: 'back.out(1.4)',
+          },
+          '-=0.3'
+        )
+        .call(() => activate(0));
     }
   })();
 

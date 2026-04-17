@@ -1387,57 +1387,6 @@
       }
     }
 
-    /* Cost callout — centered editorial + CTA (reference layout) */
-    .cost-banner {
-      background: rgba(244, 245, 247, 0);
-      border-radius: 0;
-      padding: clamp(48px, 7vw, 88px) clamp(20px, 4vw, 40px) 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-    .cost-banner__inner {
-      max-width: 720px;
-      margin-inline: auto;
-    }
-    .cost-banner__headline {
-      margin: 0;
-      font-family: var(--font-display);
-      font-size: clamp(26px, 4.2vw, 44px);
-      font-weight: 800;
-      line-height: 1.22;
-      letter-spacing: -0.025em;
-      color: #001d4a;
-    }
-    .cost-banner__figure {
-      color: #c00;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-    .cost-banner__figure .cost-counter__num {
-      letter-spacing: -0.04em;
-    }
-    .cost-counter__suffix {
-      opacity: 0;
-      display: inline-block;
-      transition: opacity 0.2s ease;
-    }
-    .cost-counter__suffix.visible {
-      opacity: 1;
-    }
-    .cost-banner__cta {
-      margin-top: clamp(28px, 4vw, 44px);
-    }
-    .cost-banner .cost-banner__cta.btn--primary {
-      background: #1d63d1;
-      color: #fff;
-    }
-    .cost-banner .cost-banner__cta.btn--primary:hover {
-      background: #1858c0;
-      box-shadow: 0 8px 24px rgba(29, 99, 209, 0.35);
-    }
-
     /* ── SECTION: SOLUTION ───────────────────────────────── */
     .solution { background: var(--color-bg); }
     #solution {
@@ -1458,6 +1407,7 @@
       overflow: hidden;
       background: var(--color-surface-2);
       aspect-ratio: 4 / 3;
+      box-shadow: var(--shadow-sm);
     }
     .solution__video {
       display: block;
@@ -1499,7 +1449,7 @@
       object-fit: contain;
       display: block;
     }
-    /* ── FITS YOUR SPACE (below #solution) ─ */
+    /* ── FITS YOUR SPACE — placement row (Figma CLN-001 · 362:1823) ─ */
     .space-fit {
       background: var(--color-bg);
     }
@@ -1509,45 +1459,59 @@
     #fits-your-space .wrap {
       max-width: 1400px;
     }
-    .space-fit__row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
-      gap: clamp(28px, 4.5vw, 56px);
+    .space-fit__stack {
+      display: flex;
+      flex-direction: column;
       align-items: center;
+      text-align: center;
+      gap: clamp(28px, 4vw, 48px);
     }
-    .space-fit__copy .label {
-      margin-bottom: 12px;
+    .space-fit__head {
+      max-width: 40rem;
+      margin-inline: auto;
     }
-    .space-fit__copy .d2 {
+    .space-fit__head .d2 {
       margin: 0;
-      color: var(--color-secondary-600);
-      max-width: 22ch;
+      color: var(--color-text);
     }
-    #space-fit-h2 {
-      padding-bottom: clamp(28px, 4vw, 40px);
-    }
-    .space-fit__media-wrap {
-      position: relative;
-      width: 100%;
-      max-width: min(560px, 100%);
-      justify-self: end;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      background: var(--color-secondary-700);
-      aspect-ratio: 4 / 5;
-      box-shadow: var(--shadow-md);
-    }
-    .space-fit__frame {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+    .space-fit__cards {
+      list-style: none;
       margin: 0;
       padding: 0;
-      border: none;
-      background: var(--color-surface-2);
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(10px, 1.2vw, 16px);
+      align-items: stretch;
     }
-    .space-fit__frame img {
+    .space-fit__card {
+      min-width: 0;
+    }
+    .space-fit__card-media {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: clamp(20px, 2vw, 28px);
+      overflow: hidden;
+      background: var(--color-surface-2);
+      aspect-ratio: 3 / 4;
+      box-shadow: var(--shadow-sm);
+    }
+    .space-fit__card-media::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+    .space-fit__card:not(.space-fit__card--caption-bottom) .space-fit__card-media::before {
+      background: linear-gradient(to bottom, rgba(0, 18, 46, 0.52) 0%, rgba(0, 18, 46, 0.12) 38%, transparent 58%);
+    }
+    .space-fit__card--caption-bottom .space-fit__card-media::before {
+      background: linear-gradient(to top, rgba(0, 18, 46, 0.55) 0%, rgba(0, 18, 46, 0.12) 42%, transparent 62%);
+    }
+    .space-fit__card-img {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -1556,51 +1520,53 @@
       object-position: center;
       display: block;
     }
-    .space-fit__thumbs {
+    .space-fit__card-caption {
       position: absolute;
-      z-index: 3;
-      left: auto;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      margin: 0;
+      padding: clamp(16px, 2.2vw, 24px) clamp(8px, 1.2vw, 14px);
+      padding-top: 32px;
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1.15vw, 16px);
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0.01em;
+      color: #fff;
+      text-align: center;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      top: 0;
+    }
+    .space-fit__card-caption strong {
+      font-weight: 800;
+    }
+    .space-fit__card-caption--bottom {
       top: auto;
-      right: clamp(12px, 2vw, 20px);
-      bottom: clamp(12px, 2vw, 20px);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-      width: auto;
-      max-width: calc(100% - 24px);
-      box-sizing: border-box;
+      bottom: 0;
     }
-    .space-fit__thumb {
-      width: 52px;
-      height: 52px;
-      padding: 0;
-      border: 2px solid var(--color-surface);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      cursor: pointer;
-      background: var(--color-surface);
-      box-shadow: 0 2px 8px rgba(13, 30, 44, 0.12);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    @media (max-width: 1024px) {
+      .space-fit__cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(12px, 2vw, 18px);
+      }
+      .space-fit__card-caption {
+        font-size: clamp(15px, 2.5vw, 18px);
+        line-height: 1.35;
+      }
     }
-    .space-fit__thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+    @media (max-width: 520px) {
+      .space-fit__cards {
+        grid-template-columns: 1fr;
+        max-width: min(360px, 100%);
+        margin-inline: auto;
+      }
+      .space-fit__card-caption {
+        font-size: clamp(17px, 4.8vw, 21px);
+        line-height: 1.33;
+      }
     }
-    .space-fit__thumb:hover {
-      border-color: var(--color-primary-200);
-    }
-    .space-fit__thumb--active {
-      border-color: var(--color-primary-500);
-      box-shadow: 0 0 0 1px var(--color-primary-500), 0 2px 10px rgba(42, 101, 227, 0.25);
-    }
-    .space-fit__thumb:focus-visible {
-      outline: 2px solid var(--color-border-focus);
-      outline-offset: 2px;
-    }
-    .space-fit__progress,
+
     .product__gallery-progress {
       position: absolute;
       z-index: 2;
@@ -1615,7 +1581,6 @@
       overflow: hidden;
       pointer-events: none;
     }
-    .space-fit__progress-fill,
     .product__gallery-progress-fill {
       height: 100%;
       width: 100%;
@@ -1626,13 +1591,11 @@
       will-change: transform;
     }
     @media (prefers-reduced-motion: reduce) {
-      .space-fit__progress,
       .product__gallery-progress {
         display: none;
       }
     }
     @media (max-width: 960px) {
-      .space-fit__progress,
       .product__gallery-progress {
         left: clamp(20px, 5vw, 28px);
         bottom: clamp(22px, 5.5vw, 36px);
@@ -1833,6 +1796,9 @@
       margin: 0;
       text-align: center;
     }
+    #product-h2 {
+      padding-bottom: clamp(20px, 3vw, 40px);
+    }
     .product__inner {
       border-radius: 16px;
       overflow: hidden;
@@ -1843,7 +1809,7 @@
       border-bottom: none;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: clamp(12px, 1.8vw, 20px);
+      gap: clamp(28px, 5vw, 80px);
       align-items: start;
       align-content: start;
     }
@@ -1859,11 +1825,11 @@
       }
     }
     .product__left {
-      padding: clamp(28px, 4.5vw, 56px) clamp(24px, 4vw, 48px);
+      padding: 0;
       display: flex;
       flex-direction: column;
-      background: var(--color-surface);
-      border-radius: 12px;
+      background: transparent;
+      border-radius: 0;
       min-width: 0;
     }
     .product__left h3#prod-h3 {
@@ -1934,6 +1900,10 @@
       margin-bottom: 0;
     }
     .product__how {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    .product__app {
       margin-top: 0;
       margin-bottom: 20px;
     }
@@ -2007,16 +1977,18 @@
     }
     .incl-list li:last-child { border-bottom: none; }
 
-    /* Product accordions (What’s Included, Maintenance & Installation, How it works) */
+    /* Product accordions (What’s Included, Filter Pods, How it works, App) */
     #product-incl-accordion.faq-list,
     #product-maint-accordion.faq-list,
-    #product-how-accordion.faq-list {
+    #product-how-accordion.faq-list,
+    #product-app-accordion.faq-list {
       margin-top: 0;
       margin-bottom: 0;
     }
     #product-incl-accordion > .faq-item > .faq-btn,
     #product-maint-accordion > .faq-item > .faq-btn,
-    #product-how-accordion > .faq-item > .faq-btn {
+    #product-how-accordion > .faq-item > .faq-btn,
+    #product-app-accordion > .faq-item > .faq-btn {
       margin: 0;
       padding: 16px 0 18px;
       font-family: var(--font-display);
@@ -2027,7 +1999,8 @@
     }
     #product-incl-accordion .faq-ans,
     #product-maint-accordion .faq-ans,
-    #product-how-accordion .faq-ans {
+    #product-how-accordion .faq-ans,
+    #product-app-accordion .faq-ans {
       padding-top: 0;
       padding-bottom: 18px;
     }
@@ -2050,6 +2023,24 @@
       width: 14px;
       height: 14px;
       margin-top: 3px;
+    }
+    #product-maint-accordion .product__accordion-prose,
+    #product-how-accordion .product__accordion-prose,
+    #product-app-accordion .product__accordion-prose {
+      max-width: none;
+    }
+    #product-maint-accordion .product__accordion-prose p,
+    #product-how-accordion .product__accordion-prose p,
+    #product-app-accordion .product__accordion-prose p {
+      margin: 0 0 14px;
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: var(--color-text-2);
+    }
+    #product-maint-accordion .product__accordion-prose p:last-child,
+    #product-how-accordion .product__accordion-prose p:last-child,
+    #product-app-accordion .product__accordion-prose p:last-child {
+      margin-bottom: 0;
     }
 
     .product__right {
@@ -2718,48 +2709,9 @@
       }
       .hero__left { padding: 88px 24px 48px; }
       .solution__top, .product__top { grid-template-columns: 1fr; gap: clamp(12px, 1.8vw, 20px); }
+      .product__top { gap: clamp(24px, 5vw, 48px); }
       .solution__copy.reveal {
         padding-top: clamp(32px, 6vw, 48px);
-      }
-      .space-fit__row {
-        grid-template-columns: 1fr;
-        gap: clamp(24px, 4vw, 40px);
-      }
-      .space-fit__media-wrap {
-        max-width: min(440px, 100%);
-        justify-self: center;
-        position: relative;
-        aspect-ratio: 4 / 5;
-        min-height: min(280px, 92vw);
-      }
-      .space-fit__frame {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-      }
-      .space-fit__thumbs {
-        position: absolute;
-        z-index: 4;
-        left: auto;
-        top: auto;
-        right: clamp(10px, 3vw, 18px);
-        bottom: clamp(10px, 3vw, 18px);
-        flex-direction: column;
-        flex-wrap: nowrap;
-        justify-content: flex-end;
-        align-items: flex-end;
-        gap: 8px;
-        width: auto;
-        max-width: calc(100% - 20px);
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        background: none;
-        pointer-events: none;
-      }
-      .space-fit__thumb {
-        pointer-events: auto;
       }
       .product__right {
         border-radius: 12px;
@@ -2808,20 +2760,6 @@
       }
       .product__feature-cards {
         grid-template-columns: 1fr;
-      }
-      .product__left {
-        padding-bottom: clamp(28px, 4.5vw, 40px);
-      }
-    }
-    @media (max-width: 600px) {
-      .cost-banner {
-        padding: clamp(40px, 10vw, 56px) clamp(16px, 4vw, 24px) 0;
-      }
-      .cost-banner__headline {
-        font-size: clamp(22px, 6.2vw, 28px);
-      }
-      .cost-banner__figure {
-        white-space: normal;
       }
     }
 
@@ -3434,27 +3372,6 @@
       </ul>
     </div>
 
-    <div class="cost-banner reveal">
-      <div class="cost-banner__inner" id="cost-counter" aria-live="polite" aria-atomic="true">
-        <h2 class="cost-banner__headline">
-          Septic system damage can<br />
-          cost up to
-          <span class="cost-banner__figure">
-            <span class="cost-counter__prefix">$</span><span
-              class="cost-counter__num"
-              id="cost-counter-num"
-              data-target="20000"
-            >0</span><span
-              class="cost-counter__suffix"
-              id="cost-counter-suffix"
-            >+</span>
-          </span>
-          to repair
-        </h2>
-        <a href="https://cleanr.life/cleanrfilter/buy-bridge?dest=https%3A%2F%2Fcleanrinc.myshopify.com%2Fcart%2F47831741006056%3A1" class="btn btn--primary cost-banner__cta">Stop Buildup Before It Starts</a>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -3499,7 +3416,7 @@
             preload="auto"
             aria-label="Animation showing CLEANR capturing lint and debris from wash water"
           >
-            <source src="video/4.3_250917_VORTX-Animation.mp4" type="video/mp4" />
+            <source src="https://cleanr.life/wp-content/uploads/2025/11/2.1_251104_Installation_smaller.mp4" type="video/mp4" />
           </video>
           <div class="vid-controls">
             <button type="button" class="vid-btn vid-btn--play" aria-pressed="true" aria-label="Pause video">
@@ -3546,62 +3463,71 @@
   </div>
 </section>
 
-<!-- ═══ 3b · FITS YOUR SPACE ═══════════════════════════════ -->
+<!-- ═══ 3b · FITS YOUR SPACE (Figma CLN-001 node 362:1823) ═══ -->
 <section class="space-fit sec" id="fits-your-space" aria-labelledby="space-fit-h2">
   <div class="wrap">
-    <div class="space-fit__row reveal">
-      <div class="space-fit__copy">
-        <span class="label label--primary">Fits in your space</span>
-        <h2 class="d2" id="space-fit-h2">CLEANR is easy to install, and is designed to fit your space</h2>
-        <ul class="solution-check-list" role="list" aria-label="Installation placement options">
-          <li>
-            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
-            On top of your washer
-          </li>
-          <li>
-            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
-            Beside your washer/dryer
-          </li>
-          <li>
-            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
-            On the floor
-          </li>
-          <li>
-            <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="20" height="20" decoding="async" aria-hidden="true" />
-            Inside a cabinet
-          </li>
-        </ul>
-      </div>
-      <div class="space-fit__media-wrap" data-space-fit-carousel role="region" aria-label="CLEANR in different laundry spaces">
-        <div class="space-fit__thumbs" role="tablist" aria-label="Space photos">
-          <button type="button" class="space-fit__thumb space-fit__thumb--active" role="tab" aria-selected="true" aria-label="Space photo 1" data-space-fit-thumb="0">
-            <img src="images/img-space-01.png" alt="" width="104" height="104" loading="lazy" decoding="async" />
-          </button>
-          <button type="button" class="space-fit__thumb" role="tab" aria-selected="false" aria-label="Space photo 2" data-space-fit-thumb="1">
-            <img src="images/img-space-02.png" alt="" width="104" height="104" loading="lazy" decoding="async" />
-          </button>
-          <button type="button" class="space-fit__thumb" role="tab" aria-selected="false" aria-label="Space photo 3" data-space-fit-thumb="2">
-            <img src="images/img-space-03.png" alt="" width="104" height="104" loading="lazy" decoding="async" />
-          </button>
-          <button type="button" class="space-fit__thumb" role="tab" aria-selected="false" aria-label="Space photo 4" data-space-fit-thumb="3">
-            <img src="images/img-space-04.png" alt="" width="104" height="104" loading="lazy" decoding="async" />
-          </button>
-        </div>
-        <div class="space-fit__frame">
-          <img
-            id="space-fit-gallery-main"
-            src="images/img-space-01.png"
-            alt="CLEANR filter installed in a laundry area"
-            width="800"
-            height="1000"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-        <div class="space-fit__progress" aria-hidden="true">
-          <div class="space-fit__progress-fill" data-space-fit-progress-fill></div>
-        </div>
-      </div>
+    <div class="space-fit__stack reveal">
+      <header class="space-fit__head">
+        <h2 class="d2" id="space-fit-h2">CLEANR is easy to install, and is designed so it <em>fits in your space</em>.</h2>
+      </header>
+      <ul class="space-fit__cards" role="list" aria-label="Ways CLEANR fits in your laundry area">
+        <li class="space-fit__card">
+          <div class="space-fit__card-media">
+            <img
+              class="space-fit__card-img"
+              src="images/placement/product-placement-01.png"
+              alt="CLEANR filter installed on top of a washing machine"
+              width="600"
+              height="800"
+              loading="lazy"
+              decoding="async"
+            />
+            <p class="space-fit__card-caption">On <strong>top</strong> of your washer</p>
+          </div>
+        </li>
+        <li class="space-fit__card">
+          <div class="space-fit__card-media">
+            <img
+              class="space-fit__card-img"
+              src="images/placement/product-placement-02.png"
+              alt="CLEANR filter beside a washer and dryer"
+              width="600"
+              height="800"
+              loading="lazy"
+              decoding="async"
+            />
+            <p class="space-fit__card-caption"><strong>Beside</strong> your washer/dryer</p>
+          </div>
+        </li>
+        <li class="space-fit__card space-fit__card--caption-bottom">
+          <div class="space-fit__card-media">
+            <img
+              class="space-fit__card-img"
+              src="images/placement/product-placement-03.png"
+              alt="CLEANR filter on the laundry room floor next to appliances"
+              width="600"
+              height="800"
+              loading="lazy"
+              decoding="async"
+            />
+            <p class="space-fit__card-caption space-fit__card-caption--bottom">On the <strong>floor</strong></p>
+          </div>
+        </li>
+        <li class="space-fit__card">
+          <div class="space-fit__card-media">
+            <img
+              class="space-fit__card-img"
+              src="images/placement/product-placement-04.png"
+              alt="CLEANR filter inside a laundry cabinet"
+              width="600"
+              height="800"
+              loading="lazy"
+              decoding="async"
+            />
+            <p class="space-fit__card-caption"><strong>Inside</strong> a cabinet</p>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </section>
@@ -3781,35 +3707,17 @@
             <div class="faq-list" id="product-maint-accordion" role="presentation" aria-labelledby="product-maint-heading">
               <div class="faq-item">
                 <button type="button" class="faq-btn" id="product-maint-heading" aria-expanded="false" aria-controls="product-maint-panel">
-                  Maintenance &amp; Installation
+                  What are Filter Pods?
                   <span class="faq-ico" aria-hidden="true">
                     <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
                     <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
                   </span>
                 </button>
                 <div class="faq-ans" id="product-maint-panel" role="region" aria-labelledby="product-maint-heading">
-                  <ul class="solution-check-list product__maint-checklist" role="list" aria-label="Maintenance and installation overview">
-                    <li>
-                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
-                      <span>Lorem ipsum dolor sit amet</span>
-                    </li>
-                    <li>
-                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
-                      <span>Consectetur adipiscing elit sed do</span>
-                    </li>
-                    <li>
-                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
-                      <span>Eiusmod tempor incididunt ut labore</span>
-                    </li>
-                    <li>
-                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
-                      <span>Dolore magna aliqua quis nostrud</span>
-                    </li>
-                    <li>
-                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
-                      <span>Exercitation ullamco laboris nisi aliquip</span>
-                    </li>
-                  </ul>
+                  <div class="product__accordion-prose">
+                    <p>Pods capture hair and lint from every cycle for easy collection and disposal. For peak performance, they should be replaced about every five loads, and the CLEANR app lets you know exactly when it’s time.</p>
+                    <p>When you’re ready to swap in a new pod, simply open the front of the filter, remove the used one, and slide in a fresh replacement. The whole process takes about 30 seconds.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -3825,24 +3733,28 @@
                   </span>
                 </button>
                 <div class="faq-ans" id="product-how-panel" role="region" aria-labelledby="product-how-heading">
-                  <ul class="solution-check-list product__how-checklist" role="list" aria-label="How CLEANR Septic Guard works">
-                    <li>
-                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
-                      <span>Connect the filter to your washer drain hose — most installs take under 15 minutes and need no tools.</span>
-                    </li>
-                    <li>
-                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
-                      <span>Every wash sends water through the filter; hair and lint are captured in the pod instead of flowing to the septic system.</span>
-                    </li>
-                    <li>
-                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
-                      <span>When it’s time to swap pods, the CLEANR app sends a reminder so upkeep stays quick and predictable.</span>
-                    </li>
-                    <li>
-                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
-                      <span>Keep using your washer as usual — protection runs automatically, load after load.</span>
-                    </li>
-                  </ul>
+                  <div class="product__accordion-prose">
+                    <p>Simply connect the filter to your washing machine’s drain hose and place it on or near your machine. As wastewater flows through the spiral system during each cycle, lint and hair are separated from the water and collected in a pod for easy disposal.</p>
+                    <p>Installation takes about 15 minutes with no tools required, and it works with any washing machine, no plumber needed. Ongoing maintenance is minimal, requiring roughly 30 seconds per week, and app alerts let you know exactly when it’s time to change the filter.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="product__app">
+            <div class="faq-list" id="product-app-accordion" role="presentation" aria-labelledby="product-app-heading">
+              <div class="faq-item">
+                <button type="button" class="faq-btn" id="product-app-heading" aria-expanded="false" aria-controls="product-app-panel">
+                  What does the CLEANR App Do?
+                  <span class="faq-ico" aria-hidden="true">
+                    <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+                    <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+                  </span>
+                </button>
+                <div class="faq-ans" id="product-app-panel" role="region" aria-labelledby="product-app-heading">
+                  <div class="product__accordion-prose">
+                    <p>The free CLEANR mobile app helps you get the most out of your filter. Access clear installation instructions, track in real time how much hair and lint you’ve collected, and more. You’ll also receive maintenance reminders and helpful tips, get quick access to support and resources, and easily order more CLEANR Pods whenever you need them.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -3959,33 +3871,53 @@
       <div class="faq-list" role="presentation">
         <div class="faq-item">
           <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa1" id="fa1-trigger">
-            Will this work with my washer?
+            Why are hair and lint bad for my septic system?
             <span class="faq-ico" aria-hidden="true">
               <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
               <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
             </span>
           </button>
-          <div class="faq-ans" id="fa1" role="region" aria-labelledby="fa1-trigger">Yes. CLEANR works with all washing machine makes and models — top-load and front-load alike.</div>
+          <div class="faq-ans" id="fa1" role="region" aria-labelledby="fa1-trigger">Unlike typical waste that breaks down in the septic system, hair and lint build up over time, wrap around integral parts of your septic system, and lead to costly maintenance issues ranging from $250-$20k+.</div>
         </div>
         <div class="faq-item">
           <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa2" id="fa2-trigger">
-            How often do I need to maintain it?
+            What happens if hair and lint clog my septic’s soil pores?
             <span class="faq-ico" aria-hidden="true">
               <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
               <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
             </span>
           </button>
-          <div class="faq-ans" id="fa2" role="region" aria-labelledby="fa2-trigger">About 30 seconds per week. The app sends a push reminder when it's time to swap the filter pod.</div>
+          <div class="faq-ans" id="fa2" role="region" aria-labelledby="fa2-trigger">When hair and lint accumulate in the drain field soil, they can block natural filtering pores. This prevents effluent from absorbing properly, leading to odors, soggy patches, or even backups inside the home. Left unchecked, it can shorten your drain field’s life and require a $5k–$20k replacement.</div>
         </div>
         <div class="faq-item">
           <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa3" id="fa3-trigger">
-            Do I need a plumber to install it?
+            Will CLEANR work with my washer?
             <span class="faq-ico" aria-hidden="true">
               <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
               <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
             </span>
           </button>
-          <div class="faq-ans" id="fa3" role="region" aria-labelledby="fa3-trigger">No. Installation takes less than 15 minutes with no tools. The package includes everything you need.</div>
+          <div class="faq-ans" id="fa3" role="region" aria-labelledby="fa3-trigger">Yes. CLEANR works with all washing machine makes and models — top-load and front-load alike. Install CLEANR on top of, beside, on the floor, or in a cabinet next to your washing machine.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa4" id="fa4-trigger">
+            How often do I need to maintain the filter?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa4" role="region" aria-labelledby="fa4-trigger">Maintaining your CLEANR Filter only takes less than 30 seconds per week. When the app sends a push reminder that it is time to swap the filter pod, simply remove the full pod and replace it with a new one. The indication lights on the filter will also let you know when it is time to change the filter pod.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-btn" aria-expanded="false" aria-controls="fa5" id="fa5-trigger">
+            Do I need a plumber to install my CLEANR?
+            <span class="faq-ico" aria-hidden="true">
+              <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+              <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+            </span>
+          </button>
+          <div class="faq-ans" id="fa5" role="region" aria-labelledby="fa5-trigger">No, installation does not require a plumber or any tools for installing, and it takes less than 15 minutes to set up.</div>
         </div>
       </div>
       <a href="https://cleanr.life/cleanrfilter/buy-bridge?dest=https%3A%2F%2Fcleanrinc.myshopify.com%2Fcart%2F47831741006056%3A1" class="btn btn--secondary">Buy the CLEANR Filter</a>
@@ -4209,7 +4141,7 @@
 
   initCleanrTestimonialCarousel(document.getElementById('h-quotes'));
 
-  /* Thumbnail + main image carousel with timed advance and progress bar (Fits your space + product gallery) */
+  /* Thumbnail + main image carousel with timed advance and progress bar (product gallery) */
   function initTimedThumbCarousel(cfg) {
     var root = cfg.root;
     if (!root) return;
@@ -4548,63 +4480,6 @@
     }
   })();
 
-  /* Cost banner — count-up ($0 → $20,000, then “+”) */
-  (function () {
-    const counterEl = document.getElementById('cost-counter-num');
-    const suffixEl = document.getElementById('cost-counter-suffix');
-    const triggerEl = document.getElementById('cost-counter');
-    if (!counterEl || !suffixEl || !triggerEl) return;
-
-    const TARGET = 20000;
-    const DURATION_MS = 1800;
-    const START_DELAY_MS = 200;
-
-    function animateCounter(el, target, duration, onComplete) {
-      const startTime = performance.now();
-      function tick(now) {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const current = Math.round(eased * target);
-        el.textContent = current.toLocaleString('en-US');
-        if (progress < 1) {
-          requestAnimationFrame(tick);
-        } else {
-          el.textContent = target.toLocaleString('en-US');
-          if (onComplete) onComplete();
-        }
-      }
-      requestAnimationFrame(tick);
-    }
-
-    const mqCostMobile = window.matchMedia('(max-width: 768px)');
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      counterEl.textContent = TARGET.toLocaleString('en-US');
-      suffixEl.classList.add('visible');
-    } else {
-      let hasRun = false;
-      ScrollTrigger.create({
-        trigger: '#cost-counter',
-        start: 'top 85%',
-        onEnter: () => {
-          if (hasRun) return;
-          hasRun = true;
-          if (mqCostMobile.matches) {
-            counterEl.textContent = TARGET.toLocaleString('en-US');
-            suffixEl.classList.add('visible');
-            return;
-          }
-          setTimeout(() => {
-            animateCounter(counterEl, TARGET, DURATION_MS, () => {
-              suffixEl.classList.add('visible');
-            });
-          }, START_DELAY_MS);
-        },
-      });
-    }
-  })();
-
   /* Scroll reveals */
   gsap.utils.toArray('.reveal').forEach(el => {
     gsap.to(el, {
@@ -4614,7 +4489,7 @@
   });
 
   /* FAQ accordion + product “What’s Included” (exclusive open within each list) */
-  document.querySelectorAll('#faqs .faq-btn, #product-incl-accordion .faq-btn, #product-maint-accordion .faq-btn, #product-how-accordion .faq-btn').forEach(btn => {
+  document.querySelectorAll('#faqs .faq-btn, #product-incl-accordion .faq-btn, #product-maint-accordion .faq-btn, #product-how-accordion .faq-btn, #product-app-accordion .faq-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const item = btn.closest('.faq-item');
       const list = btn.closest('.faq-list');
@@ -4630,16 +4505,6 @@
         btn.setAttribute('aria-expanded', 'true');
       }
     });
-  });
-
-  initTimedThumbCarousel({
-    root: document.querySelector('[data-space-fit-carousel]'),
-    main: 'space-fit-gallery-main',
-    thumbSelector: '[data-space-fit-thumb]',
-    thumbIndexAttr: 'data-space-fit-thumb',
-    activeClass: 'space-fit__thumb--active',
-    progressFillSelector: '[data-space-fit-progress-fill]',
-    intervalMs: 8000,
   });
 
   /* Testimonials — horizontal row + prev/next (scrollbar hidden; arrows at all widths) */

@@ -1671,6 +1671,8 @@
       box-sizing: border-box;
     }
     .testi__viewport {
+      --testi-viewport-pad-y: clamp(18px, 2.8vw, 28px);
+      --testi-viewport-pad-x: clamp(12px, 2vw, 24px);
       flex: 1;
       min-width: 0;
       overflow-x: auto;
@@ -1679,6 +1681,9 @@
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      /* Inset so card box-shadow isn’t clipped (overflow-x forces effective vertical clip) */
+      padding: var(--testi-viewport-pad-y) var(--testi-viewport-pad-x);
+      box-sizing: border-box;
     }
     .testi__viewport::-webkit-scrollbar {
       display: none;
@@ -1689,6 +1694,7 @@
       gap: clamp(10px, 1.4vw, 16px);
       align-items: stretch;
       min-width: min-content;
+      margin: calc(-1 * var(--testi-viewport-pad-y, 0px)) calc(-1 * var(--testi-viewport-pad-x, 0px));
     }
     .testi__nav {
       display: grid;
@@ -1838,7 +1844,8 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: clamp(12px, 1.8vw, 20px);
-      align-items: stretch;
+      align-items: start;
+      align-content: start;
     }
     @media (min-width: 961px) {
       .product__inner {
@@ -2048,7 +2055,7 @@
     }
     .product__gallery {
       position: relative;
-      flex: 1 1 auto;
+      flex: 0 0 auto;
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -2105,9 +2112,9 @@
     }
     .product__media-frame {
       position: relative;
-      flex: 1 1 auto;
-      min-height: clamp(480px, 52vh, 800px);
+      flex: 0 0 auto;
       width: 100%;
+      height: clamp(480px, 52vh, 800px);
       border-radius: 0;
       overflow: hidden;
       background: var(--color-surface-2);

@@ -145,6 +145,7 @@ body {
   /* ── TYPOGRAPHY: LINE HEIGHT ──────────────────────────────── */
   --leading-none:    1;      /* display / hero — tight */
   --leading-tight:   1.15;   /* headings */
+  --leading-h2:      1.24;   /* section h2 — multi-line headlines */
   --leading-snug:    1.35;   /* sub-headings */
   --leading-normal:  1.6;    /* default body */
   --leading-relaxed: 1.72;   /* long-form prose */
@@ -242,7 +243,7 @@ h2 {
   font-family: var(--font-display);
   font-size: var(--text-h2);
   font-weight: var(--weight-bold);
-  line-height: 1.08;
+  line-height: var(--leading-h2);
   letter-spacing: var(--tracking-tighter);
   color: var(--color-text);
 }

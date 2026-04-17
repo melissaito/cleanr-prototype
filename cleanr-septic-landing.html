@@ -134,7 +134,7 @@
         --text-h3: clamp(24px, 3.4vw, 30px);
       }
       h2 {
-        line-height: 1.22;
+        line-height: 1.32;
       }
     }
 
@@ -1931,6 +1931,10 @@
     }
     .product__maint {
       margin-top: 0;
+      margin-bottom: 0;
+    }
+    .product__how {
+      margin-top: 0;
       margin-bottom: 20px;
     }
 
@@ -2003,14 +2007,16 @@
     }
     .incl-list li:last-child { border-bottom: none; }
 
-    /* Product accordions (“What’s Included”, “Maintenance & Installation”) */
+    /* Product accordions (What’s Included, Maintenance & Installation, How it works) */
     #product-incl-accordion.faq-list,
-    #product-maint-accordion.faq-list {
+    #product-maint-accordion.faq-list,
+    #product-how-accordion.faq-list {
       margin-top: 0;
       margin-bottom: 0;
     }
     #product-incl-accordion > .faq-item > .faq-btn,
-    #product-maint-accordion > .faq-item > .faq-btn {
+    #product-maint-accordion > .faq-item > .faq-btn,
+    #product-how-accordion > .faq-item > .faq-btn {
       margin: 0;
       padding: 16px 0 18px;
       font-family: var(--font-display);
@@ -2020,23 +2026,27 @@
       line-height: 1.3;
     }
     #product-incl-accordion .faq-ans,
-    #product-maint-accordion .faq-ans {
+    #product-maint-accordion .faq-ans,
+    #product-how-accordion .faq-ans {
       padding-top: 0;
       padding-bottom: 18px;
     }
     #product-incl-accordion .product__incl-checklist,
-    #product-maint-accordion .product__maint-checklist {
+    #product-maint-accordion .product__maint-checklist,
+    #product-how-accordion .product__how-checklist {
       margin: 0;
       max-width: none;
       gap: 14px;
     }
     #product-incl-accordion .product__incl-checklist li,
-    #product-maint-accordion .product__maint-checklist li {
+    #product-maint-accordion .product__maint-checklist li,
+    #product-how-accordion .product__how-checklist li {
       font-size: 14.5px;
       line-height: 1.65;
     }
     #product-incl-accordion .product__incl-checklist .solution-check-list__icon,
-    #product-maint-accordion .product__maint-checklist .solution-check-list__icon {
+    #product-maint-accordion .product__maint-checklist .solution-check-list__icon,
+    #product-how-accordion .product__how-checklist .solution-check-list__icon {
       width: 14px;
       height: 14px;
       margin-top: 3px;
@@ -2114,7 +2124,7 @@
       position: relative;
       flex: 0 0 auto;
       width: 100%;
-      height: clamp(480px, 52vh, 800px);
+      height: clamp(560px, 64vh, 960px);
       border-radius: 0;
       overflow: hidden;
       background: var(--color-surface-2);
@@ -2762,7 +2772,7 @@
         max-width: 100%;
         flex: none;
         aspect-ratio: 2 / 3;
-        min-height: min(440px, 110vw);
+        min-height: min(520px, 120vw);
       }
       .product__media-frame {
         position: absolute;
@@ -3722,14 +3732,14 @@
   <div class="wrap">
 
     <header class="product__intro reveal">
-      <h2 class="d2" id="product-h2">Everything You Need to Start Protecting Your Septic</h2>
+      <h2 class="d2" id="product-h2">Everything You Need to Start<br /><em>Protecting Your Septic</em></h2>
     </header>
 
     <div class="product__inner reveal">
       <div class="product__top">
         <div class="product__left">
           <h3 class="d2" id="prod-h3" style="margin-bottom:4px;">CLEANR Septic Guard for Laundry</h3>
-          <p class="product__body" style="margin-top:12px;">CLEANR Septic Guard is a complete, easy-to-install septic-safe filter that starts protecting your system immediately with no tools, no plumber, and no guesswork. Simply connect the filter to your washing machine’s drain hose and place it on or near your washing machine. As wastewater from each wash flows through its spiral system, the lint and hair are separated from the water and collected in a pod for easy disposal.</p>
+          <p class="product__body" style="margin-top:12px;">CLEANR Septic Guard is a complete, easy-to-install septic-safe filter that starts protecting your system immediately with no tools, no plumber, and no guesswork.</p>
           <div class="product__incl">
             <div class="faq-list" id="product-incl-accordion" role="presentation" aria-labelledby="product-incl-heading">
               <div class="faq-item">
@@ -3798,6 +3808,39 @@
                     <li>
                       <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
                       <span>Exercitation ullamco laboris nisi aliquip</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="product__how">
+            <div class="faq-list" id="product-how-accordion" role="presentation" aria-labelledby="product-how-heading">
+              <div class="faq-item">
+                <button type="button" class="faq-btn" id="product-how-heading" aria-expanded="false" aria-controls="product-how-panel">
+                  How Does It Work?
+                  <span class="faq-ico" aria-hidden="true">
+                    <img class="faq-ico__symbol faq-ico__symbol--plus" src="images/plus.svg" alt="" width="32" height="32" decoding="async" />
+                    <img class="faq-ico__symbol faq-ico__symbol--minus" src="images/minus.svg" alt="" width="32" height="32" decoding="async" />
+                  </span>
+                </button>
+                <div class="faq-ans" id="product-how-panel" role="region" aria-labelledby="product-how-heading">
+                  <ul class="solution-check-list product__how-checklist" role="list" aria-label="How CLEANR Septic Guard works">
+                    <li>
+                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
+                      <span>Connect the filter to your washer drain hose — most installs take under 15 minutes and need no tools.</span>
+                    </li>
+                    <li>
+                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
+                      <span>Every wash sends water through the filter; hair and lint are captured in the pod instead of flowing to the septic system.</span>
+                    </li>
+                    <li>
+                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
+                      <span>When it’s time to swap pods, the CLEANR app sends a reminder so upkeep stays quick and predictable.</span>
+                    </li>
+                    <li>
+                      <img class="solution-check-list__icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" aria-hidden="true" />
+                      <span>Keep using your washer as usual — protection runs automatically, load after load.</span>
                     </li>
                   </ul>
                 </div>
@@ -4571,7 +4614,7 @@
   });
 
   /* FAQ accordion + product “What’s Included” (exclusive open within each list) */
-  document.querySelectorAll('#faqs .faq-btn, #product-incl-accordion .faq-btn, #product-maint-accordion .faq-btn').forEach(btn => {
+  document.querySelectorAll('#faqs .faq-btn, #product-incl-accordion .faq-btn, #product-maint-accordion .faq-btn, #product-how-accordion .faq-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const item = btn.closest('.faq-item');
       const list = btn.closest('.faq-list');

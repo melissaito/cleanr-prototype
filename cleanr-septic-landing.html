@@ -413,6 +413,7 @@
       letter-spacing: -0.022em;
     }
     .hero__h1 em { color: var(--color-primary-500); font-style: normal; }
+    .hero__h1 .hero__h1-money { letter-spacing: -0.04em; }
 
     .hero__sub {
       font-size: clamp(15px, 1.4vw, 17px);
@@ -1564,6 +1565,9 @@
       .space-fit__card-caption {
         font-size: clamp(17px, 4.8vw, 21px);
         line-height: 1.33;
+      }
+      .space-fit__card-caption--bottom {
+        padding-bottom: clamp(28px, 8vw, 40px);
       }
     }
 
@@ -3096,7 +3100,7 @@
     </div>
 
     <h1 class="d1 hero__h1" style="opacity:0" id="h-h1">
-      $229 Can Prevent a $20,000 Septic Repair
+      $229 Can Prevent a <span class="hero__h1-money">$20,000</span> Septic Repair
     </h1>
 
     <p class="hero__sub" style="opacity:0" id="h-sub">

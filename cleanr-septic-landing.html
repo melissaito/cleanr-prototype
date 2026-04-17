@@ -846,8 +846,8 @@
       bottom: 2px;
       transform: translateX(-6px);
     }
-    /* Hotspot 2 — Too Frequent Pumping: lower callout + shift label left */
-    .diagram-hotspot[data-index="2"] .hotspot__lens-stack .callout {
+    /* Hotspot 3 — Too Frequent Pumping (lens): lower callout + shift label left */
+    .diagram-hotspot[data-index="3"] .hotspot__lens-stack .callout {
       bottom: -8px;
       transform: translateX(-42px); /* net ~50px left vs base +8px */
     }
@@ -1052,12 +1052,12 @@
         top: 58% !important;
       }
       .diagram-hotspot[data-index="2"] {
-        left: 84% !important;
-        top: 20% !important;
-      }
-      .diagram-hotspot[data-index="3"] {
         left: 52% !important;
         top: 64% !important;
+      }
+      .diagram-hotspot[data-index="3"] {
+        left: 84% !important;
+        top: 20% !important;
       }
       .hotspot.hotspot--lens {
         position: relative;
@@ -3296,11 +3296,11 @@
           </button>
         </div>
 
-        <div class="diagram-hotspot" data-index="2" style="left: 82%; top: 26%;">
+        <div class="diagram-hotspot" data-index="3" style="left: 82%; top: 26%;">
           <button
             type="button"
             class="hotspot hotspot--lens"
-            data-index="2"
+            data-index="3"
             aria-pressed="false"
             aria-label="Too frequent pumping from inlet strain: close-up and typical extra cost"
           >
@@ -3310,7 +3310,7 @@
               <span class="hotspot__lens">
                 <img src="images/hotspot-03.png" alt="" width="160" height="160" loading="lazy" decoding="async" />
               </span>
-              <div class="callout" data-index="2">
+              <div class="callout" data-index="3">
                 <div class="callout__body">
                   <p class="callout__text">Too Frequent Pumping</p>
                   <span class="cost-pill" aria-label="Typical extra cost range">$250–$500</span>
@@ -3321,17 +3321,17 @@
           </button>
         </div>
 
-        <div class="diagram-hotspot diagram-hotspot--label" data-index="3" style="left: calc(50% + 100px); top: 71%;">
+        <div class="diagram-hotspot diagram-hotspot--label" data-index="2" style="left: calc(50% + 100px); top: 71%;">
           <button
             type="button"
             class="hotspot hotspot--label"
-            data-index="3"
+            data-index="2"
             aria-pressed="false"
             aria-label="Burnt out aerator: typical repair cost $500 to $2,000"
           >
             <span class="hotspot__dot" aria-hidden="true"></span>
             <span class="hotspot__num" aria-hidden="true">3</span>
-            <div class="callout" data-index="3">
+            <div class="callout" data-index="2">
               <div class="callout__body">
                 <p class="callout__text">Burnt Out Aerator</p>
                 <span class="cost-pill" aria-label="Typical repair cost range">$500–$2k</span>
@@ -3368,18 +3368,6 @@
         </li>
         <li>
           <button type="button" class="diagram-card" data-index="2">
-            <span class="diagram-card__num" aria-hidden="true">4</span>
-            <div class="diagram-card__content">
-              <div class="diagram-card__head">
-                <div class="diagram-card__title">Too Frequent Pumping</div>
-                <span class="diagram-card__cost cost-pill">$250–$500</span>
-              </div>
-              <div class="diagram-card__body">Lint and debris force more pump-outs and maintenance — extra cost before bigger failures show up.</div>
-            </div>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="diagram-card" data-index="3">
             <span class="diagram-card__num" aria-hidden="true">3</span>
             <div class="diagram-card__content">
               <div class="diagram-card__head">
@@ -3387,6 +3375,18 @@
                 <span class="diagram-card__cost cost-pill">$500–$2k</span>
               </div>
               <div class="diagram-card__body">When the aerator fails, the system loses treatment capacity — repairs or replacement often run from $500 to $2,000.</div>
+            </div>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="diagram-card" data-index="3">
+            <span class="diagram-card__num" aria-hidden="true">4</span>
+            <div class="diagram-card__content">
+              <div class="diagram-card__head">
+                <div class="diagram-card__title">Too Frequent Pumping</div>
+                <span class="diagram-card__cost cost-pill">$250–$500</span>
+              </div>
+              <div class="diagram-card__body">Lint and debris force more pump-outs and maintenance — extra cost before bigger failures show up.</div>
             </div>
           </button>
         </li>

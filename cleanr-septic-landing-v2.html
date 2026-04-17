@@ -1002,8 +1002,8 @@
 
       .split-diagram__dot[data-index="0"] { left: 10% !important; top: 52% !important; }
       .split-diagram__dot[data-index="1"] { left: 40% !important; top: 80% !important; }
-      .split-diagram__dot[data-index="2"] { left: 82% !important; top: 26% !important; }
-      .split-diagram__dot[data-index="3"] { left: 56% !important; top: 68% !important; }
+      .split-diagram__dot[data-index="2"] { left: 56% !important; top: 68% !important; }
+      .split-diagram__dot[data-index="3"] { left: 82% !important; top: 26% !important; }
 
       .split-diagram__accordion {
         display: flex;
@@ -3355,12 +3355,12 @@
                   <span class="split-diagram__dot-ring"></span>
                   <span class="split-diagram__dot-inner">2</span>
                 </button>
-                <button type="button" class="split-diagram__dot" data-index="2" style="left:82%; top:26%;"
+                <button type="button" class="split-diagram__dot" data-index="3" style="left:82%; top:26%;"
                         aria-label="Open: Too Frequent Pumping">
                   <span class="split-diagram__dot-ring"></span>
                   <span class="split-diagram__dot-inner">4</span>
                 </button>
-                <button type="button" class="split-diagram__dot" data-index="3" style="left:calc(50% + 100px); top:71%;"
+                <button type="button" class="split-diagram__dot" data-index="2" style="left:calc(50% + 100px); top:71%;"
                         aria-label="Open: Burnt Out Aerator">
                   <span class="split-diagram__dot-ring"></span>
                   <span class="split-diagram__dot-inner">3</span>
@@ -3452,41 +3452,6 @@
                     aria-controls="split-diagram-panel-2"
                     id="split-diagram-trigger-2"
                   >
-                    <span class="split-diagram__accordion-num split-diagram__accordion-num--trigger">4</span>
-                    <span class="split-diagram__accordion-title">Too Frequent Pumping</span>
-                    <span class="split-diagram__accordion-cost cost-pill" aria-label="Typical extra cost per visit">$250–$500</span>
-                    <span class="split-diagram__accordion-chevron" aria-hidden="true">
-                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--down"></span>
-                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--up"></span>
-                    </span>
-                  </button>
-                </div>
-                <div class="split-diagram__accordion-thumb-wrap">
-                  <div class="split-diagram__accordion-thumb" aria-hidden="true">
-                    <img src="images/diagram/System%20Backups.jpg" alt="" width="240" height="136" loading="lazy" decoding="async" />
-                  </div>
-                  <span class="split-diagram__accordion-num split-diagram__accordion-num--thumb" aria-hidden="true">4</span>
-                </div>
-              </div>
-              <div class="split-diagram__accordion-panel" id="split-diagram-panel-2" role="region" aria-labelledby="split-diagram-trigger-2" hidden>
-                <div class="split-diagram__accordion-panel-inner">
-                  <p class="split-diagram__accordion-desc">
-                    Lint adds extra solids that don’t break down, causing the tank to fill faster. That can shorten pumping intervals from years to months, adding recurring pump-out costs.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="split-diagram__accordion-item" data-index="3" role="listitem">
-              <div class="split-diagram__accordion-card-head">
-                <div class="split-diagram__accordion-text-col">
-                  <button
-                    type="button"
-                    class="split-diagram__accordion-trigger"
-                    aria-expanded="false"
-                    aria-controls="split-diagram-panel-3"
-                    id="split-diagram-trigger-3"
-                  >
                     <span class="split-diagram__accordion-num split-diagram__accordion-num--trigger">3</span>
                     <span class="split-diagram__accordion-title">Burnt Out Aerator</span>
                     <span class="split-diagram__accordion-cost cost-pill" aria-label="Typical repair cost range">$500–$2k</span>
@@ -3503,10 +3468,45 @@
                   <span class="split-diagram__accordion-num split-diagram__accordion-num--thumb" aria-hidden="true">3</span>
                 </div>
               </div>
-              <div class="split-diagram__accordion-panel" id="split-diagram-panel-3" role="region" aria-labelledby="split-diagram-trigger-3" hidden>
+              <div class="split-diagram__accordion-panel" id="split-diagram-panel-2" role="region" aria-labelledby="split-diagram-trigger-2" hidden>
                 <div class="split-diagram__accordion-panel-inner">
                   <p class="split-diagram__accordion-desc">
                     Fine fibers can coat the diffuser and restrict airflow, forcing the motor to run hot. The decline is slow and easy to miss until performance drops or backups start.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="split-diagram__accordion-item" data-index="3" role="listitem">
+              <div class="split-diagram__accordion-card-head">
+                <div class="split-diagram__accordion-text-col">
+                  <button
+                    type="button"
+                    class="split-diagram__accordion-trigger"
+                    aria-expanded="false"
+                    aria-controls="split-diagram-panel-3"
+                    id="split-diagram-trigger-3"
+                  >
+                    <span class="split-diagram__accordion-num split-diagram__accordion-num--trigger">4</span>
+                    <span class="split-diagram__accordion-title">Too Frequent Pumping</span>
+                    <span class="split-diagram__accordion-cost cost-pill" aria-label="Typical extra cost per visit">$250–$500</span>
+                    <span class="split-diagram__accordion-chevron" aria-hidden="true">
+                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--down"></span>
+                      <span class="split-diagram__accordion-chevron-icon split-diagram__accordion-chevron-icon--up"></span>
+                    </span>
+                  </button>
+                </div>
+                <div class="split-diagram__accordion-thumb-wrap">
+                  <div class="split-diagram__accordion-thumb" aria-hidden="true">
+                    <img src="images/diagram/System%20Backups.jpg" alt="" width="240" height="136" loading="lazy" decoding="async" />
+                  </div>
+                  <span class="split-diagram__accordion-num split-diagram__accordion-num--thumb" aria-hidden="true">4</span>
+                </div>
+              </div>
+              <div class="split-diagram__accordion-panel" id="split-diagram-panel-3" role="region" aria-labelledby="split-diagram-trigger-3" hidden>
+                <div class="split-diagram__accordion-panel-inner">
+                  <p class="split-diagram__accordion-desc">
+                    Lint adds extra solids that don’t break down, causing the tank to fill faster. That can shorten pumping intervals from years to months, adding recurring pump-out costs.
                   </p>
                 </div>
               </div>
@@ -4477,6 +4477,11 @@
     const stage = document.getElementById('split-diagram-stage');
     const items = Array.from(section.querySelectorAll('.split-diagram__accordion-item'));
     const dots = Array.from(section.querySelectorAll('.split-diagram__dot'));
+    function itemForDiagramIndex(idx) {
+      const n = typeof idx === 'number' ? idx : parseInt(String(idx), 10);
+      if (Number.isNaN(n)) return null;
+      return items.find((item) => parseInt(String(item.getAttribute('data-index')), 10) === n) || null;
+    }
     const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const mqMobile = window.matchMedia('(max-width: 768px)');
     function isMobile() {
@@ -4520,10 +4525,11 @@
         return;
       }
 
-      items.forEach((item, i) => {
+      items.forEach((item) => {
         const trigger = item.querySelector('.split-diagram__accordion-trigger');
         const panel = item.querySelector('.split-diagram__accordion-panel');
         if (!trigger || !panel) return;
+        const i = parseInt(String(item.getAttribute('data-index')), 10);
         const isThis = i === next;
 
         item.classList.toggle('is-active', isThis);
@@ -4569,23 +4575,26 @@
         }
       });
 
-      dots.forEach((dot, i) => {
-        dot.classList.toggle('is-active', i === next);
+      dots.forEach((dot) => {
+        const dotIdx = parseInt(String(dot.getAttribute('data-index')), 10);
+        dot.classList.toggle('is-active', dotIdx === next);
       });
 
-      if (isMobile()) scrollActiveCardIntoView(items[next]);
+      if (isMobile()) scrollActiveCardIntoView(itemForDiagramIndex(next));
 
       activeIndex = next;
     }
 
-    items.forEach((item, i) => {
+    items.forEach((item) => {
       const trigger = item.querySelector('.split-diagram__accordion-trigger');
       if (!trigger) return;
+      const idx = parseInt(String(item.getAttribute('data-index')), 10);
+      if (Number.isNaN(idx)) return;
       trigger.addEventListener('click', () => {
-        if (i === activeIndex) {
+        if (idx === activeIndex) {
           activate(-1);
         } else {
-          activate(i);
+          activate(idx);
         }
       });
     });

@@ -1406,10 +1406,13 @@
     #solution .wrap { max-width: 1400px; }
     .solution__top {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1.32fr) minmax(0, 0.68fr);
       gap: clamp(40px, 6vw, 80px);
-      align-items: center;
+      align-items: start;
       margin-bottom: clamp(56px, 7vw, 88px);
+    }
+    .solution__media {
+      min-width: 0;
     }
     .solution__video-wrap {
       position: relative;

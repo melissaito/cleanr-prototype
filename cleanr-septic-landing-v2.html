@@ -1258,8 +1258,17 @@
     }
     /* Equal spacing everywhere (incl. between duplicated sets) without track gap — gap would break translateX(-50%) loop */
     .trust-marquee .trust-marquee__pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       background-color: var(--color-marquee-pill);
       margin-right: var(--trust-marquee-gap);
+    }
+    .trust-marquee__pill-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      display: block;
     }
     @keyframes trustMarqueeScroll {
       to { transform: translateX(-50%); }
@@ -3513,16 +3522,16 @@
       <div class="trust-marquee__fade trust-marquee__fade--right" aria-hidden="true"></div>
       <div class="trust-marquee__track">
         <div class="trust-marquee__set">
-          <span class="trust-marquee__pill">90%+ filtration tested by third parties</span>
-          <span class="trust-marquee__pill">5,000+ gallons filtered annually per home</span>
-          <span class="trust-marquee__pill">Trusted in 9 states and 7+ countries</span>
-          <span class="trust-marquee__pill">No plumber — installs in 15 minutes</span>
+          <span class="trust-marquee__pill"><img class="trust-marquee__pill-icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" />90%+ filtration tested by third parties</span>
+          <span class="trust-marquee__pill"><img class="trust-marquee__pill-icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" />5,000+ gallons filtered annually per home</span>
+          <span class="trust-marquee__pill"><img class="trust-marquee__pill-icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" />Trusted in 9 states and 7+ countries</span>
+          <span class="trust-marquee__pill"><img class="trust-marquee__pill-icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" />No plumber — installs in 15 minutes</span>
         </div>
         <div class="trust-marquee__set">
-          <span class="trust-marquee__pill">90%+ filtration tested by third parties</span>
-          <span class="trust-marquee__pill">5,000+ gallons filtered annually per home</span>
-          <span class="trust-marquee__pill">Trusted in 9 states and 7+ countries</span>
-          <span class="trust-marquee__pill">No plumber — installs in 15 minutes</span>
+          <span class="trust-marquee__pill"><img class="trust-marquee__pill-icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" />90%+ filtration tested by third parties</span>
+          <span class="trust-marquee__pill"><img class="trust-marquee__pill-icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" />5,000+ gallons filtered annually per home</span>
+          <span class="trust-marquee__pill"><img class="trust-marquee__pill-icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" />Trusted in 9 states and 7+ countries</span>
+          <span class="trust-marquee__pill"><img class="trust-marquee__pill-icon" src="images/check-icon.svg" alt="" width="14" height="14" decoding="async" />No plumber — installs in 15 minutes</span>
         </div>
       </div>
     </div>
